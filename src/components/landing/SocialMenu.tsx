@@ -64,11 +64,13 @@ export const SocialMenu = ({ activePlatform, onPlatformChange }: SocialMenuProps
         <Camera className="w-8 h-8 text-muted-foreground" />
       </div>
 
-      {/* Logout */}
-      <button className="mt-4 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors px-4 py-2">
-        <LogOut className="w-4 h-4" />
-        <span>התנתק</span>
-      </button>
+      {/* Logout - part of menu */}
+      <div className="mt-auto pt-4 border-t border-border/50">
+        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all duration-300 text-right">
+          <LogOut className="w-5 h-5 flex-shrink-0" />
+          <span className="font-medium">התנתק</span>
+        </button>
+      </div>
     </div>
   );
 };
