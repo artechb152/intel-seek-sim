@@ -16,7 +16,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         tactical: 
-          "bg-gradient-to-r from-primary to-emerald-600 text-primary-foreground font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300",
+          "bg-gradient-to-r from-primary via-emerald-500 to-primary text-primary-foreground font-bold shadow-[0_0_30px_rgba(74,222,128,0.5)] hover:shadow-[0_0_50px_rgba(74,222,128,0.7)] hover:scale-105 transition-all duration-300 border border-primary/50",
         tacticalOutline:
           "border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground transition-all duration-300",
         amber:
