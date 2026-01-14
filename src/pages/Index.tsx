@@ -13,10 +13,8 @@ const Index = () => {
   const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
-    const hidePopup = localStorage.getItem("hideWelcomePopup");
-    if (!hidePopup) {
-      setShowWelcome(true);
-    }
+    // Always show welcome popup on page load
+    setShowWelcome(true);
   }, []);
 
   const handleStart = () => {
