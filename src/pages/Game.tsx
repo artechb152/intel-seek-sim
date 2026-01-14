@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import israelMap from "@/assets/israel-map.png";
 import {
   Dialog,
   DialogContent,
@@ -172,15 +173,16 @@ const Game = () => {
               <MapPin className="w-4 h-4 text-blue-400" />
               מיקום
             </label>
-            <div className="aspect-[4/3] bg-secondary rounded-lg relative overflow-hidden">
-              {/* Simple Israel Map Placeholder */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative">
-                  <div className="w-20 h-40 bg-blue-500/20 rounded-full rotate-12 border border-blue-500/40" />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
-                  </div>
-                </div>
+            <div className="aspect-[3/4] bg-white rounded-lg relative overflow-hidden border border-border">
+              {/* Israel Map */}
+              <img 
+                src={israelMap} 
+                alt="מפת ישראל" 
+                className="w-full h-full object-contain p-2"
+              />
+              {/* Location marker pulse */}
+              <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
               </div>
               <div className="absolute bottom-2 left-2 right-2">
                 <Input 
