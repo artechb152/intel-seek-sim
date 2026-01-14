@@ -50,9 +50,12 @@ const Index = () => {
 
       {/* Main Content */}
       <div className="relative z-10 flex h-screen p-4 gap-4">
-        {/* Left Panel - Team Chat */}
-        <div className="w-80 flex-shrink-0 hidden lg:block">
-          <TeamChat />
+        {/* Right Panel - Social Menu */}
+        <div className="w-72 flex-shrink-0 hidden md:block">
+          <SocialMenu
+            activePlatform={activePlatform}
+            onPlatformChange={setActivePlatform}
+          />
         </div>
 
         {/* Center Panel - Phone Mockup & Start */}
@@ -103,12 +106,9 @@ const Index = () => {
           </Button>
         </div>
 
-        {/* Right Panel - Social Menu */}
-        <div className="w-72 flex-shrink-0 hidden md:block">
-          <SocialMenu
-            activePlatform={activePlatform}
-            onPlatformChange={setActivePlatform}
-          />
+        {/* Left Panel - Team Chat */}
+        <div className="w-80 flex-shrink-0 hidden lg:block">
+          <TeamChat />
         </div>
       </div>
 
