@@ -139,4 +139,17 @@
     border-radius: 32px;
     overflow: hidden;
   }
+
+  @keyframes auto-scroll {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-66.666%);
+    }
+  }
+
+  .animate-auto-scroll {
+    animation: auto-scroll 20s linear infinite;
+  }
 }
