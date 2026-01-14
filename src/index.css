@@ -160,6 +160,33 @@
     overflow: hidden;
   }
 
+  @keyframes auto-scroll-fast {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-66.666%);
+    }
+  }
+
+  .animate-auto-scroll-fast {
+    animation: auto-scroll-fast 12s linear infinite;
+  }
+
+  @keyframes auto-scroll-tiktok {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-66.666%);
+    }
+  }
+
+  .animate-auto-scroll-tiktok {
+    animation: auto-scroll-tiktok 8s linear infinite;
+  }
+
+  /* Legacy - keep for compatibility */
   @keyframes auto-scroll {
     0% {
       transform: translateY(0);
