@@ -172,55 +172,57 @@ const Game = () => {
               <MapPin className="w-4 h-4 text-blue-400" />
               מיקום
             </label>
-            <div className="aspect-[3/4] bg-secondary rounded-lg relative overflow-hidden">
-              {/* Israel Map Outline */}
-              <div className="absolute inset-0 flex items-center justify-center p-4">
+            <div className="aspect-[3/5] bg-secondary rounded-lg relative overflow-hidden">
+              {/* Israel Map Outline - Accurate Shape */}
+              <div className="absolute inset-0 flex items-center justify-center p-3">
                 <svg 
-                  viewBox="0 0 100 200" 
+                  viewBox="0 0 120 280" 
                   className="w-full h-full"
-                  style={{ maxHeight: '180px' }}
+                  style={{ maxHeight: '200px' }}
                 >
-                  {/* Israel outline path */}
+                  {/* Israel accurate outline path */}
                   <path
-                    d="M50 5 
-                       L55 8 L58 12 L60 18 L58 22 L62 25 L65 22 L68 25 L65 30 
-                       L60 32 L58 38 L55 42 L52 48 L50 55 L48 62 L50 68 
-                       L52 72 L55 78 L58 85 L60 92 L58 98 L55 105 
-                       L52 112 L50 120 L48 128 L45 138 L42 148 
-                       L38 158 L35 168 L32 178 L28 188 L25 195
-                       L22 188 L25 178 L28 168 L30 158 L32 148 
-                       L35 138 L38 128 L40 118 L42 108 L40 98 
-                       L38 88 L40 78 L42 68 L45 58 L48 48 
-                       L50 38 L48 28 L45 18 L48 10 Z"
-                    fill="rgba(59, 130, 246, 0.15)"
-                    stroke="rgba(59, 130, 246, 0.5)"
+                    d="M75 8 L80 10 L85 8 L92 12 L95 18 L90 22 L88 28 
+                       L92 32 L95 28 L100 30 L105 35 L100 42 L95 45 
+                       L90 48 L88 55 L85 60 L82 68 L80 75 L78 82 
+                       L80 88 L82 95 L80 102 L78 110 L75 118 
+                       L72 125 L70 132 L68 140 L65 150 L62 160 
+                       L58 172 L55 185 L50 200 L45 218 L40 235 
+                       L35 252 L30 265 L28 272
+                       L32 265 L35 255 L38 245 L42 232 L45 220 
+                       L48 208 L50 195 L52 182 L55 170 L58 158 
+                       L60 145 L62 132 L60 120 L58 108 L55 96 
+                       L52 85 L50 75 L48 65 L50 55 L52 45 
+                       L55 35 L58 25 L62 18 L68 12 L75 8 Z"
+                    fill="rgba(59, 130, 246, 0.12)"
+                    stroke="rgba(59, 130, 246, 0.6)"
                     strokeWidth="1.5"
-                    className="drop-shadow-[0_0_8px_rgba(59,130,246,0.3)]"
+                    className="drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]"
+                  />
+                  {/* Kinneret (Sea of Galilee) */}
+                  <ellipse
+                    cx="88"
+                    cy="42"
+                    rx="5"
+                    ry="8"
+                    fill="rgba(59, 130, 246, 0.35)"
+                    stroke="rgba(59, 130, 246, 0.5)"
+                    strokeWidth="0.8"
                   />
                   {/* Dead Sea */}
                   <ellipse
-                    cx="52"
-                    cy="95"
+                    cx="78"
+                    cy="105"
                     rx="4"
-                    ry="12"
-                    fill="rgba(59, 130, 246, 0.3)"
-                    stroke="rgba(59, 130, 246, 0.4)"
-                    strokeWidth="0.5"
-                  />
-                  {/* Kinneret */}
-                  <ellipse
-                    cx="55"
-                    cy="35"
-                    rx="3"
-                    ry="5"
-                    fill="rgba(59, 130, 246, 0.3)"
-                    stroke="rgba(59, 130, 246, 0.4)"
-                    strokeWidth="0.5"
+                    ry="15"
+                    fill="rgba(59, 130, 246, 0.35)"
+                    stroke="rgba(59, 130, 246, 0.5)"
+                    strokeWidth="0.8"
                   />
                 </svg>
                 {/* Pulsing location marker */}
-                <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(59,130,246,0.6)]" />
                 </div>
               </div>
               <div className="absolute bottom-2 left-2 right-2">
