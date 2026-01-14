@@ -94,13 +94,12 @@ const Index = () => {
             onClick={handleStart}
             variant="tactical"
             size="xl"
-            className="group relative overflow-hidden"
+            className="group relative overflow-hidden animate-pulse-glow"
           >
             <span className="relative z-10 flex items-center gap-2">
-              <Play className="w-5 h-5 transition-transform group-hover:scale-110" />
+              <Play className="w-6 h-6 transition-transform group-hover:scale-125" />
               התחל סימולציה
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-primary via-emerald-500 to-primary bg-[length:200%_100%] animate-[shimmer_2s_infinite] opacity-0 group-hover:opacity-20" />
           </Button>
         </div>
 
