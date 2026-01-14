@@ -131,11 +131,32 @@
 
   @keyframes pulse-glow {
     0%, 100% {
-      box-shadow: 0 0 30px rgba(74, 222, 128, 0.5), 0 0 60px rgba(74, 222, 128, 0.3);
+      box-shadow: 0 0 15px rgba(74, 222, 128, 0.3), 0 0 30px rgba(74, 222, 128, 0.15);
     }
     50% {
-      box-shadow: 0 0 50px rgba(74, 222, 128, 0.7), 0 0 80px rgba(74, 222, 128, 0.4);
+      box-shadow: 0 0 25px rgba(74, 222, 128, 0.4), 0 0 40px rgba(74, 222, 128, 0.2);
     }
+  }
+
+  /* Blue glow for game page */
+  .animate-pulse-glow-blue {
+    animation: pulse-glow-blue 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow-blue {
+    0%, 100% {
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), 0 0 30px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2);
+    }
+  }
+
+  /* Date/time input icons fix */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+    cursor: pointer;
   }
 
   .phone-frame {
