@@ -172,57 +172,14 @@ const Game = () => {
               <MapPin className="w-4 h-4 text-blue-400" />
               מיקום
             </label>
-            <div className="aspect-[3/5] bg-secondary rounded-lg relative overflow-hidden">
-              {/* Israel Map Outline - Accurate Shape */}
-              <div className="absolute inset-0 flex items-center justify-center p-3">
-                <svg 
-                  viewBox="0 0 120 280" 
-                  className="w-full h-full"
-                  style={{ maxHeight: '200px' }}
-                >
-                  {/* Israel accurate outline path */}
-                  <path
-                    d="M75 8 L80 10 L85 8 L92 12 L95 18 L90 22 L88 28 
-                       L92 32 L95 28 L100 30 L105 35 L100 42 L95 45 
-                       L90 48 L88 55 L85 60 L82 68 L80 75 L78 82 
-                       L80 88 L82 95 L80 102 L78 110 L75 118 
-                       L72 125 L70 132 L68 140 L65 150 L62 160 
-                       L58 172 L55 185 L50 200 L45 218 L40 235 
-                       L35 252 L30 265 L28 272
-                       L32 265 L35 255 L38 245 L42 232 L45 220 
-                       L48 208 L50 195 L52 182 L55 170 L58 158 
-                       L60 145 L62 132 L60 120 L58 108 L55 96 
-                       L52 85 L50 75 L48 65 L50 55 L52 45 
-                       L55 35 L58 25 L62 18 L68 12 L75 8 Z"
-                    fill="rgba(59, 130, 246, 0.12)"
-                    stroke="rgba(59, 130, 246, 0.6)"
-                    strokeWidth="1.5"
-                    className="drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]"
-                  />
-                  {/* Kinneret (Sea of Galilee) */}
-                  <ellipse
-                    cx="88"
-                    cy="42"
-                    rx="5"
-                    ry="8"
-                    fill="rgba(59, 130, 246, 0.35)"
-                    stroke="rgba(59, 130, 246, 0.5)"
-                    strokeWidth="0.8"
-                  />
-                  {/* Dead Sea */}
-                  <ellipse
-                    cx="78"
-                    cy="105"
-                    rx="4"
-                    ry="15"
-                    fill="rgba(59, 130, 246, 0.35)"
-                    stroke="rgba(59, 130, 246, 0.5)"
-                    strokeWidth="0.8"
-                  />
-                </svg>
-                {/* Pulsing location marker */}
-                <div className="absolute top-1/4 left-1/2 -translate-x-1/2">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(59,130,246,0.6)]" />
+            <div className="aspect-[4/3] bg-secondary rounded-lg relative overflow-hidden">
+              {/* Simple Israel Map Placeholder */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative">
+                  <div className="w-20 h-40 bg-blue-500/20 rounded-full rotate-12 border border-blue-500/40" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
+                  </div>
                 </div>
               </div>
               <div className="absolute bottom-2 left-2 right-2">
