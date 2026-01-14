@@ -51,9 +51,9 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         tactical: {
-          green: "hsl(var(--tactical-green))",
+          blue: "hsl(var(--tactical-blue))",
           amber: "hsl(var(--amber-alert))",
-          blue: "hsl(var(--cyber-blue))",
+          cyan: "hsl(var(--cyber-blue))",
           red: "hsl(var(--danger-red))",
         },
         sidebar: {

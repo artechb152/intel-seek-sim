@@ -16,8 +16,8 @@
     --popover: 220 18% 10%;
     --popover-foreground: 210 20% 92%;
 
-    --primary: 142 50% 45%;
-    --primary-foreground: 220 20% 8%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 220 20% 98%;
 
     --secondary: 220 15% 18%;
     --secondary-foreground: 210 20% 85%;
@@ -33,35 +33,35 @@
 
     --border: 220 15% 20%;
     --input: 220 15% 18%;
-    --ring: 142 50% 45%;
+    --ring: 217 91% 60%;
 
     --radius: 0.5rem;
 
     /* Custom colors */
-    --tactical-green: 142 50% 45%;
-    --tactical-green-glow: 142 60% 50%;
+    --tactical-blue: 217 91% 60%;
+    --tactical-blue-glow: 217 91% 70%;
     --amber-alert: 38 90% 55%;
     --cyber-blue: 200 80% 55%;
     --danger-red: 0 70% 50%;
     --surface-glass: 220 20% 12%;
     
     /* Gradients */
-    --gradient-tactical: linear-gradient(135deg, hsl(142 50% 45%), hsl(160 50% 40%));
+    --gradient-tactical: linear-gradient(135deg, hsl(217 91% 60%), hsl(200 80% 55%));
     --gradient-dark: linear-gradient(180deg, hsl(220 20% 10%), hsl(220 20% 6%));
     --gradient-card: linear-gradient(135deg, hsl(220 18% 14%), hsl(220 18% 10%));
     
     /* Shadows */
-    --shadow-glow: 0 0 20px hsl(142 50% 45% / 0.3);
+    --shadow-glow: 0 0 20px hsl(217 91% 60% / 0.3);
     --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4);
 
     --sidebar-background: 220 18% 10%;
     --sidebar-foreground: 210 20% 85%;
-    --sidebar-primary: 142 50% 45%;
-    --sidebar-primary-foreground: 220 20% 8%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 220 20% 98%;
     --sidebar-accent: 220 15% 18%;
     --sidebar-accent-foreground: 210 20% 85%;
     --sidebar-border: 220 15% 20%;
-    --sidebar-ring: 142 50% 45%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 
@@ -83,8 +83,8 @@
 }
 
 @layer utilities {
-  .glow-green {
-    box-shadow: 0 0 20px hsl(142 50% 45% / 0.4), 0 0 40px hsl(142 50% 45% / 0.2);
+  .glow-blue {
+    box-shadow: 0 0 20px hsl(217 91% 60% / 0.4), 0 0 40px hsl(217 91% 60% / 0.2);
   }
   
   .glow-amber {
@@ -98,11 +98,11 @@
   }
   
   .tactical-border {
-    border: 1px solid hsl(142 50% 45% / 0.3);
+    border: 1px solid hsl(217 91% 60% / 0.3);
   }
   
   .text-gradient-tactical {
-    background: linear-gradient(135deg, hsl(142 50% 55%), hsl(160 50% 50%));
+    background: linear-gradient(135deg, hsl(217 91% 65%), hsl(200 80% 60%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -117,7 +117,7 @@
   }
   
   .scrollbar-tactical::-webkit-scrollbar-thumb {
-    background: hsl(142 50% 45% / 0.5);
+    background: hsl(217 91% 60% / 0.5);
     border-radius: 3px;
   }
 
@@ -130,20 +130,6 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% {
-      box-shadow: 0 0 15px rgba(74, 222, 128, 0.3), 0 0 30px rgba(74, 222, 128, 0.15);
-    }
-    50% {
-      box-shadow: 0 0 25px rgba(74, 222, 128, 0.4), 0 0 40px rgba(74, 222, 128, 0.2);
-    }
-  }
-
-  /* Blue glow for game page */
-  .animate-pulse-glow-blue {
-    animation: pulse-glow-blue 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-glow-blue {
     0%, 100% {
       box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), 0 0 30px rgba(59, 130, 246, 0.15);
     }
