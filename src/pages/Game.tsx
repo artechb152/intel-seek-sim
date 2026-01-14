@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   MapPin, Calendar, Search, Filter, Check, X, 
-  Clock, Target, AlertTriangle, ChevronLeft 
+  Clock, Target, ChevronLeft, Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface Post {
   id: string;
@@ -20,23 +21,53 @@ interface Post {
   isRelevant: boolean;
 }
 
-const mockPosts: Post[] = [
-  { id: "1", image: "", platform: "instagram", user: "soldier_123", location: "תל אביב", timestamp: "14:30", keywords: ["כומתה אדומה", "צנחנים"], isRelevant: true },
-  { id: "2", image: "", platform: "tiktok", user: "army_life", location: "חיפה", timestamp: "15:45", keywords: ["אימון", "יחידה 669"], isRelevant: true },
-  { id: "3", image: "", platform: "instagram", user: "beach_vibes", location: "אילת", timestamp: "12:00", keywords: ["חופש", "ים"], isRelevant: false },
-  { id: "4", image: "", platform: "facebook", user: "military_fan", location: "ירושלים", timestamp: "16:20", keywords: ["כומתה ירוקה", "גולני"], isRelevant: true },
-  { id: "5", image: "", platform: "instagram", user: "travel_il", location: "באר שבע", timestamp: "11:30", keywords: ["טיול", "נגב"], isRelevant: false },
-  { id: "6", image: "", platform: "tiktok", user: "idf_proud", location: "רמת גן", timestamp: "13:15", keywords: ["דרגת סרן", "מפקד"], isRelevant: true },
-  { id: "7", image: "", platform: "instagram", user: "daily_post", location: "נתניה", timestamp: "10:00", keywords: ["בוקר טוב"], isRelevant: false },
-  { id: "8", image: "", platform: "facebook", user: "reserve_unit", location: "צפת", timestamp: "17:00", keywords: ["מילואים", "יחידה 8200"], isRelevant: true },
-];
+const generateMockPosts = (): Post[] => {
+  const platforms: ("instagram" | "tiktok" | "facebook")[] = ["instagram", "tiktok", "facebook"];
+  const locations = ["תל אביב", "חיפה", "ירושלים", "באר שבע", "אילת", "נתניה", "רמת גן", "צפת", "אשדוד", "פתח תקווה", "ראשון לציון", "חולון"];
+  const users = ["soldier_123", "army_life", "beach_vibes", "military_fan", "travel_il", "idf_proud", "daily_post", "reserve_unit", "combat_ready", "base_life", "training_day", "weekend_warrior", "patrol_unit", "field_ops", "recon_team"];
+  const keywordSets = [
+    ["כומתה אדומה", "צנחנים"],
+    ["אימון", "יחידה 669"],
+    ["חופש", "ים"],
+    ["כומתה ירוקה", "גולני"],
+    ["טיול", "נגב"],
+    ["דרגת סרן", "מפקד"],
+    ["בוקר טוב"],
+    ["מילואים", "יחידה 8200"],
+    ["כומתה שחורה", "שריון"],
+    ["תרגיל", "חי״ר"],
+    ["סיור", "גבול"],
+    ["מסע", "טירונות"],
+  ];
+  const times = ["08:00", "09:15", "10:30", "11:45", "12:00", "13:15", "14:30", "15:45", "16:20", "17:00", "18:30", "19:45"];
+
+  const posts: Post[] = [];
+  for (let i = 1; i <= 30; i++) {
+    const keywordSet = keywordSets[Math.floor(Math.random() * keywordSets.length)];
+    const isMilitary = keywordSet.some(k => k.includes("כומתה") || k.includes("יחידה") || k.includes("דרגת") || k.includes("מילואים") || k.includes("שריון") || k.includes("חי״ר"));
+    posts.push({
+      id: i.toString(),
+      image: "",
+      platform: platforms[Math.floor(Math.random() * platforms.length)],
+      user: users[Math.floor(Math.random() * users.length)] + "_" + i,
+      location: locations[Math.floor(Math.random() * locations.length)],
+      timestamp: times[Math.floor(Math.random() * times.length)],
+      keywords: keywordSet,
+      isRelevant: isMilitary,
+    });
+  }
+  return posts;
+};
+
+const mockPosts: Post[] = generateMockPosts();
 
 const Game = () => {
   const navigate = useNavigate();
   const [selectedPosts, setSelectedPosts] = useState<string[]>([]);
   const [searchKeywords, setSearchKeywords] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [showMissionSelect, setShowMissionSelect] = useState(false);
+  const [isFiltering, setIsFiltering] = useState(false);
+  const [filterApplied, setFilterApplied] = useState(false);
 
   const correctCount = selectedPosts.filter(id => 
     mockPosts.find(p => p.id === id)?.isRelevant
@@ -45,6 +76,17 @@ const Game = () => {
   const wrongCount = selectedPosts.filter(id => 
     !mockPosts.find(p => p.id === id)?.isRelevant
   ).length;
+
+  const handleApplyFilters = () => {
+    setIsFiltering(true);
+    setTimeout(() => {
+      setIsFiltering(false);
+      setFilterApplied(true);
+      toast.success("הפילטרים הוחלו בהצלחה", {
+        description: `נמצאו ${mockPosts.length} פוסטים תואמים`,
+      });
+    }, 1500);
+  };
 
   const togglePost = (id: string) => {
     setSelectedPosts(prev => 
@@ -74,20 +116,20 @@ const Game = () => {
   return (
     <div className="min-h-screen bg-background p-4">
       {/* Header */}
-      <header className="glass-panel rounded-xl p-4 mb-4 flex items-center justify-between">
+      <header className="glass-panel rounded-xl p-4 mb-4 flex items-center justify-between flex-wrap gap-4">
         <Button variant="ghost" onClick={() => navigate("/")} className="gap-2">
           <ChevronLeft className="w-4 h-4" />
           חזור
         </Button>
         
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-2">
             <Target className="w-5 h-5 text-primary" />
             <span className="text-sm text-muted-foreground">משימה:</span>
             <span className="font-semibold text-foreground">זיהוי יחידות צבאיות</span>
           </div>
           
-          <div className="h-8 w-px bg-border" />
+          <div className="h-8 w-px bg-border hidden sm:block" />
           
           <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-2">
@@ -204,9 +246,29 @@ const Game = () => {
             </div>
           </div>
 
-          <Button variant="tacticalOutline" className="w-full">
-            החל פילטרים
+          <Button 
+            variant="tacticalOutline" 
+            className="w-full"
+            onClick={handleApplyFilters}
+            disabled={isFiltering}
+          >
+            {isFiltering ? (
+              <>
+                <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                מחפש...
+              </>
+            ) : (
+              "החל פילטרים"
+            )}
           </Button>
+
+          {filterApplied && (
+            <div className="mt-3 p-3 bg-primary/10 rounded-lg border border-primary/30">
+              <p className="text-xs text-primary text-center">
+                ✓ נמצאו {mockPosts.length} תוצאות
+              </p>
+            </div>
+          )}
         </aside>
 
         {/* Posts Grid */}

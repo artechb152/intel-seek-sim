@@ -51,17 +51,17 @@ const Index = () => {
       {/* Main Content */}
       <div className="relative z-10 flex h-screen p-4 gap-4">
         {/* Left Panel - Team Chat */}
-        <div className="w-80 flex-shrink-0">
+        <div className="w-80 flex-shrink-0 hidden lg:block">
           <TeamChat />
         </div>
 
         {/* Center Panel - Phone Mockup & Start */}
-        <div className="flex-1 flex flex-col items-center justify-center relative">
+        <div className="flex-1 flex flex-col items-center justify-center relative min-w-0">
           {/* Header */}
-          <div className="absolute top-0 left-0 right-0 flex items-center justify-center py-4">
+          <div className="mb-6 flex items-center justify-center">
             <div className="flex items-center gap-3">
               <Shield className="w-8 h-8 text-primary" />
-              <div>
+              <div className="text-center">
                 <h1 className="text-2xl font-bold tracking-wider">
                   <span className="text-gradient-tactical">SOCIAL INTEL</span>
                   <span className="text-foreground"> SIM</span>
@@ -73,7 +73,7 @@ const Index = () => {
           </div>
 
           {/* Phone */}
-          <div className="mb-8">
+          <div className="mb-6 flex-shrink-0">
             <PhoneMockup platform={activePlatform} />
           </div>
 
@@ -105,7 +105,7 @@ const Index = () => {
         </div>
 
         {/* Right Panel - Social Menu */}
-        <div className="w-72 flex-shrink-0">
+        <div className="w-72 flex-shrink-0 hidden md:block">
           <SocialMenu
             activePlatform={activePlatform}
             onPlatformChange={setActivePlatform}
