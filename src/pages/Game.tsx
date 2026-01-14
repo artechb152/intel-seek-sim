@@ -350,7 +350,7 @@ const Game = () => {
 
       {/* Enlarged Post Dialog */}
       <Dialog open={!!enlargedPost} onOpenChange={() => setEnlargedPost(null)}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center justify-between">
               <span>@{enlargedPost?.user}</span>
