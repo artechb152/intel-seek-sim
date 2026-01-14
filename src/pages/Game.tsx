@@ -153,7 +153,7 @@ const Game = () => {
           </div>
         </div>
         
-        <Button variant="tacticalBlue" onClick={handleSubmit} className="animate-pulse-glow-blue">
+        <Button variant="tactical" onClick={handleSubmit} className="animate-pulse-glow">
           סיים בדיקה
         </Button>
       </header>
@@ -246,7 +246,7 @@ const Game = () => {
           </div>
 
           <Button 
-            variant="tacticalOutlineBlue" 
+            variant="tacticalOutline" 
             className="w-full"
             onClick={handleApplyFilters}
             disabled={isFiltering}
@@ -390,7 +390,7 @@ const Game = () => {
               
               {/* Select Button */}
               <Button 
-                variant={selectedPosts.includes(enlargedPost.id) ? "tacticalBlue" : "tacticalOutlineBlue"}
+                variant={selectedPosts.includes(enlargedPost.id) ? "tactical" : "tacticalOutline"}
                 className="w-full"
                 onClick={() => {
                   togglePost(enlargedPost.id);
