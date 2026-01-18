@@ -113,7 +113,7 @@ export const TeamChat = () => {
   const selectedMessages = selectedChat ? chatDetails[selectedChat] : [];
 
   return (
-    <div className="glass-panel rounded-2xl h-full flex flex-col">
+    <div className="glass-panel rounded-2xl h-full flex flex-col overflow-hidden">
       {/* Header */}
       <div className="p-4 border-b border-border/50">
         {selectedChat ? (
@@ -146,7 +146,7 @@ export const TeamChat = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto scrollbar-tactical p-2 space-y-1">
+      <div className="flex-1 min-h-0 overflow-y-auto scrollbar-tactical p-2 space-y-1">
         {selectedChat ? (
           // Chat Detail View
           <div className="flex flex-col gap-3 p-2">
@@ -201,7 +201,7 @@ export const TeamChat = () => {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-border/50">
+      <div className="p-4 border-t border-border/50 flex-shrink-0 bg-background/50">
         <div className="flex items-center gap-2">
           <Input
             placeholder="הקלד הודעה..."
