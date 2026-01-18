@@ -6,11 +6,13 @@ import { SocialMenu } from "@/components/landing/SocialMenu";
 import { TeamChat } from "@/components/landing/TeamChat";
 import { PhoneMockup } from "@/components/landing/PhoneMockup";
 import { WelcomePopup } from "@/components/landing/WelcomePopup";
+import { MissionPopup } from "@/components/landing/MissionPopup";
 
 const Index = () => {
   const navigate = useNavigate();
   const [activePlatform, setActivePlatform] = useState("instagram");
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showMission, setShowMission] = useState(false);
 
   useEffect(() => {
     // Always show welcome popup on page load
@@ -18,6 +20,11 @@ const Index = () => {
   }, []);
 
   const handleStart = () => {
+    setShowMission(true);
+  };
+
+  const handleMissionStart = () => {
+    setShowMission(false);
     navigate("/game");
   };
 
@@ -112,6 +119,13 @@ const Index = () => {
 
       {/* Welcome Popup */}
       <WelcomePopup open={showWelcome} onClose={() => setShowWelcome(false)} />
+      
+      {/* Mission Popup */}
+      <MissionPopup 
+        open={showMission} 
+        onClose={() => setShowMission(false)} 
+        onStart={handleMissionStart}
+      />
     </div>
   );
 };
