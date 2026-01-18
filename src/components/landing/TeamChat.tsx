@@ -1,6 +1,8 @@
-import { Search, Send } from "lucide-react";
+import { useState } from "react";
+import { Search, Send, Play, Target } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 interface ChatMessage {
   id: string;
@@ -8,6 +10,11 @@ interface ChatMessage {
   message: string;
   time: string;
   unread?: number;
+  isMission?: boolean;
+}
+
+interface TeamChatProps {
+  onStartMission?: () => void;
 }
 
 const mockMessages: ChatMessage[] = [
@@ -24,6 +31,14 @@ const mockMessages: ChatMessage[] = [
     message: "שים לב לתאריך 14:30",
     time: "3:00PM",
     unread: 3,
+  },
+  {
+    id: "mission",
+    sender: "מטה פיקוד",
+    message: "משימה חדשה: אסוף מידע וניתוח שטח בסיס גלילות",
+    time: "עכשיו",
+    unread: 1,
+    isMission: true,
   },
   {
     id: "3",
@@ -53,7 +68,16 @@ const mockMessages: ChatMessage[] = [
   },
 ];
 
-export const TeamChat = () => {
+export const TeamChat = ({ onStartMission }: TeamChatProps) => {
+  const [selectedMessage, setSelectedMessage] = useState<string | null>(null);
+
+  const handleMessageClick = (msg: ChatMessage) => {
+    setSelectedMessage(msg.id);
+    if (msg.isMission && onStartMission) {
+      // Show mission details on click
+    }
+  };
+
   return (
     <div className="glass-panel rounded-2xl h-full flex flex-col">
       {/* Header */}
@@ -73,24 +97,54 @@ export const TeamChat = () => {
         {mockMessages.map((msg) => (
           <div
             key={msg.id}
-            className="p-3 rounded-xl hover:bg-secondary/50 transition-colors cursor-pointer group"
+            onClick={() => handleMessageClick(msg)}
+            className={`p-3 rounded-xl transition-colors cursor-pointer group ${
+              msg.isMission 
+                ? "bg-primary/10 border border-primary/30 hover:bg-primary/20" 
+                : "hover:bg-secondary/50"
+            } ${selectedMessage === msg.id ? "ring-1 ring-primary/50" : ""}`}
           >
             <div className="flex items-start gap-3">
-              <Avatar className="w-10 h-10 bg-secondary">
-                <AvatarFallback className="bg-secondary text-muted-foreground text-sm">
-                  {msg.sender.slice(0, 2)}
+              <Avatar className={`w-10 h-10 ${msg.isMission ? "bg-primary/20" : "bg-secondary"}`}>
+                <AvatarFallback className={`text-sm ${msg.isMission ? "bg-primary/20 text-primary" : "bg-secondary text-muted-foreground"}`}>
+                  {msg.isMission ? <Target className="w-4 h-4" /> : msg.sender.slice(0, 2)}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-medium text-foreground">{msg.sender}</span>
+                  <span className={`font-medium ${msg.isMission ? "text-primary" : "text-foreground"}`}>
+                    {msg.sender}
+                  </span>
                   <span className="text-xs text-muted-foreground">{msg.time}</span>
                 </div>
-                <p className="text-sm text-muted-foreground truncate">{msg.message}</p>
+                <p className={`text-sm truncate ${msg.isMission ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                  {msg.message}
+                </p>
+                
+                {/* Mission action button */}
+                {msg.isMission && (
+                  <Button
+                    variant="tactical"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onStartMission?.();
+                    }}
+                    className="mt-3 w-full animate-pulse-glow"
+                  >
+                    <Play className="w-4 h-4 ml-2" />
+                    התחל משימה
+                  </Button>
+                )}
               </div>
-              {msg.unread && (
+              {msg.unread && !msg.isMission && (
                 <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
                   {msg.unread}
+                </span>
+              )}
+              {msg.isMission && (
+                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-destructive text-destructive-foreground text-xs flex items-center justify-center font-medium animate-pulse">
+                  !
                 </span>
               )}
             </div>
