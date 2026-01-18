@@ -58,10 +58,6 @@ export const SocialMenu = ({ activePlatform, onPlatformChange }: SocialMenuProps
         </p>
       </div>
 
-      {/* Image Placeholder */}
-      <div className="mt-4 h-20 bg-secondary rounded-xl flex items-center justify-center">
-        <Camera className="w-8 h-8 text-muted-foreground" />
-      </div>
 
       {/* Logout - part of menu */}
       <div className="mt-auto pt-4 border-t border-border/50">
