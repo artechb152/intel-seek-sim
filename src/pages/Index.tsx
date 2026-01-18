@@ -113,7 +113,7 @@ const Index = () => {
 
         {/* Left Panel - Team Chat */}
         <div className="w-80 flex-shrink-0 hidden lg:block">
-          <TeamChat onStartMission={handleStart} />
+          <TeamChat />
         </div>
       </div>
 
