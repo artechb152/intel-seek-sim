@@ -20,7 +20,7 @@ const socialItems: SocialMenuItem[] = [
   { id: "snapchat", name: "סנאפצ'אט", icon: <MessageCircle className="w-5 h-5" /> },
   { id: "twitter", name: "טוויטר", icon: <Twitter className="w-5 h-5" /> },
   { id: "listening", name: "האזנה", icon: <Radio className="w-5 h-5" /> },
-  
+  { id: "cameras", name: "תצלומות", icon: <Camera className="w-5 h-5" /> },
 ];
 
 export const SocialMenu = ({ activePlatform, onPlatformChange }: SocialMenuProps) => {
