@@ -1,6 +1,6 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Target, MapPin, Clock, AlertTriangle } from "lucide-react";
+import { Target } from "lucide-react";
 
 interface MissionPopupProps {
   open: boolean;
@@ -11,7 +11,7 @@ interface MissionPopupProps {
 export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="glass-panel border-primary/30 max-w-md" dir="rtl">
+      <DialogContent className="glass-panel border-primary/30 max-w-lg" dir="rtl">
         <DialogHeader className="space-y-4">
           <div className="flex items-center justify-center">
             <div className="relative">
@@ -25,29 +25,35 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
           <DialogTitle className="text-2xl font-bold text-center text-foreground">
             משימה חדשה
           </DialogTitle>
-          
-          <div className="glass-panel p-4 rounded-lg border border-primary/20">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-              <DialogDescription className="text-foreground text-base leading-relaxed text-right">
-                אסוף מידע וניתוח שטח בסיס גלילות
-              </DialogDescription>
-            </div>
-          </div>
         </DialogHeader>
         
-        <div className="space-y-3 mt-4">
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <MapPin className="w-4 h-4 text-primary" />
-            <span>מיקום: אזור מרכז</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            <Clock className="w-4 h-4 text-primary" />
-            <span>זמן משוער: 10 דקות</span>
+        {/* Video Container */}
+        <div className="aspect-video bg-secondary rounded-lg overflow-hidden border border-border">
+          <div className="w-full h-full flex items-center justify-center">
+            <video 
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+            >
+              <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
+              <div className="flex flex-col items-center justify-center text-muted-foreground">
+                <Target className="w-12 h-12 mb-2" />
+                <span>תצוגת משימה</span>
+              </div>
+            </video>
           </div>
         </div>
         
-        <div className="flex gap-3 mt-6">
+        {/* Mission Title Below Video */}
+        <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/30">
+          <p className="text-lg font-bold text-foreground">
+            אסוף מידע וניתוח שטח בסיס גלילות
+          </p>
+        </div>
+        
+        <div className="flex gap-3 mt-4">
           <Button 
             variant="outline" 
             onClick={onClose}

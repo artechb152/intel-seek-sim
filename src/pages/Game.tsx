@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   MapPin, Calendar, Search, Filter, Check, 
-  Clock, Target, ChevronLeft, Loader2, ZoomIn, X as CloseIcon
+  Clock, Target, ChevronLeft, Loader2, ZoomIn,
+  Instagram, Facebook, Twitter
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,20 +16,22 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { MissionDetailsPopup } from "@/components/landing/MissionDetailsPopup";
 
 interface Post {
   id: string;
   image: string;
-  platform: "instagram" | "tiktok" | "facebook";
+  platform: "instagram" | "twitter" | "facebook";
   user: string;
   location: string;
   timestamp: string;
+  date: string;
   keywords: string[];
   isRelevant: boolean;
 }
 
 const generateMockPosts = (): Post[] => {
-  const platforms: ("instagram" | "tiktok" | "facebook")[] = ["instagram", "tiktok", "facebook"];
+  const platforms: ("instagram" | "twitter" | "facebook")[] = ["instagram", "twitter", "facebook"];
   const locations = ["תל אביב", "חיפה", "ירושלים", "באר שבע", "אילת", "נתניה", "רמת גן", "צפת", "אשדוד", "פתח תקווה", "ראשון לציון", "חולון"];
   const users = ["soldier_123", "army_life", "beach_vibes", "military_fan", "travel_il", "idf_proud", "daily_post", "reserve_unit", "combat_ready", "base_life", "training_day", "weekend_warrior", "patrol_unit", "field_ops", "recon_team"];
   const keywordSets = [
@@ -46,6 +49,7 @@ const generateMockPosts = (): Post[] => {
     ["מסע", "טירונות"],
   ];
   const times = ["08:00", "09:15", "10:30", "11:45", "12:00", "13:15", "14:30", "15:45", "16:20", "17:00", "18:30", "19:45"];
+  const dates = ["2024-01-15", "2024-01-16", "2024-01-17", "2024-01-18", "2024-01-19", "2024-01-20", "2024-01-21"];
 
   const posts: Post[] = [];
   for (let i = 1; i <= 30; i++) {
@@ -58,6 +62,7 @@ const generateMockPosts = (): Post[] => {
       user: users[Math.floor(Math.random() * users.length)] + "_" + i,
       location: locations[Math.floor(Math.random() * locations.length)],
       timestamp: times[Math.floor(Math.random() * times.length)],
+      date: dates[Math.floor(Math.random() * dates.length)],
       keywords: keywordSet,
       isRelevant: isMilitary,
     });
@@ -72,9 +77,58 @@ const Game = () => {
   const [selectedPosts, setSelectedPosts] = useState<string[]>([]);
   const [searchKeywords, setSearchKeywords] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedPlatform, setSelectedPlatform] = useState<"all" | "instagram" | "twitter" | "facebook">("all");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [fromTime, setFromTime] = useState("");
+  const [toTime, setToTime] = useState("");
   const [isFiltering, setIsFiltering] = useState(false);
-  const [filterApplied, setFilterApplied] = useState(false);
   const [enlargedPost, setEnlargedPost] = useState<Post | null>(null);
+  const [showMissionDetails, setShowMissionDetails] = useState(false);
+
+  // Dynamic filtering
+  const filteredPosts = useMemo(() => {
+    return mockPosts.filter(post => {
+      // Platform filter
+      if (selectedPlatform !== "all" && post.platform !== selectedPlatform) {
+        return false;
+      }
+      
+      // Location filter
+      if (selectedLocation && !post.location.includes(selectedLocation)) {
+        return false;
+      }
+      
+      // Keywords filter
+      if (searchKeywords) {
+        const keywords = searchKeywords.split(",").map(k => k.trim().toLowerCase());
+        const postKeywords = post.keywords.map(k => k.toLowerCase());
+        const hasMatch = keywords.some(kw => 
+          postKeywords.some(pk => pk.includes(kw)) || 
+          post.user.toLowerCase().includes(kw)
+        );
+        if (!hasMatch) return false;
+      }
+      
+      // Date filter
+      if (fromDate && post.date < fromDate) {
+        return false;
+      }
+      if (toDate && post.date > toDate) {
+        return false;
+      }
+      
+      // Time filter
+      if (fromTime && post.timestamp < fromTime) {
+        return false;
+      }
+      if (toTime && post.timestamp > toTime) {
+        return false;
+      }
+      
+      return true;
+    });
+  }, [selectedPlatform, selectedLocation, searchKeywords, fromDate, toDate, fromTime, toTime]);
 
   const correctCount = selectedPosts.filter(id => 
     mockPosts.find(p => p.id === id)?.isRelevant
@@ -88,11 +142,10 @@ const Game = () => {
     setIsFiltering(true);
     setTimeout(() => {
       setIsFiltering(false);
-      setFilterApplied(true);
       toast.success("הפילטרים הוחלו בהצלחה", {
-        description: `נמצאו ${mockPosts.length} פוסטים תואמים`,
+        description: `נמצאו ${filteredPosts.length} פוסטים תואמים`,
       });
-    }, 1500);
+    }, 800);
   };
 
   const togglePost = (id: string) => {
@@ -104,19 +157,25 @@ const Game = () => {
   };
 
   const handleSubmit = () => {
-    if (correctCount >= 5) {
-      navigate("/results", { state: { passed: true, correct: correctCount, wrong: wrongCount, total: selectedPosts.length } });
-    } else {
-      navigate("/results", { state: { passed: false, correct: correctCount, wrong: wrongCount, total: selectedPosts.length } });
-    }
+    // Navigate to quiz instead of results
+    navigate("/quiz", { state: { correct: correctCount, wrong: wrongCount, total: selectedPosts.length } });
   };
 
   const getPlatformColor = (platform: string) => {
     switch (platform) {
       case "instagram": return "bg-gradient-to-r from-purple-500 to-pink-500";
-      case "tiktok": return "bg-black";
+      case "twitter": return "bg-sky-500";
       case "facebook": return "bg-blue-600";
       default: return "bg-gray-500";
+    }
+  };
+
+  const getPlatformIcon = (platform: string) => {
+    switch (platform) {
+      case "instagram": return <Instagram className="w-4 h-4" />;
+      case "twitter": return <Twitter className="w-4 h-4" />;
+      case "facebook": return <Facebook className="w-4 h-4" />;
+      default: return null;
     }
   };
 
@@ -129,12 +188,16 @@ const Game = () => {
           חזור
         </Button>
         
-          <div className="flex items-center gap-4 flex-wrap">
-          <div className="flex items-center gap-2">
-            <Target className="w-5 h-5 text-blue-400" />
+        <div className="flex items-center gap-4 flex-wrap">
+          {/* Clickable Mission Header */}
+          <button 
+            onClick={() => setShowMissionDetails(true)}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer"
+          >
+            <Target className="w-5 h-5 text-primary" />
             <span className="text-sm text-muted-foreground">משימה:</span>
             <span className="font-semibold text-foreground">אסוף מידע וניתוח שטח בסיס גלילות</span>
-          </div>
+          </button>
           
           <div className="h-8 w-px bg-border hidden sm:block" />
           
@@ -192,9 +255,36 @@ const Game = () => {
               </div>
             </div>
             <div className="flex gap-2">
-              <Badge variant="outline" className="cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50">צפון</Badge>
-              <Badge variant="outline" className="cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50">מרכז</Badge>
-              <Badge variant="outline" className="cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50">דרום</Badge>
+              <Badge 
+                variant="outline" 
+                className={cn(
+                  "cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50",
+                  selectedLocation.includes("צפ") && "bg-blue-500/20 border-blue-500/50"
+                )}
+                onClick={() => setSelectedLocation("צפת")}
+              >
+                צפון
+              </Badge>
+              <Badge 
+                variant="outline" 
+                className={cn(
+                  "cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50",
+                  (selectedLocation.includes("תל אביב") || selectedLocation.includes("רמת")) && "bg-blue-500/20 border-blue-500/50"
+                )}
+                onClick={() => setSelectedLocation("תל אביב")}
+              >
+                מרכז
+              </Badge>
+              <Badge 
+                variant="outline" 
+                className={cn(
+                  "cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50",
+                  (selectedLocation.includes("באר") || selectedLocation.includes("אילת")) && "bg-blue-500/20 border-blue-500/50"
+                )}
+                onClick={() => setSelectedLocation("באר שבע")}
+              >
+                דרום
+              </Badge>
             </div>
           </div>
 
@@ -207,21 +297,41 @@ const Game = () => {
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <span className="text-xs text-muted-foreground">מתאריך</span>
-                <Input type="date" className="bg-secondary/50" />
+                <Input 
+                  type="date" 
+                  className="bg-secondary/50" 
+                  value={fromDate}
+                  onChange={(e) => setFromDate(e.target.value)}
+                />
               </div>
               <div>
                 <span className="text-xs text-muted-foreground">עד תאריך</span>
-                <Input type="date" className="bg-secondary/50" />
+                <Input 
+                  type="date" 
+                  className="bg-secondary/50"
+                  value={toDate}
+                  onChange={(e) => setToDate(e.target.value)}
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <span className="text-xs text-muted-foreground">משעה</span>
-                <Input type="time" className="bg-secondary/50" />
+                <Input 
+                  type="time" 
+                  className="bg-secondary/50"
+                  value={fromTime}
+                  onChange={(e) => setFromTime(e.target.value)}
+                />
               </div>
               <div>
                 <span className="text-xs text-muted-foreground">עד שעה</span>
-                <Input type="time" className="bg-secondary/50" />
+                <Input 
+                  type="time" 
+                  className="bg-secondary/50"
+                  value={toTime}
+                  onChange={(e) => setToTime(e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -239,9 +349,39 @@ const Game = () => {
               className="bg-secondary/50"
             />
             <div className="flex flex-wrap gap-1">
-              <Badge className="bg-blue-500/20 text-blue-400 cursor-pointer hover:bg-blue-500/30">כומתה אדומה</Badge>
-              <Badge className="bg-blue-500/20 text-blue-400 cursor-pointer hover:bg-blue-500/30">יחידה 669</Badge>
-              <Badge className="bg-blue-500/20 text-blue-400 cursor-pointer hover:bg-blue-500/30">דרגת סרן</Badge>
+              <Badge 
+                className={cn(
+                  "cursor-pointer",
+                  searchKeywords.includes("כומתה אדומה") 
+                    ? "bg-blue-500/40 text-blue-300" 
+                    : "bg-blue-500/20 text-blue-400 hover:bg-blue-500/30"
+                )}
+                onClick={() => setSearchKeywords(prev => prev ? prev + ", כומתה אדומה" : "כומתה אדומה")}
+              >
+                כומתה אדומה
+              </Badge>
+              <Badge 
+                className={cn(
+                  "cursor-pointer",
+                  searchKeywords.includes("יחידה 669") 
+                    ? "bg-blue-500/40 text-blue-300" 
+                    : "bg-blue-500/20 text-blue-400 hover:bg-blue-500/30"
+                )}
+                onClick={() => setSearchKeywords(prev => prev ? prev + ", יחידה 669" : "יחידה 669")}
+              >
+                יחידה 669
+              </Badge>
+              <Badge 
+                className={cn(
+                  "cursor-pointer",
+                  searchKeywords.includes("דרגת סרן") 
+                    ? "bg-blue-500/40 text-blue-300" 
+                    : "bg-blue-500/20 text-blue-400 hover:bg-blue-500/30"
+                )}
+                onClick={() => setSearchKeywords(prev => prev ? prev + ", דרגת סרן" : "דרגת סרן")}
+              >
+                דרגת סרן
+              </Badge>
             </div>
           </div>
 
@@ -261,19 +401,68 @@ const Game = () => {
             )}
           </Button>
 
-          {filterApplied && (
-            <div className="mt-3 p-3 bg-blue-500/10 rounded-lg border border-blue-500/30">
-              <p className="text-xs text-blue-400 text-center">
-                ✓ נמצאו {mockPosts.length} תוצאות
-              </p>
-            </div>
-          )}
+          <div className="p-3 bg-blue-500/10 rounded-lg border border-blue-500/30">
+            <p className="text-xs text-blue-400 text-center">
+              ✓ {filteredPosts.length} תוצאות
+            </p>
+          </div>
         </aside>
 
         {/* Posts Grid */}
         <main className="flex-1 glass-panel rounded-xl p-4 overflow-y-auto scrollbar-tactical">
+          {/* Platform Tabs */}
+          <div className="flex gap-2 mb-4 border-b border-border pb-4">
+            <button
+              onClick={() => setSelectedPlatform("all")}
+              className={cn(
+                "px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2",
+                selectedPlatform === "all"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+              )}
+            >
+              הכל
+            </button>
+            <button
+              onClick={() => setSelectedPlatform("facebook")}
+              className={cn(
+                "px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2",
+                selectedPlatform === "facebook"
+                  ? "bg-blue-600 text-white"
+                  : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+              )}
+            >
+              <Facebook className="w-4 h-4" />
+              Facebook
+            </button>
+            <button
+              onClick={() => setSelectedPlatform("instagram")}
+              className={cn(
+                "px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2",
+                selectedPlatform === "instagram"
+                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                  : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+              )}
+            >
+              <Instagram className="w-4 h-4" />
+              Instagram
+            </button>
+            <button
+              onClick={() => setSelectedPlatform("twitter")}
+              className={cn(
+                "px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2",
+                selectedPlatform === "twitter"
+                  ? "bg-sky-500 text-white"
+                  : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+              )}
+            >
+              <Twitter className="w-4 h-4" />
+              Twitter
+            </button>
+          </div>
+
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {mockPosts.map((post) => {
+            {filteredPosts.map((post) => {
               const isSelected = selectedPosts.includes(post.id);
               return (
                 <div
@@ -297,9 +486,10 @@ const Game = () => {
 
                   {/* Platform Badge */}
                   <div className={cn(
-                    "absolute top-2 right-2 px-2 py-0.5 rounded text-white text-[10px] font-medium",
+                    "absolute top-2 right-2 px-2 py-0.5 rounded text-white text-[10px] font-medium flex items-center gap-1",
                     getPlatformColor(post.platform)
                   )}>
+                    {getPlatformIcon(post.platform)}
                     {post.platform}
                   </div>
 
@@ -343,6 +533,14 @@ const Game = () => {
               );
             })}
           </div>
+
+          {filteredPosts.length === 0 && (
+            <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
+              <Search className="w-12 h-12 mb-4 opacity-50" />
+              <p className="text-lg font-medium">לא נמצאו תוצאות</p>
+              <p className="text-sm">נסה לשנות את הפילטרים</p>
+            </div>
+          )}
         </main>
       </div>
 
@@ -403,6 +601,12 @@ const Game = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Mission Details Popup */}
+      <MissionDetailsPopup 
+        open={showMissionDetails} 
+        onClose={() => setShowMissionDetails(false)} 
+      />
     </div>
   );
 };

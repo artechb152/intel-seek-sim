@@ -71,8 +71,7 @@ const Index = () => {
               <Shield className="w-8 h-8 text-primary" />
               <div className="text-center">
                 <h1 className="text-2xl font-bold tracking-wider">
-                  <span className="text-gradient-tactical">SOCIAL INTEL</span>
-                  <span className="text-foreground"> SIM</span>
+                  <span className="text-gradient-tactical">شبكة الظل</span>
                 </h1>
                 <p className="text-xs text-muted-foreground tracking-widest">סימולטור איסוף מודיעין מרשתות חברתיות</p>
               </div>
