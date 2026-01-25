@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Play, Radar, Shield } from "lucide-react";
+import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SocialMenu } from "@/components/landing/SocialMenu";
 import { TeamChat } from "@/components/landing/TeamChat";
@@ -67,15 +67,11 @@ const Index = () => {
         <div className="flex-1 flex flex-col items-center justify-center relative min-w-0">
           {/* Header */}
           <div className="mb-6 flex items-center justify-center">
-            <div className="flex items-center gap-3">
-              <Shield className="w-8 h-8 text-primary" />
-              <div className="text-center">
-                <h1 className="text-2xl font-bold tracking-wider">
-                  <span className="text-gradient-tactical">شبكة الظل</span>
-                </h1>
-                <p className="text-xs text-muted-foreground tracking-widest">סימולטור איסוף מודיעין מרשתות חברתיות</p>
-              </div>
-              <Radar className="w-6 h-6 text-primary animate-pulse-glow" />
+            <div className="text-center">
+              <h1 className="text-2xl font-bold tracking-wider">
+                <span className="text-gradient-tactical">شبكة الظل</span>
+              </h1>
+              <p className="text-xs text-muted-foreground tracking-widest">סימולטור איסוף מודיעין מרשתות חברתיות</p>
             </div>
           </div>
 

@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
-  MapPin, Calendar, Search, Filter, Check, 
+  MapPin, Calendar, Search, Filter, 
   Clock, Target, ChevronLeft, Loader2, ZoomIn,
-  Instagram, Facebook, Twitter
+  Instagram, Facebook, Twitter, RotateCcw, Bookmark
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,8 +32,8 @@ interface Post {
 
 const generateMockPosts = (): Post[] => {
   const platforms: ("instagram" | "twitter" | "facebook")[] = ["instagram", "twitter", "facebook"];
-  const locations = ["תל אביב", "חיפה", "ירושלים", "באר שבע", "אילת", "נתניה", "רמת גן", "צפת", "אשדוד", "פתח תקווה", "ראשון לציון", "חולון"];
-  const users = ["soldier_123", "army_life", "beach_vibes", "military_fan", "travel_il", "idf_proud", "daily_post", "reserve_unit", "combat_ready", "base_life", "training_day", "weekend_warrior", "patrol_unit", "field_ops", "recon_team"];
+  const locations = ["תל אביב", "חיפה", "ירושלים", "באר שבע", "אילת", "נתניה", "רמת גן", "צפת", "אשדוד", "פתח תקווה", "ראשון לציון", "חולון", "הרצליה", "כפר סבא", "רעננה", "מודיעין"];
+  const users = ["soldier_123", "army_life", "beach_vibes", "military_fan", "travel_il", "idf_proud", "daily_post", "reserve_unit", "combat_ready", "base_life", "training_day", "weekend_warrior", "patrol_unit", "field_ops", "recon_team", "night_watch", "desert_fox", "eagle_eye", "shadow_ops", "swift_blade"];
   const keywordSets = [
     ["כומתה אדומה", "צנחנים"],
     ["אימון", "יחידה 669"],
@@ -47,14 +47,18 @@ const generateMockPosts = (): Post[] => {
     ["תרגיל", "חי״ר"],
     ["סיור", "גבול"],
     ["מסע", "טירונות"],
+    ["קורס קצינים", "בה״ד 1"],
+    ["חיילים", "בסיס"],
+    ["נשק", "מטווח"],
+    ["ג׳יפ", "שטח"],
   ];
-  const times = ["08:00", "09:15", "10:30", "11:45", "12:00", "13:15", "14:30", "15:45", "16:20", "17:00", "18:30", "19:45"];
-  const dates = ["2024-01-15", "2024-01-16", "2024-01-17", "2024-01-18", "2024-01-19", "2024-01-20", "2024-01-21"];
+  const times = ["08:00", "09:15", "10:30", "11:45", "12:00", "13:15", "14:30", "15:45", "16:20", "17:00", "18:30", "19:45", "20:15", "21:30", "22:00"];
+  const dates = ["2024-01-15", "2024-01-16", "2024-01-17", "2024-01-18", "2024-01-19", "2024-01-20", "2024-01-21", "2024-01-22", "2024-01-23", "2024-01-24"];
 
   const posts: Post[] = [];
-  for (let i = 1; i <= 30; i++) {
+  for (let i = 1; i <= 50; i++) {
     const keywordSet = keywordSets[Math.floor(Math.random() * keywordSets.length)];
-    const isMilitary = keywordSet.some(k => k.includes("כומתה") || k.includes("יחידה") || k.includes("דרגת") || k.includes("מילואים") || k.includes("שריון") || k.includes("חי״ר"));
+    const isMilitary = keywordSet.some(k => k.includes("כומתה") || k.includes("יחידה") || k.includes("דרגת") || k.includes("מילואים") || k.includes("שריון") || k.includes("חי״ר") || k.includes("קורס") || k.includes("נשק") || k.includes("בסיס"));
     posts.push({
       id: i.toString(),
       image: "",
@@ -75,6 +79,7 @@ const mockPosts: Post[] = generateMockPosts();
 const Game = () => {
   const navigate = useNavigate();
   const [selectedPosts, setSelectedPosts] = useState<string[]>([]);
+  const [savedPosts, setSavedPosts] = useState<string[]>([]);
   const [searchKeywords, setSearchKeywords] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState<"all" | "instagram" | "twitter" | "facebook">("all");
@@ -85,10 +90,18 @@ const Game = () => {
   const [isFiltering, setIsFiltering] = useState(false);
   const [enlargedPost, setEnlargedPost] = useState<Post | null>(null);
   const [showMissionDetails, setShowMissionDetails] = useState(false);
+  const [showSavedOnly, setShowSavedOnly] = useState(false);
 
   // Dynamic filtering
   const filteredPosts = useMemo(() => {
-    return mockPosts.filter(post => {
+    let posts = mockPosts;
+    
+    // Show only saved posts if filter is active
+    if (showSavedOnly) {
+      posts = posts.filter(post => savedPosts.includes(post.id));
+    }
+    
+    return posts.filter(post => {
       // Platform filter
       if (selectedPlatform !== "all" && post.platform !== selectedPlatform) {
         return false;
@@ -128,7 +141,7 @@ const Game = () => {
       
       return true;
     });
-  }, [selectedPlatform, selectedLocation, searchKeywords, fromDate, toDate, fromTime, toTime]);
+  }, [selectedPlatform, selectedLocation, searchKeywords, fromDate, toDate, fromTime, toTime, showSavedOnly, savedPosts]);
 
   const correctCount = selectedPosts.filter(id => 
     mockPosts.find(p => p.id === id)?.isRelevant
@@ -148,6 +161,18 @@ const Game = () => {
     }, 800);
   };
 
+  const handleResetFilters = () => {
+    setSearchKeywords("");
+    setSelectedLocation("");
+    setSelectedPlatform("all");
+    setFromDate("");
+    setToDate("");
+    setFromTime("");
+    setToTime("");
+    setShowSavedOnly(false);
+    toast.success("הפילטרים אופסו");
+  };
+
   const togglePost = (id: string) => {
     setSelectedPosts(prev => 
       prev.includes(id) 
@@ -156,8 +181,16 @@ const Game = () => {
     );
   };
 
+  const toggleSavePost = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSavedPosts(prev => 
+      prev.includes(id) 
+        ? prev.filter(p => p !== id)
+        : [...prev, id]
+    );
+  };
+
   const handleSubmit = () => {
-    // Navigate to quiz instead of results
     navigate("/quiz", { state: { correct: correctCount, wrong: wrongCount, total: selectedPosts.length } });
   };
 
@@ -204,7 +237,7 @@ const Game = () => {
           <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground">נבחרו:</span>
-              <Badge variant="outline" className="font-mono">{selectedPosts.length}/30</Badge>
+              <Badge variant="outline" className="font-mono">{selectedPosts.length}/50</Badge>
             </div>
           </div>
           
@@ -224,10 +257,33 @@ const Game = () => {
       <div className="flex gap-4 h-[calc(100vh-140px)]">
         {/* Filters Sidebar */}
         <aside className="w-80 glass-panel rounded-xl p-4 space-y-6 overflow-y-auto scrollbar-tactical">
-          <h2 className="text-lg font-bold flex items-center gap-2">
-            <Filter className="w-5 h-5 text-blue-400" />
-            פילטרים
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold flex items-center gap-2">
+              <Filter className="w-5 h-5 text-blue-400" />
+              פילטרים
+            </h2>
+            <button
+              onClick={handleResetFilters}
+              className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+              title="איפוס פילטרים"
+            >
+              <RotateCcw className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Saved Filter */}
+          <button
+            onClick={() => setShowSavedOnly(!showSavedOnly)}
+            className={cn(
+              "w-full flex items-center gap-2 p-3 rounded-lg border transition-all",
+              showSavedOnly
+                ? "bg-primary/20 border-primary/50 text-primary"
+                : "bg-secondary/50 border-border text-muted-foreground hover:border-primary/30"
+            )}
+          >
+            <Bookmark className={cn("w-4 h-4", showSavedOnly && "fill-primary")} />
+            <span className="font-medium">שמורים ({savedPosts.length})</span>
+          </button>
 
           {/* Location Filter */}
           <div className="space-y-3">
@@ -236,7 +292,6 @@ const Game = () => {
               מיקום
             </label>
             <div className="aspect-[4/3] bg-secondary rounded-lg relative overflow-hidden">
-              {/* Simple Israel Map Placeholder */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative">
                   <div className="w-20 h-40 bg-blue-500/20 rounded-full rotate-12 border border-blue-500/40" />
@@ -299,7 +354,7 @@ const Game = () => {
                 <span className="text-xs text-muted-foreground">מתאריך</span>
                 <Input 
                   type="date" 
-                  className="bg-secondary/50" 
+                  className="bg-secondary/50 [color-scheme:dark]" 
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
                 />
@@ -308,7 +363,7 @@ const Game = () => {
                 <span className="text-xs text-muted-foreground">עד תאריך</span>
                 <Input 
                   type="date" 
-                  className="bg-secondary/50"
+                  className="bg-secondary/50 [color-scheme:dark]"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
                 />
@@ -319,7 +374,7 @@ const Game = () => {
                 <span className="text-xs text-muted-foreground">משעה</span>
                 <Input 
                   type="time" 
-                  className="bg-secondary/50"
+                  className="bg-secondary/50 [color-scheme:dark]"
                   value={fromTime}
                   onChange={(e) => setFromTime(e.target.value)}
                 />
@@ -328,7 +383,7 @@ const Game = () => {
                 <span className="text-xs text-muted-foreground">עד שעה</span>
                 <Input 
                   type="time" 
-                  className="bg-secondary/50"
+                  className="bg-secondary/50 [color-scheme:dark]"
                   value={toTime}
                   onChange={(e) => setToTime(e.target.value)}
                 />
@@ -464,19 +519,22 @@ const Game = () => {
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredPosts.map((post) => {
               const isSelected = selectedPosts.includes(post.id);
+              const isSaved = savedPosts.includes(post.id);
               return (
                 <div
                   key={post.id}
-                  onClick={() => togglePost(post.id)}
                   className={cn(
-                    "relative rounded-xl overflow-hidden cursor-pointer transition-all duration-300 group",
+                    "relative rounded-xl overflow-hidden transition-all duration-300 group",
                     isSelected 
-                      ? "ring-2 ring-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)] scale-[0.98]" 
-                      : "hover:scale-[1.02] hover:ring-1 hover:ring-blue-500/50"
+                      ? "ring-2 ring-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]" 
+                      : "hover:ring-1 hover:ring-blue-500/50"
                   )}
                 >
-                  {/* Image */}
-                  <div className="aspect-square bg-secondary flex items-center justify-center">
+                  {/* Clickable Image Area - Opens Enlarged View */}
+                  <div 
+                    className="aspect-square bg-secondary flex items-center justify-center cursor-pointer"
+                    onClick={() => setEnlargedPost(post)}
+                  >
                     <div className="w-16 h-16 rounded-lg border border-muted-foreground/30 flex items-center justify-center">
                       <svg className="w-8 h-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -493,12 +551,18 @@ const Game = () => {
                     {post.platform}
                   </div>
 
-                  {/* Selection Indicator */}
-                  {isSelected && (
-                    <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
-                      <Check className="w-4 h-4 text-white" />
-                    </div>
-                  )}
+                  {/* Save Button */}
+                  <button
+                    onClick={(e) => toggleSavePost(post.id, e)}
+                    className={cn(
+                      "absolute top-2 left-2 w-7 h-7 rounded-full flex items-center justify-center transition-all",
+                      isSaved 
+                        ? "bg-primary text-white" 
+                        : "bg-black/50 text-white opacity-0 group-hover:opacity-100 hover:bg-black/70"
+                    )}
+                  >
+                    <Bookmark className={cn("w-4 h-4", isSaved && "fill-white")} />
+                  </button>
 
                   {/* Zoom Button */}
                   <button
@@ -527,6 +591,26 @@ const Game = () => {
                           {kw}
                         </span>
                       ))}
+                    </div>
+                  </div>
+
+                  {/* Static Radio Button for Selection */}
+                  <div 
+                    className="absolute bottom-3 left-3 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      togglePost(post.id);
+                    }}
+                  >
+                    <div className={cn(
+                      "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
+                      isSelected 
+                        ? "border-primary bg-primary" 
+                        : "border-white/70 bg-black/30"
+                    )}>
+                      {isSelected && (
+                        <div className="w-2 h-2 rounded-full bg-white" />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -592,7 +676,6 @@ const Game = () => {
                 className="w-full"
                 onClick={() => {
                   togglePost(enlargedPost.id);
-                  setEnlargedPost(null);
                 }}
               >
                 {selectedPosts.includes(enlargedPost.id) ? "הסר מהבחירה" : "בחר פוסט זה"}
