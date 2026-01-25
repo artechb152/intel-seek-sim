@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Target, Filter, CheckCircle } from "lucide-react";
+import { AlertTriangle, Eye, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -26,7 +26,7 @@ export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="glass-panel border-primary/30 sm:max-w-md">
+      <DialogContent className="glass-panel border-primary/30 sm:max-w-lg max-h-[90vh] overflow-y-auto" dir="rtl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center mb-2">
             <span className="text-gradient-tactical">ברוך הבא</span>
@@ -35,34 +35,30 @@ export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className="flex items-start gap-3 p-3 rounded-lg bg-secondary/50">
-            <div className="p-2 rounded-lg bg-primary/20">
-              <Filter className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-foreground">השתמש בפילטרים</h4>
-              <p className="text-sm text-muted-foreground">סנן לפי מיקום, תאריך ומילות קוד לדיוק מקסימלי</p>
-            </div>
+        <div className="space-y-4 py-4 text-right">
+          <div className="flex items-start gap-3 p-4 rounded-lg bg-destructive/10 border border-destructive/30">
+            <AlertTriangle className="w-6 h-6 text-destructive flex-shrink-0 mt-0.5" />
+            <p className="text-foreground leading-relaxed">
+              האויב אוסף עליכם מידע ממגוון רחב של רשתות ומקורות גלויים וסמויים, במטרה לבנות תמונה מלאה עליכם ועל הארגון: מי אתם, מה התפקיד שלכם, עם מי אתם עובדים, היכן אתם נמצאים, ומהם דפוסי הפעילות שלכם.
+            </p>
           </div>
 
-          <div className="flex items-start gap-3 p-3 rounded-lg bg-secondary/50">
-            <div className="p-2 rounded-lg bg-primary/20">
-              <Target className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-foreground">בחר פוסטים רלוונטיים</h4>
-              <p className="text-sm text-muted-foreground">סמן רק את הפוסטים שתואמים למשימה</p>
-            </div>
+          <div className="flex items-start gap-3 p-4 rounded-lg bg-secondary/50">
+            <Eye className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
+            <p className="text-muted-foreground leading-relaxed">
+              איסוף המידע מתבצע לעיתים בלי שתשימו לב — דרך פרטים קטנים שמופיעים ברשתות חברתיות, אתרי אינטרנט, קבצים ציבוריים, תמונות, תגובות, מיקומים, ושיתופים שונים.
+            </p>
           </div>
 
-          <div className="flex items-start gap-3 p-3 rounded-lg bg-secondary/50">
-            <div className="p-2 rounded-lg bg-accent/20">
-              <CheckCircle className="w-5 h-5 text-accent" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-foreground">10 הצלחות = מעבר</h4>
-              <p className="text-sm text-muted-foreground">הגע ל-10 בחירות נכונות מתוך 30 פוסטים</p>
+          <div className="flex items-start gap-3 p-4 rounded-lg bg-secondary/50">
+            <Shield className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
+            <div className="space-y-2">
+              <p className="text-muted-foreground leading-relaxed">
+                במסך הבא תוכלו לעבור בין מקורות המידע השונים ולראות כיצד כל מקור "מספר סיפור" עליכם. עברו על המקורות כדי להבין עד כמה קל לצבור פרטים משמעותיים גם בלי גישה מיוחדת.
+              </p>
+              <p className="text-foreground font-medium">
+                לאחר שתסיימו להכיר את המקורות ולהתנסות בהם, תוכלו להתחיל בסימולציה.
+              </p>
             </div>
           </div>
         </div>
