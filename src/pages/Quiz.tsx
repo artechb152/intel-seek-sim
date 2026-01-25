@@ -60,13 +60,13 @@ const Quiz = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 overflow-hidden">
       {/* Background Effect */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-transparent" />
       </div>
 
-      <div className="glass-panel rounded-2xl p-8 max-w-2xl w-full relative z-10" dir="rtl">
+      <div className="glass-panel rounded-2xl p-6 max-w-3xl w-full relative z-10" dir="rtl">
         {/* Header */}
         <div className="mb-6 text-center">
           <h2 className="text-2xl font-bold text-foreground mb-2">שאלה סופית</h2>
@@ -80,8 +80,8 @@ const Quiz = () => {
           </div>
         </div>
 
-        {/* Answers */}
-        <div className="space-y-3 mb-8">
+        {/* Answers - Grid Layout for Static View */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-6">
           {answers.map((answer) => {
             const isSelected = selectedAnswers.includes(answer.id);
             const isDisabled = !isSelected && selectedAnswers.length >= 5;
@@ -92,7 +92,7 @@ const Quiz = () => {
                 onClick={() => handleSelectAnswer(answer.id)}
                 disabled={isDisabled}
                 className={cn(
-                  "w-full text-right p-4 rounded-xl border transition-all duration-200 flex items-center gap-3",
+                  "w-full text-right p-3 rounded-lg border transition-all duration-200 flex items-center gap-2",
                   isSelected
                     ? "border-primary bg-primary/20 text-foreground"
                     : isDisabled
@@ -102,29 +102,30 @@ const Quiz = () => {
               >
                 {/* Radio Button Style Indicator */}
                 <div className={cn(
-                  "w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all",
+                  "w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all",
                   isSelected 
                     ? "border-primary bg-primary" 
                     : "border-muted-foreground/50"
                 )}>
                   {isSelected && (
-                    <div className="w-2 h-2 rounded-full bg-white" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
                   )}
                 </div>
-                <span className="font-medium">{answer.text}</span>
+                <span className="text-sm">{answer.text}</span>
               </button>
             );
           })}
         </div>
 
         {/* Navigation */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 mt-4">
           <Button
             variant="tacticalOutline"
             onClick={() => navigate("/game")}
+            size="sm"
             className="flex-1"
           >
-            <ChevronLeft className="w-4 h-4 mr-2" />
+            <ChevronLeft className="w-4 h-4 mr-1" />
             חזור
           </Button>
           
@@ -132,6 +133,7 @@ const Quiz = () => {
             variant="tactical"
             onClick={handleSubmit}
             disabled={selectedAnswers.length !== 5}
+            size="sm"
             className="flex-1 animate-pulse-glow"
           >
             סיים שאלון

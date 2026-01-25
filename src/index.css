@@ -84,11 +84,11 @@
 
 @layer utilities {
   .glow-blue {
-    box-shadow: 0 0 20px hsl(217 91% 60% / 0.4), 0 0 40px hsl(217 91% 60% / 0.2);
+    filter: drop-shadow(0 0 8px hsl(217 91% 60% / 0.6));
   }
   
   .glow-amber {
-    box-shadow: 0 0 15px hsl(38 90% 55% / 0.4);
+    filter: drop-shadow(0 0 6px hsl(38 90% 55% / 0.5));
   }
   
   .glass-panel {
