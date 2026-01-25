@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   MapPin, Calendar, Search, Filter, 
-  Clock, Target, ChevronLeft, Loader2, ZoomIn,
+  Clock, Target, ChevronLeft, Loader2,
   Instagram, Facebook, Twitter, RotateCcw, Bookmark
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -551,28 +551,17 @@ const Game = () => {
                     {post.platform}
                   </div>
 
-                  {/* Save Button */}
+                  {/* Save Button - Always Visible */}
                   <button
                     onClick={(e) => toggleSavePost(post.id, e)}
                     className={cn(
                       "absolute top-2 left-2 w-7 h-7 rounded-full flex items-center justify-center transition-all",
                       isSaved 
                         ? "bg-primary text-white" 
-                        : "bg-black/50 text-white opacity-0 group-hover:opacity-100 hover:bg-black/70"
+                        : "bg-black/50 text-white hover:bg-black/70"
                     )}
                   >
                     <Bookmark className={cn("w-4 h-4", isSaved && "fill-white")} />
-                  </button>
-
-                  {/* Zoom Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setEnlargedPost(post);
-                    }}
-                    className="absolute top-2 left-10 w-6 h-6 rounded-full bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
-                  >
-                    <ZoomIn className="w-3 h-3 text-white" />
                   </button>
 
                   {/* Info Overlay */}

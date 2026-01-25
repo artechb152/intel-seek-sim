@@ -20,7 +20,7 @@ const socialItems: SocialMenuItem[] = [
   { id: "snapchat", name: "סנאפצ'אט", icon: <MessageCircle className="w-5 h-5" /> },
   { id: "twitter", name: "טוויטר", icon: <Twitter className="w-5 h-5" /> },
   { id: "listening", name: "האזנה", icon: <Radio className="w-5 h-5" /> },
-  { id: "cameras", name: "תצלומות", icon: <Camera className="w-5 h-5" /> },
+  { id: "cameras", name: "מצלמות אבטחה", icon: <Camera className="w-5 h-5" /> },
 ];
 
 export const SocialMenu = ({ activePlatform, onPlatformChange }: SocialMenuProps) => {
@@ -54,7 +54,7 @@ export const SocialMenu = ({ activePlatform, onPlatformChange }: SocialMenuProps
       {/* Info Box */}
       <div className="mt-4 p-4 bg-secondary/50 rounded-xl text-sm text-muted-foreground leading-relaxed">
         <p>
-          ז על השכל הזאת להיכנס לעמוד הפקודות, בעמודים אלה יראה לך כל הפקודות שאנחנו מציעים
+          المدينة هادئة، لكن الأحاديث لا تتوقف. في الشوارع كرامة… وفي الظلال أسرار. شبكة الظلال تواصل الإصغاء.
         </p>
       </div>
 
