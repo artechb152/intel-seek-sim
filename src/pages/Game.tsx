@@ -1,9 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   MapPin, Calendar, Search, Filter, 
   Clock, Target, ChevronLeft, Loader2,
-  Instagram, Facebook, Twitter, RotateCcw, Bookmark
+  Instagram, Facebook, RotateCcw, Bookmark
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,7 +53,7 @@ const generateMockPosts = (): Post[] => {
     ["ג׳יפ", "שטח"],
   ];
   const times = ["08:00", "09:15", "10:30", "11:45", "12:00", "13:15", "14:30", "15:45", "16:20", "17:00", "18:30", "19:45", "20:15", "21:30", "22:00"];
-  const dates = ["2024-01-15", "2024-01-16", "2024-01-17", "2024-01-18", "2024-01-19", "2024-01-20", "2024-01-21", "2024-01-22", "2024-01-23", "2024-01-24"];
+  const dates = ["2023-04-05", "2023-04-18", "2023-05-02", "2023-05-20", "2023-06-10", "2023-06-25", "2023-07-08", "2023-07-22", "2023-08-05", "2023-08-20", "2023-09-01", "2023-09-15", "2023-09-28"];
 
   const posts: Post[] = [];
   for (let i = 1; i <= 50; i++) {
@@ -91,6 +91,30 @@ const Game = () => {
   const [enlargedPost, setEnlargedPost] = useState<Post | null>(null);
   const [showMissionDetails, setShowMissionDetails] = useState(false);
   const [showSavedOnly, setShowSavedOnly] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(10 * 60); // 10 minutes in seconds
+
+  // Timer countdown
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          navigate("/quiz", { state: { correct: correctCount, wrong: wrongCount, total: selectedPosts.length, timedOut: true } });
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [navigate]);
+
+  // Format time as MM:SS
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   // Dynamic filtering
   const filteredPosts = useMemo(() => {
@@ -203,10 +227,17 @@ const Game = () => {
     }
   };
 
+  // X (Twitter) Icon Component
+  const XIcon = ({ className }: { className?: string }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    </svg>
+  );
+
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
       case "instagram": return <Instagram className="w-4 h-4" />;
-      case "twitter": return <Twitter className="w-4 h-4" />;
+      case "twitter": return <XIcon className="w-4 h-4" />;
       case "facebook": return <Facebook className="w-4 h-4" />;
       default: return null;
     }
@@ -243,9 +274,12 @@ const Game = () => {
           
           <div className="h-8 w-px bg-border" />
           
-          <div className="flex items-center gap-2 text-accent">
-            <Clock className="w-4 h-4" />
-            <span className="font-mono">12:34</span>
+          <div className={cn(
+            "flex items-center gap-2 font-mono text-lg font-bold",
+            timeRemaining <= 60 ? "text-red-500 animate-pulse" : "text-amber-400"
+          )} style={{ textShadow: timeRemaining <= 60 ? '0 0 10px rgba(239,68,68,0.8)' : '0 0 10px rgba(251,191,36,0.6)' }}>
+            <Clock className="w-5 h-5" />
+            <span>{formatTime(timeRemaining)}</span>
           </div>
         </div>
         
@@ -309,14 +343,26 @@ const Game = () => {
                 />
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
+              <Badge 
+                variant="outline" 
+                className={cn(
+                  "cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50",
+                  selectedLocation === "" && "bg-blue-500/20 border-blue-500/50"
+                )}
+                onDoubleClick={() => setSelectedLocation("")}
+                onClick={() => setSelectedLocation("")}
+              >
+                הכל
+              </Badge>
               <Badge 
                 variant="outline" 
                 className={cn(
                   "cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50",
                   selectedLocation.includes("צפ") && "bg-blue-500/20 border-blue-500/50"
                 )}
-                onClick={() => setSelectedLocation("צפת")}
+                onDoubleClick={() => setSelectedLocation("")}
+                onClick={() => setSelectedLocation(selectedLocation === "צפת" ? "" : "צפת")}
               >
                 צפון
               </Badge>
@@ -326,7 +372,8 @@ const Game = () => {
                   "cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50",
                   (selectedLocation.includes("תל אביב") || selectedLocation.includes("רמת")) && "bg-blue-500/20 border-blue-500/50"
                 )}
-                onClick={() => setSelectedLocation("תל אביב")}
+                onDoubleClick={() => setSelectedLocation("")}
+                onClick={() => setSelectedLocation(selectedLocation === "תל אביב" ? "" : "תל אביב")}
               >
                 מרכז
               </Badge>
@@ -336,7 +383,8 @@ const Game = () => {
                   "cursor-pointer hover:bg-blue-500/20 hover:border-blue-500/50",
                   (selectedLocation.includes("באר") || selectedLocation.includes("אילת")) && "bg-blue-500/20 border-blue-500/50"
                 )}
-                onClick={() => setSelectedLocation("באר שבע")}
+                onDoubleClick={() => setSelectedLocation("")}
+                onClick={() => setSelectedLocation(selectedLocation === "באר שבע" ? "" : "באר שבע")}
               >
                 דרום
               </Badge>
@@ -345,10 +393,24 @@ const Game = () => {
 
           {/* Date/Time Filter */}
           <div className="space-y-3">
-            <label className="text-sm font-medium flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-blue-400" />
-              תאריך ושעה
-            </label>
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-blue-400" />
+                תאריך ושעה
+              </label>
+              <button
+                onClick={() => {
+                  setFromDate("");
+                  setToDate("");
+                  setFromTime("");
+                  setToTime("");
+                }}
+                className="p-1.5 rounded hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+                title="איפוס תאריך ושעה"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <span className="text-xs text-muted-foreground">מתאריך</span>
@@ -357,6 +419,8 @@ const Game = () => {
                   className="bg-secondary/50 [color-scheme:dark]" 
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
+                  min="2023-04-01"
+                  max="2023-10-01"
                 />
               </div>
               <div>
@@ -366,6 +430,8 @@ const Game = () => {
                   className="bg-secondary/50 [color-scheme:dark]"
                   value={toDate}
                   onChange={(e) => setToDate(e.target.value)}
+                  min="2023-04-01"
+                  max="2023-10-01"
                 />
               </div>
             </div>
@@ -507,12 +573,12 @@ const Game = () => {
               className={cn(
                 "px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2",
                 selectedPlatform === "twitter"
-                  ? "bg-sky-500 text-white"
+                  ? "bg-black text-white border border-white/20"
                   : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
               )}
             >
-              <Twitter className="w-4 h-4" />
-              Twitter
+              <XIcon className="w-4 h-4" />
+              X
             </button>
           </div>
 
@@ -665,6 +731,7 @@ const Game = () => {
                 className="w-full"
                 onClick={() => {
                   togglePost(enlargedPost.id);
+                  setEnlargedPost(null); // Close popup after selection
                 }}
               >
                 {selectedPosts.includes(enlargedPost.id) ? "הסר מהבחירה" : "בחר פוסט זה"}
