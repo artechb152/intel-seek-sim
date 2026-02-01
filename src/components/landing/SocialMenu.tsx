@@ -23,9 +23,9 @@ const XIcon = ({ className }: { className?: string }) => (
 const socialItems: SocialMenuItem[] = [
   { id: "instagram", name: "אינסטגרם", icon: <Instagram className="w-5 h-5" /> },
   { id: "facebook", name: "פייסבוק", icon: <Facebook className="w-5 h-5" /> },
+  { id: "x", name: "X", icon: <XIcon className="w-5 h-5" /> },
   { id: "tiktok", name: "טיקטוק", icon: <Camera className="w-5 h-5" /> },
   { id: "snapchat", name: "סנאפצ'אט", icon: <MessageCircle className="w-5 h-5" /> },
-  { id: "x", name: "X", icon: <XIcon className="w-5 h-5" /> },
   { id: "listening", name: "האזנה", icon: <Radio className="w-5 h-5" /> },
   { id: "cameras", name: "מצלמות אבטחה", icon: <Camera className="w-5 h-5" /> },
 ];

@@ -660,7 +660,7 @@ export const PhoneMockup = ({ platform }: PhoneMockupProps) => {
         return <FacebookFeed />;
       case "tiktok":
         return <TikTokFeed />;
-      case "twitter":
+      case "x":
         return <TwitterFeed />;
       case "snapchat":
         return <SnapchatFeed />;

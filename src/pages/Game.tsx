@@ -21,7 +21,7 @@ import { MissionDetailsPopup } from "@/components/landing/MissionDetailsPopup";
 interface Post {
   id: string;
   image: string;
-  platform: "instagram" | "twitter" | "facebook";
+  platform: "instagram" | "x" | "facebook";
   user: string;
   location: string;
   timestamp: string;
@@ -31,7 +31,7 @@ interface Post {
 }
 
 const generateMockPosts = (): Post[] => {
-  const platforms: ("instagram" | "twitter" | "facebook")[] = ["instagram", "twitter", "facebook"];
+  const platforms: ("instagram" | "x" | "facebook")[] = ["instagram", "x", "facebook"];
   const locations = ["תל אביב", "חיפה", "ירושלים", "באר שבע", "אילת", "נתניה", "רמת גן", "צפת", "אשדוד", "פתח תקווה", "ראשון לציון", "חולון", "הרצליה", "כפר סבא", "רעננה", "מודיעין"];
   const users = ["soldier_123", "army_life", "beach_vibes", "military_fan", "travel_il", "idf_proud", "daily_post", "reserve_unit", "combat_ready", "base_life", "training_day", "weekend_warrior", "patrol_unit", "field_ops", "recon_team", "night_watch", "desert_fox", "eagle_eye", "shadow_ops", "swift_blade"];
   const keywordSets = [
@@ -82,7 +82,7 @@ const Game = () => {
   const [savedPosts, setSavedPosts] = useState<string[]>([]);
   const [searchKeywords, setSearchKeywords] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedPlatform, setSelectedPlatform] = useState<"all" | "instagram" | "twitter" | "facebook">("all");
+  const [selectedPlatform, setSelectedPlatform] = useState<"all" | "instagram" | "x" | "facebook">("all");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [fromTime, setFromTime] = useState("");
@@ -221,7 +221,7 @@ const Game = () => {
   const getPlatformColor = (platform: string) => {
     switch (platform) {
       case "instagram": return "bg-gradient-to-r from-purple-500 to-pink-500";
-      case "twitter": return "bg-sky-500";
+      case "x": return "bg-black";
       case "facebook": return "bg-blue-600";
       default: return "bg-gray-500";
     }
@@ -237,7 +237,7 @@ const Game = () => {
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
       case "instagram": return <Instagram className="w-4 h-4" />;
-      case "twitter": return <XIcon className="w-4 h-4" />;
+      case "x": return <XIcon className="w-4 h-4" />;
       case "facebook": return <Facebook className="w-4 h-4" />;
       default: return null;
     }
@@ -399,14 +399,9 @@ const Game = () => {
                 תאריך ושעה
               </label>
               <button
-                onClick={() => {
-                  setFromDate("");
-                  setToDate("");
-                  setFromTime("");
-                  setToTime("");
-                }}
+                onClick={handleResetFilters}
                 className="p-1.5 rounded hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
-                title="איפוס תאריך ושעה"
+                title="איפוס כל הפילטרים"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
@@ -569,10 +564,10 @@ const Game = () => {
               Instagram
             </button>
             <button
-              onClick={() => setSelectedPlatform("twitter")}
+              onClick={() => setSelectedPlatform("x")}
               className={cn(
                 "px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2",
-                selectedPlatform === "twitter"
+                selectedPlatform === "x"
                   ? "bg-black text-white border border-white/20"
                   : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
               )}
