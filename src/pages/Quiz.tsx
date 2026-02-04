@@ -3,39 +3,21 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-interface Answer {
-  id: number;
-  text: string;
-  isCorrect: boolean;
-}
-
-const answers: Answer[] = [
-  { id: 1, text: "פרסום תמונה עם כומתה צבאית חושף את היחידה והתפקיד", isCorrect: true },
-  { id: 2, text: "תמונה עם תגית מיקום מאפשרת לזהות את המיקום המדויק, הזמן ודפוס הפעילות", isCorrect: true },
-  { id: 3, text: "שיתוף שגרה יומית מאפשר לאויב לחזות תנועות ולתכנן פעולות", isCorrect: true },
-  { id: 4, text: "סטורי שנעלם אחרי 24 שעות בטוח לפרסום כי הוא נמחק", isCorrect: false },
-  { id: 5, text: "ניתן לזהות יחידה מתוך תמונה לפי סמלים, רקע, ציוד ואנשים", isCorrect: true },
-  { id: 6, text: "צילום מחוץ לבסיס לא מהווה סיכון ביטחוני", isCorrect: false },
-  { id: 7, text: "תגובות וחברים ברשת יכולים לחשוף קשרים, יחידות ומידע על אחרים", isCorrect: true },
-  { id: 8, text: "פרופיל פרטי מספיק כדי להגן על מידע רגיש", isCorrect: false },
-  { id: 9, text: "אין בעיה לפרסם תמונות מטווחים אם לא רואים נשק", isCorrect: false },
-  { id: 10, text: "מותר לפרסם תמונות מאירוע יחידתי לאחר אישור מג\"ד", isCorrect: false },
-];
+import { quizAnswers, REQUIRED_ANSWERS, PASSING_SCORE } from "@/constants/quiz";
 
 const Quiz = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { correct = 0, wrong = 0, total = 0 } = location.state || {};
-  
+
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
 
   const handleSelectAnswer = (answerId: number) => {
-    setSelectedAnswers(prev => {
+    setSelectedAnswers((prev) => {
       if (prev.includes(answerId)) {
-        return prev.filter(id => id !== answerId);
+        return prev.filter((id) => id !== answerId);
       }
-      if (prev.length >= 5) {
+      if (prev.length >= REQUIRED_ANSWERS) {
         return prev;
       }
       return [...prev, answerId];
@@ -43,19 +25,19 @@ const Quiz = () => {
   };
 
   const handleSubmit = () => {
-    const correctAnswers = selectedAnswers.filter(id => 
-      answers.find(a => a.id === id)?.isCorrect
+    const correctAnswers = selectedAnswers.filter(
+      (id) => quizAnswers.find((a) => a.id === id)?.isCorrect
     ).length;
-    const passed = correctAnswers >= 4;
-    navigate("/results", { 
-      state: { 
-        passed, 
-        correct, 
-        wrong, 
+    const passed = correctAnswers >= PASSING_SCORE;
+    navigate("/results", {
+      state: {
+        passed,
+        correct,
+        wrong,
         total,
         quizScore: correctAnswers,
-        quizTotal: 5 
-      } 
+        quizTotal: REQUIRED_ANSWERS,
+      },
     });
   };
 
@@ -70,22 +52,24 @@ const Quiz = () => {
         {/* Header */}
         <div className="mb-6 text-center">
           <h2 className="text-2xl font-bold text-foreground mb-2">שאלה סופית</h2>
-          <p className="text-muted-foreground">בחר 5 טענות נכונות מתוך הרשימה</p>
+          <p className="text-muted-foreground">בחר {REQUIRED_ANSWERS} טענות נכונות מתוך הרשימה</p>
         </div>
 
         {/* Selection Counter */}
         <div className="mb-6 flex justify-center">
           <div className="px-4 py-2 rounded-full bg-primary/20 border border-primary/30">
-            <span className="text-primary font-medium">נבחרו: {selectedAnswers.length}/5</span>
+            <span className="text-primary font-medium">
+              נבחרו: {selectedAnswers.length}/{REQUIRED_ANSWERS}
+            </span>
           </div>
         </div>
 
-        {/* Answers - Grid Layout for Static View */}
+        {/* Answers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-6">
-          {answers.map((answer) => {
+          {quizAnswers.map((answer) => {
             const isSelected = selectedAnswers.includes(answer.id);
-            const isDisabled = !isSelected && selectedAnswers.length >= 5;
-            
+            const isDisabled = !isSelected && selectedAnswers.length >= REQUIRED_ANSWERS;
+
             return (
               <button
                 key={answer.id}
@@ -96,20 +80,18 @@ const Quiz = () => {
                   isSelected
                     ? "border-primary bg-primary/20 text-foreground"
                     : isDisabled
-                      ? "border-border bg-secondary/30 text-muted-foreground/50 cursor-not-allowed"
-                      : "border-border bg-secondary/50 text-muted-foreground hover:border-primary/50 hover:bg-secondary"
+                    ? "border-border bg-secondary/30 text-muted-foreground/50 cursor-not-allowed"
+                    : "border-border bg-secondary/50 text-muted-foreground hover:border-primary/50 hover:bg-secondary"
                 )}
               >
-                {/* Radio Button Style Indicator */}
-                <div className={cn(
-                  "w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all",
-                  isSelected 
-                    ? "border-primary bg-primary" 
-                    : "border-muted-foreground/50"
-                )}>
-                  {isSelected && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                {/* Radio Button Indicator */}
+                <div
+                  className={cn(
+                    "w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all",
+                    isSelected ? "border-primary bg-primary" : "border-muted-foreground/50"
                   )}
+                >
+                  {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                 </div>
                 <span className="text-sm">{answer.text}</span>
               </button>
@@ -128,11 +110,11 @@ const Quiz = () => {
             <ChevronLeft className="w-4 h-4 mr-1" />
             חזור
           </Button>
-          
+
           <Button
             variant="tactical"
             onClick={handleSubmit}
-            disabled={selectedAnswers.length !== 5}
+            disabled={selectedAnswers.length !== REQUIRED_ANSWERS}
             size="sm"
             className="flex-1 animate-pulse-glow"
           >
@@ -140,9 +122,9 @@ const Quiz = () => {
           </Button>
         </div>
 
-        {selectedAnswers.length !== 5 && (
+        {selectedAnswers.length !== REQUIRED_ANSWERS && (
           <p className="text-center text-sm text-muted-foreground mt-4">
-            יש לבחור בדיוק 5 תשובות
+            יש לבחור בדיוק {REQUIRED_ANSWERS} תשובות
           </p>
         )}
       </div>
