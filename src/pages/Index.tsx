@@ -4,7 +4,7 @@ import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SocialMenu } from "@/components/landing/SocialMenu";
 import { TeamChat } from "@/components/landing/TeamChat";
-import { PhoneMockup } from "@/components/landing/PhoneMockup";
+import { PhoneMockup } from "@/components/phone-mockup/PhoneMockup";
 import { WelcomePopup } from "@/components/landing/WelcomePopup";
 import { MissionPopup } from "@/components/landing/MissionPopup";
 
