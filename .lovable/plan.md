@@ -1,177 +1,328 @@
 
-# תכנית לייעול CSS ושיפור ניהול תמונות
+# תכנית לייעול מלא וחלוקת הקוד לקטגוריות
 
-## הבהרה חשובה
+## מבנה הקבצים המוצע
 
-### לגבי קובץ `tailwind.config.lov.json` (7,835 שורות)
-קובץ זה הוא **קובץ מערכת פנימי של Lovable** ולא נועד לעריכה ידנית. הוא מכיל את כל ערכי ברירת המחדל של Tailwind לצורכי השלמה אוטומטית וכלי פיתוח פנימיים. אין צורך לייעל אותו - הוא לא משפיע על גודל ה-CSS הסופי של האפליקציה.
-
-הקבצים שאתה באמת צריך לנהל הם:
-- `tailwind.config.ts` (107 שורות) - הגדרות מותאמות אישית
-- `src/index.css` (202 שורות) - סגנונות CSS מותאמים
+```text
+src/
+├── components/
+│   ├── common/
+│   │   ├── icons/
+│   │   │   └── XIcon.tsx                 # (קיים)
+│   │   └── EmptyState.tsx                # חדש
+│   │
+│   ├── game/                              # חדש - כל רכיבי מסך המשחק
+│   │   ├── GameHeader.tsx                 # כותרת + טיימר
+│   │   ├── FiltersSidebar/
+│   │   │   ├── index.tsx                  # רכיב ראשי
+│   │   │   ├── LocationFilter.tsx         # פילטר מיקום
+│   │   │   ├── DateTimeFilter.tsx         # פילטר תאריך/שעה
+│   │   │   ├── KeywordsFilter.tsx         # פילטר מילות קוד
+│   │   │   └── SavedFilter.tsx            # כפתור שמורים
+│   │   ├── PlatformTabs.tsx               # טאבים של פלטפורמות
+│   │   ├── PostCard.tsx                   # כרטיסיית פוסט
+│   │   ├── PostGrid.tsx                   # רשת הפוסטים
+│   │   ├── EnlargedPostDialog.tsx         # דיאלוג פוסט מוגדל
+│   │   └── MissionDetailsPopup.tsx        # (מועבר מ-landing/)
+│   │
+│   ├── landing/                           # ללא שינוי במבנה
+│   │   ├── SocialMenu.tsx                 # יעודכן - ישתמש ב-XIcon משותף
+│   │   ├── TeamChat.tsx
+│   │   ├── WelcomePopup.tsx
+│   │   └── MissionPopup.tsx
+│   │
+│   ├── phone-mockup/                      # (קיים - מאורגן היטב)
+│   │   ├── PhoneMockup.tsx
+│   │   ├── StatusBar.tsx
+│   │   └── feeds/
+│   │       ├── index.ts
+│   │       ├── InstagramFeed.tsx
+│   │       ├── FacebookFeed.tsx
+│   │       ├── TikTokFeed.tsx
+│   │       ├── XFeed.tsx
+│   │       ├── SnapchatFeed.tsx
+│   │       ├── SecurityCamerasFeed.tsx
+│   │       └── RadioListeningFeed.tsx
+│   │
+│   ├── quiz/                              # חדש
+│   │   └── AnswerCard.tsx
+│   │
+│   └── ui/                                # ללא שינוי
+│
+├── constants/
+│   ├── images.ts                          # (קיים)
+│   ├── platforms.ts                       # יורחב - כל הגדרות הפלטפורמות
+│   ├── posts.ts                           # (קיים)
+│   ├── quiz.ts                            # חדש - תשובות השאלון
+│   ├── locations.ts                       # חדש - מיקומים ומילות קוד
+│   └── feedData/                          # חדש - נתוני פידים לכל פלטפורמה
+│       ├── instagram.ts
+│       ├── facebook.ts
+│       ├── tiktok.ts
+│       ├── x.ts
+│       └── snapchat.ts
+│
+├── hooks/
+│   ├── useTimer.ts                        # (קיים)
+│   ├── usePostFilters.ts                  # (קיים) - כבר מאורגן היטב
+│   ├── usePostSelection.ts                # חדש - לוגיקת בחירת פוסטים
+│   ├── use-mobile.tsx                     # (קיים)
+│   └── use-toast.ts                       # (קיים)
+│
+├── lib/
+│   ├── utils.ts                           # (קיים)
+│   └── platform-helpers.tsx               # יורחב
+│
+├── types/
+│   ├── index.ts                           # (קיים)
+│   ├── game.ts                            # חדש - טיפוסי Game
+│   └── feeds.ts                           # חדש - טיפוסי Feeds
+│
+└── pages/
+    ├── Index.tsx                          # (קיים - נקי)
+    ├── Game.tsx                           # יקטן מ-586 ל-~80 שורות
+    ├── Quiz.tsx                           # יקטן - ישתמש ב-constants
+    ├── Results.tsx                        # (קיים)
+    └── NotFound.tsx                       # (קיים)
+```
 
 ---
 
-## חלק 1: שיפור ניהול תמונות
+## פירוט השינויים לפי קטגוריות
 
-### מצב נוכחי
-- כל התמונות בפוסטים ובמוקאפים הן **placeholder ריקות** (ריבועים אפורים עם SVG)
-- שדה ה-`image` בכל פוסט ריק: `image: ""`
-- אין תמונות אמיתיות ברשתות החברתיות המוצגות
+### קטגוריה 1: רכיבי Game (פירוק מ-586 שורות)
 
-### פתרון מוצע: שימוש בשירותי תמונות חינמיים
+#### `GameHeader.tsx` (~60 שורות)
+- כותרת עם לוגו
+- כפתור חזרה
+- תצוגת משימה (לחיצה פותחת popup)
+- מונה פוסטים נבחרים
+- טיימר עם אנימציית אזהרה
+- כפתור סיום בדיקה
 
-#### 1. תמונות לפוסטים (Post Images)
-שימוש ב-**Picsum Photos** עם seed קבוע לכל פוסט:
+#### `FiltersSidebar/index.tsx` (~80 שורות)
+רכיב wrapper שמארגן את כל הפילטרים:
+- כותרת + כפתור איפוס
+- מאגד את תת-הקומפוננטות
 
-```text
-URL Pattern: https://picsum.photos/seed/{post_id}/400/400
+#### `FiltersSidebar/LocationFilter.tsx` (~50 שורות)
+- מפה סכמטית
+- שדה חיפוש
+- badges של אזורים
 
-דוגמאות:
-- פוסט 1: https://picsum.photos/seed/post_1/400/400
-- פוסט 2: https://picsum.photos/seed/post_2/400/400
-```
+#### `FiltersSidebar/DateTimeFilter.tsx` (~50 שורות)
+- שדות תאריך (מ/עד)
+- שדות שעה (מ/עד)
+- כפתור איפוס
 
-**יתרונות:**
-- תמונות ייחודיות לכל פוסט
-- קביעות (אותה תמונה לאותו ID)
-- לא דורש אחסון מקומי
+#### `FiltersSidebar/KeywordsFilter.tsx` (~40 שורות)
+- שדה חיפוש
+- badges של מילות קוד נפוצות
 
-#### 2. תמונות פרופיל (Avatars)
-שימוש ב-**Pravatar** לתמונות משתמש:
+#### `FiltersSidebar/SavedFilter.tsx` (~20 שורות)
+- כפתור הצגת שמורים בלבד
 
-```text
-URL Pattern: https://i.pravatar.cc/150?u={username}
+#### `PlatformTabs.tsx` (~70 שורות)
+- כפתור "הכל"
+- כפתור Facebook
+- כפתור Instagram  
+- כפתור X
+- לוגיקת צבעים לפי פלטפורמה
 
-דוגמאות:
-- soldier_123: https://i.pravatar.cc/150?u=soldier_123
-- army_life: https://i.pravatar.cc/150?u=army_life
-```
+#### `PostCard.tsx` (~80 שורות)
+- תמונת הפוסט
+- badge פלטפורמה
+- כפתור שמירה
+- מידע (משתמש, מיקום, שעה, מילות קוד)
+- radio button לבחירה
 
-#### 3. תמונות לפי קטגוריה
-אפשרות נוספת - **Unsplash Source** לתמונות לפי נושא:
+#### `PostGrid.tsx` (~30 שורות)
+- Grid layout
+- מיפוי PostCard
+- הודעת "אין תוצאות"
 
-```text
-https://source.unsplash.com/400x400/?military
-https://source.unsplash.com/400x400/?beach
-https://source.unsplash.com/400x400/?city
-```
-
----
-
-## חלק 2: מבנה הקבצים החדש
-
-### שינויים בתיקיית Constants
-
-יצירת `src/constants/images.ts`:
-```text
-src/constants/
-├── posts.ts          # נתוני פוסטים
-├── quiz.ts           # שאלות ותשובות
-├── platforms.ts      # הגדרות פלטפורמות
-└── images.ts         # פונקציות URL לתמונות
-```
-
-### פונקציות עזר לתמונות
-
-קובץ `src/constants/images.ts` יכיל:
-- `getPostImage(postId)` - מחזיר URL לתמונת פוסט
-- `getAvatarImage(username)` - מחזיר URL לתמונת פרופיל
-- `getCategoryImage(category)` - מחזיר URL לתמונה לפי קטגוריה
+#### `EnlargedPostDialog.tsx` (~70 שורות)
+- תמונה מוגדלת
+- מידע מפורט
+- כפתור בחר/הסר
 
 ---
 
-## חלק 3: שינויים נדרשים בקבצים
+### קטגוריה 2: Constants (נתונים סטטיים)
 
-### 1. עדכון `src/constants/posts.ts`
+#### `constants/quiz.ts` (חדש)
+```typescript
+export const quizAnswers = [
+  { id: 1, text: "פרסום תמונה עם כומתה...", isCorrect: true },
+  // ... 10 תשובות
+];
+```
 
-```text
-// יצירת URL דינמי לכל פוסט
-export const generateMockPosts = (): Post[] => {
+#### `constants/locations.ts` (חדש)
+```typescript
+export const locationOptions = [
+  { label: "הכל", value: "" },
+  { label: "צפון", value: "צפת" },
+  { label: "מרכז", value: "תל אביב" },
+  { label: "דרום", value: "באר שבע" },
+];
+
+export const keywordSuggestions = [
+  "כומתה אדומה",
+  "יחידה 669", 
+  "דרגת סרן"
+];
+```
+
+#### `constants/feedData/instagram.ts` (חדש)
+```typescript
+export const instagramPosts = [
+  { id: 1, user: "joshua_l", location: "Tokyo, Japan", likes: "44,686" },
   // ...
-  posts.push({
-    id: i.toString(),
-    image: `https://picsum.photos/seed/post_${i}/400/400`,
-    avatar: `https://i.pravatar.cc/150?u=${user}`,
-    // ...
-  });
+];
+
+export const instagramStories = [
+  { name: "Your Story", hasNew: false },
+  // ...
+];
+```
+
+#### דפוס דומה ל-facebook.ts, tiktok.ts, x.ts, snapchat.ts
+
+---
+
+### קטגוריה 3: Hooks (לוגיקה)
+
+#### `hooks/usePostSelection.ts` (חדש ~40 שורות)
+```typescript
+export const usePostSelection = (posts: Post[]) => {
+  const [selectedPosts, setSelectedPosts] = useState<string[]>([]);
+  
+  const togglePost = useCallback((id: string) => {
+    setSelectedPosts(prev => 
+      prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
+    );
+  }, []);
+  
+  const correctCount = useMemo(() => 
+    selectedPosts.filter(id => posts.find(p => p.id === id)?.isRelevant).length
+  , [selectedPosts, posts]);
+  
+  const wrongCount = useMemo(() => 
+    selectedPosts.filter(id => !posts.find(p => p.id === id)?.isRelevant).length
+  , [selectedPosts, posts]);
+  
+  return { selectedPosts, togglePost, correctCount, wrongCount };
 };
 ```
 
-### 2. עדכון PostCard Component
+---
 
-החלפת ה-SVG placeholder ב-tag של `<img>`:
+### קטגוריה 4: Types (טיפוסים)
 
-```text
-<img 
-  src={post.image} 
-  alt={`פוסט של ${post.user}`}
-  className="w-full h-full object-cover"
-  loading="lazy"
-/>
+#### `types/game.ts` (חדש)
+```typescript
+export interface FilterState {
+  searchKeywords: string;
+  selectedLocation: string;
+  selectedPlatform: "all" | Platform;
+  fromDate: string;
+  toDate: string;
+  fromTime: string;
+  toTime: string;
+  showSavedOnly: boolean;
+}
+
+export interface PostCardProps {
+  post: Post;
+  isSelected: boolean;
+  isSaved: boolean;
+  onSelect: () => void;
+  onSave: (e: React.MouseEvent) => void;
+  onEnlarge: () => void;
+}
 ```
 
-### 3. עדכון PhoneMockup Feeds
+#### `types/feeds.ts` (חדש)
+```typescript
+export interface InstagramPost {
+  id: number;
+  user: string;
+  location: string;
+  likes: string;
+}
 
-שימוש בתמונות אמיתיות במוקאפים של הרשתות:
-
-```text
-// InstagramFeed
-<img 
-  src={`https://picsum.photos/seed/ig_${i}/400/400`}
-  className="w-full aspect-square object-cover"
-/>
-
-// אווטרים
-<img 
-  src={`https://i.pravatar.cc/50?u=${post.user}`}
-  className="w-8 h-8 rounded-full"
-/>
+export interface Tweet {
+  id: number;
+  user: string;
+  handle: string;
+  content: string;
+  time: string;
+  likes: string;
+  retweets: string;
+}
+// ... טיפוסים נוספים לכל פלטפורמה
 ```
 
 ---
 
-## חלק 4: אופטימיזציות CSS
+### קטגוריה 5: עדכונים נוספים
 
-### צמצום `src/index.css`
-- איחוד keyframes כפולים (יש 3 אנימציות scroll דומות)
-- הסרת קוד מיותר
+#### תיקון SocialMenu.tsx
+```typescript
+// במקום הגדרה מקומית של XIcon:
+import { XIcon } from "@/components/common/icons/XIcon";
+```
 
-### ארגון משופר
+#### עדכון platforms.ts
+```typescript
+// הוספת הגדרות מרוכזות
+export const platformColors = {
+  instagram: "bg-gradient-to-r from-purple-500 to-pink-500",
+  facebook: "bg-[#1877f2]",
+  x: "bg-black",
+  tiktok: "bg-black",
+  snapchat: "bg-yellow-400",
+} as const;
 
-```text
-src/styles/
-├── base.css          # משתני CSS ובסיס
-├── utilities.css     # כלי עזר (glow, glass-panel)
-├── animations.css    # כל האנימציות
-└── phone.css         # סגנונות למוקאפ הטלפון
+export const platformActiveClasses = {
+  instagram: "bg-gradient-to-r from-purple-500 to-pink-500 text-white",
+  facebook: "bg-[#1877f2] text-white",
+  x: "bg-foreground text-background border border-border",
+} as const;
 ```
 
 ---
 
-## חלק 5: טבלת סיכום השינויים
+## טבלת סיכום
 
-| קובץ | שינוי | תוצאה |
-|------|-------|--------|
-| `src/constants/images.ts` | **חדש** | פונקציות עזר לתמונות |
-| `src/constants/posts.ts` | עדכון | הוספת URLs לתמונות |
-| `src/pages/Game.tsx` | עדכון | שימוש ב-`<img>` במקום SVG |
-| `src/components/game/PostCard.tsx` | **חדש** | קומפוננטת כרטיסיית פוסט |
-| `src/components/landing/PhoneMockup.tsx` | עדכון | תמונות אמיתיות בפידים |
-| `src/index.css` | צמצום | הסרת כפילויות |
+| קובץ מקורי | שורות | לאחר פירוק |
+|------------|--------|------------|
+| Game.tsx | 586 | ~80 (+ 10 קומפוננטות) |
+| Quiz.tsx | 153 | ~100 (+ constants) |
+| SocialMenu.tsx | 68 | ~50 (ללא XIcon כפול) |
+| Feeds (כל אחד) | ~80-130 | ללא שינוי (כבר מחולק) |
 
 ---
 
 ## יתרונות הפתרון
 
-**תמונות:**
-- הצגה ויזואלית מרשימה ומציאותית
-- אין צורך באחסון תמונות
-- טעינה מהירה עם lazy loading
-- עקביות (אותו פוסט = אותה תמונה)
+**ארגון:**
+- כל קובץ עם אחריות יחידה (Single Responsibility)
+- קומפוננטות קטנות (< 100 שורות)
+- הפרדה ברורה בין UI, לוגיקה, ונתונים
 
-**קוד:**
-- הפרדה ברורה בין לוגיקה לנתונים
-- קומפוננטות קטנות וממוקדות
-- קל להחליף מקור תמונות בעתיד
-- תחזוקה פשוטה יותר
+**שימוש חוזר:**
+- קומפוננטות עצמאיות שניתן לייצא
+- הוקים גנריים
+- קבועים מרוכזים
+
+**תחזוקה:**
+- קל למצוא קוד רלוונטי
+- שינויים מבודדים
+- debugging פשוט יותר
+
+**ביצועים:**
+- React יכול לעשות memoization יעיל
+- טעינה עצלה אפשרית
+- פחות re-renders מיותרים
