@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Check, X, ChevronLeft } from "lucide-react";
+import { Check, X, ChevronLeft, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { quizSteps } from "@/constants/quiz";
 import { mockPosts } from "@/constants/posts";
@@ -25,10 +26,14 @@ interface QuizPopupProps {
 
 interface PostMiniCardProps {
   post: Post;
+  onClick: () => void;
 }
 
-const PostMiniCard = ({ post }: PostMiniCardProps) => (
-  <div className="relative rounded-lg overflow-hidden bg-secondary aspect-square">
+const PostMiniCard = ({ post, onClick }: PostMiniCardProps) => (
+  <button
+    onClick={onClick}
+    className="relative rounded-lg overflow-hidden bg-secondary aspect-square cursor-pointer hover:ring-2 hover:ring-primary/50 transition-all"
+  >
     <img
       src={post.image}
       alt={`פוסט של ${post.user}`}
@@ -45,8 +50,72 @@ const PostMiniCard = ({ post }: PostMiniCardProps) => (
     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-2">
       <p className="text-[9px] text-foreground line-clamp-2">{post.content}</p>
     </div>
-  </div>
+  </button>
 );
+
+interface PostDetailModalProps {
+  post: Post | null;
+  onClose: () => void;
+}
+
+const PostDetailModal = ({ post, onClose }: PostDetailModalProps) => {
+  if (!post) return null;
+
+  return (
+    <Dialog open={!!post} onOpenChange={onClose}>
+      <DialogContent 
+        className="max-w-md z-[60]"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+      >
+        <DialogHeader>
+          <DialogTitle className="flex items-center justify-between">
+            <span>@{post.user}</span>
+            <Badge className={getPlatformColor(post.platform)}>
+              {post.platform}
+            </Badge>
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4" dir="rtl">
+          <div className="aspect-square bg-secondary rounded-lg overflow-hidden">
+            <img
+              src={post.image}
+              alt={`פוסט של ${post.user}`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Clock className="w-4 h-4" />
+              <span>{post.timestamp}</span>
+            </div>
+
+            <p className="text-foreground text-sm">{post.content}</p>
+
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <MapPin className="w-4 h-4" />
+              <span>{post.location}</span>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {post.keywords.map((kw, i) => (
+                <Badge
+                  key={i}
+                  variant="outline"
+                  className="text-primary border-primary/50"
+                >
+                  {kw}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 interface ImageAnswerCardProps {
   imageIndex: number;
@@ -141,7 +210,7 @@ export const QuizPopup = ({
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [stepResults, setStepResults] = useState<boolean[]>([]);
-
+  const [viewingPost, setViewingPost] = useState<Post | null>(null);
   const currentQuestion = quizSteps[currentStep];
   const isLastStep = currentStep === quizSteps.length - 1;
   const isImageQuestion = currentQuestion.isImageQuestion;
@@ -188,13 +257,16 @@ export const QuizPopup = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent
-        className={cn(
-          "transition-all duration-300",
-          showFeedback ? "max-w-3xl" : "max-w-lg"
-        )}
-      >
+    <>
+      <Dialog open={open} onOpenChange={handleClose}>
+        <DialogContent
+          className={cn(
+            "transition-all duration-300",
+            showFeedback ? "max-w-2xl" : "max-w-lg"
+          )}
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onInteractOutside={(e) => e.preventDefault()}
+        >
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <span>שאלון סיכום</span>
@@ -313,7 +385,11 @@ export const QuizPopup = ({
               </h4>
               <div className="grid grid-cols-4 gap-2">
                 {relatedPosts.map((post) => (
-                  <PostMiniCard key={post.id} post={post} />
+                  <PostMiniCard 
+                    key={post.id} 
+                    post={post} 
+                    onClick={() => setViewingPost(post)}
+                  />
                 ))}
               </div>
             </div>
@@ -340,5 +416,12 @@ export const QuizPopup = ({
         </div>
       </DialogContent>
     </Dialog>
+    
+    {/* Nested post detail modal */}
+    <PostDetailModal 
+      post={viewingPost} 
+      onClose={() => setViewingPost(null)} 
+    />
+  </>
   );
 };
