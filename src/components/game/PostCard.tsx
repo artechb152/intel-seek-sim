@@ -67,7 +67,7 @@ export const PostCard = ({
       </button>
 
       {/* Info Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/80 to-transparent p-3">
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/60 to-transparent p-3 pt-8">
         <div className="flex items-center justify-between text-foreground text-xs mb-1">
           <span className="font-medium">@{post.user}</span>
           <span className="opacity-70">{post.timestamp}</span>
