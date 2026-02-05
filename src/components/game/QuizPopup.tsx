@@ -76,11 +76,11 @@ const ImageAnswerCard = ({
       className={cn(
         "relative rounded-xl overflow-hidden border-4 transition-all duration-200 aspect-square",
         showResult && isCorrect
-          ? "border-accent ring-2 ring-accent/50"
+          ? "border-emerald-500 ring-2 ring-emerald-500/50"
           : showResult && !isCorrect
-          ? "border-destructive ring-2 ring-destructive/50"
+          ? "border-red-500 ring-2 ring-red-500/50"
           : showCorrectAnswer
-          ? "border-accent ring-2 ring-accent/50"
+          ? "border-emerald-500 ring-2 ring-emerald-500/50"
           : isSelected
           ? "border-primary"
           : "border-border hover:border-primary/50"
@@ -97,20 +97,20 @@ const ImageAnswerCard = ({
           className={cn(
             "absolute inset-0 flex items-center justify-center",
             showResult && isCorrect
-              ? "bg-accent/30"
+              ? "bg-emerald-500/30"
               : showResult && !isCorrect
-              ? "bg-destructive/30"
-              : "bg-accent/20"
+              ? "bg-red-500/30"
+              : "bg-emerald-500/20"
           )}
         >
           <div
             className={cn(
               "w-12 h-12 rounded-full flex items-center justify-center",
               showResult && isCorrect
-                ? "bg-accent text-accent-foreground"
+                ? "bg-emerald-500 text-white"
                 : showResult && !isCorrect
-                ? "bg-destructive text-destructive-foreground"
-                : "bg-accent text-accent-foreground"
+                ? "bg-red-500 text-white"
+                : "bg-emerald-500 text-white"
             )}
           >
             {(showResult && isCorrect) || showCorrectAnswer ? (
@@ -208,8 +208,8 @@ export const QuizPopup = ({
                       ? "bg-primary scale-125"
                       : idx < currentStep
                       ? stepResults[idx]
-                        ? "bg-accent"
-                        : "bg-destructive"
+                        ? "bg-emerald-500"
+                        : "bg-red-500"
                       : "bg-muted"
                   )}
                 />
@@ -271,11 +271,11 @@ export const QuizPopup = ({
                     className={cn(
                       "w-full text-right p-3 rounded-lg border transition-all duration-200 flex items-center gap-3",
                       showResult && isCorrect
-                        ? "border-accent bg-accent/20 text-foreground"
+                        ? "border-emerald-500 bg-emerald-500/20 text-foreground"
                         : showResult && !isCorrect
-                        ? "border-destructive bg-destructive/20 text-foreground"
+                        ? "border-red-500 bg-red-500/20 text-foreground"
                         : showCorrectAnswer
-                        ? "border-accent bg-accent/10 text-foreground"
+                        ? "border-emerald-500 bg-emerald-500/10 text-foreground"
                         : isSelected
                         ? "border-primary bg-primary/20 text-foreground"
                         : "border-border bg-secondary/50 text-muted-foreground hover:border-primary/50 hover:bg-secondary"
@@ -286,11 +286,11 @@ export const QuizPopup = ({
                       className={cn(
                         "w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center transition-all",
                         showResult && isCorrect
-                          ? "bg-accent text-accent-foreground"
+                          ? "bg-emerald-500 text-white"
                           : showResult && !isCorrect
-                          ? "bg-destructive text-destructive-foreground"
+                          ? "bg-red-500 text-white"
                           : showCorrectAnswer
-                          ? "bg-accent text-accent-foreground"
+                          ? "bg-emerald-500 text-white"
                           : "border-2 border-muted-foreground/50"
                       )}
                     >
