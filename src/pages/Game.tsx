@@ -10,6 +10,7 @@ import {
   PostGrid,
   EnlargedPostDialog,
   MissionDetailsPopup,
+  QuizPopup,
 } from "@/components/game";
 
 // Hooks & Types
@@ -45,14 +46,13 @@ const Game = () => {
   // UI state
   const [enlargedPost, setEnlargedPost] = useState<Post | null>(null);
   const [showMissionDetails, setShowMissionDetails] = useState(false);
+  const [showQuizPopup, setShowQuizPopup] = useState(false);
 
   // Timer
   const { timeRemaining, formattedTime } = useTimer({
     initialSeconds: 10 * 60,
     onTimeUp: () => {
-      navigate("/quiz", {
-        state: { correct: correctCount, wrong: wrongCount, total: selectedPosts.length, timedOut: true },
-      });
+      setShowQuizPopup(true);
     },
   });
 
@@ -110,8 +110,8 @@ const Game = () => {
   }, []);
 
   const handleSubmit = useCallback(() => {
-    navigate("/quiz", { state: { correct: correctCount, wrong: wrongCount, total: selectedPosts.length } });
-  }, [navigate, correctCount, wrongCount, selectedPosts.length]);
+    setShowQuizPopup(true);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background p-4">
@@ -175,6 +175,14 @@ const Game = () => {
       <MissionDetailsPopup
         open={showMissionDetails}
         onClose={() => setShowMissionDetails(false)}
+      />
+
+      <QuizPopup
+        open={showQuizPopup}
+        onClose={() => setShowQuizPopup(false)}
+        correctCount={correctCount}
+        wrongCount={wrongCount}
+        totalSelected={selectedPosts.length}
       />
     </div>
   );

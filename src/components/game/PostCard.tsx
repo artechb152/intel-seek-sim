@@ -72,6 +72,7 @@ export const PostCard = ({
           <span className="font-medium">@{post.user}</span>
           <span className="opacity-70">{post.timestamp}</span>
         </div>
+        <p className="text-foreground/90 text-[10px] mb-1 line-clamp-1">{post.content}</p>
         <div className="flex items-center gap-1 text-foreground/70 text-[10px] mb-2">
           <MapPin className="w-3 h-3" />
           {post.location}

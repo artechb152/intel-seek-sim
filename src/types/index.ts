@@ -5,6 +5,7 @@ export interface Post {
   avatar: string;
   platform: Platform;
   user: string;
+  content: string;
   location: string;
   timestamp: string;
   date: string;
@@ -21,9 +22,10 @@ export interface Answer {
   isCorrect: boolean;
 }
 
-export interface QuizQuestion {
+export interface QuizStep {
   question: string;
   answers: Answer[];
+  relatedPostIds: string[];
 }
 
 // Chat types
