@@ -63,7 +63,7 @@ export const GameHeader = ({
       </div>
 
       <Button variant="tactical" onClick={onSubmit} className="animate-pulse-glow">
-        סיים בדיקה
+        סיים לבדיקה
       </Button>
     </header>
   );

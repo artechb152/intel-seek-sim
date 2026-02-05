@@ -35,6 +35,25 @@ const keywordSets = [
   ["ג׳יפ", "שטח"],
 ];
 
+const contentTexts = [
+  "יום אימונים מטורף עם הצוות 💪🔥",
+  "סוף סוף חופש אחרי שבועות! 🌊",
+  "בוקר טוב מהבסיס ☀️",
+  "מסיימים תרגיל ארוך 🎯",
+  "עוד יום עוד דולר 😅",
+  "הנוף מכאן פשוט מדהים 🏔️",
+  "טירונות זה לא בדיחה 😤",
+  "סוף שבוע מגיע! 🎉",
+  "אחרי מסע כיף לנוח 🛌",
+  "יום רגיל בשגרה 📸",
+  "חזרתי מהקורס! סוף סוף 🙌",
+  "עם החברים הכי טובים 👊",
+  "סיור לילה היה שווה את זה 🌙",
+  "תמונה מהתרגול אתמול 🎖️",
+  "מילואים זה הבית השני שלי 🏠",
+  "ממש גאה ביחידה שלנו! 💚",
+];
+
 const times = [
   "08:00", "09:15", "10:30", "11:45", "12:00", 
   "13:15", "14:30", "15:45", "16:20", "17:00", 
@@ -61,6 +80,7 @@ export const generateMockPosts = (): Post[] => {
       k.includes("מילואים") || k.includes("שריון") || k.includes("חי״ר") || 
       k.includes("קורס") || k.includes("נשק") || k.includes("בסיס")
     );
+    const content = contentTexts[Math.floor(Math.random() * contentTexts.length)];
     
     posts.push({
       id: i.toString(),
@@ -68,6 +88,7 @@ export const generateMockPosts = (): Post[] => {
       avatar: getAvatarImage(user),
       platform: platforms[Math.floor(Math.random() * platforms.length)],
       user,
+      content,
       location: locations[Math.floor(Math.random() * locations.length)],
       timestamp: times[Math.floor(Math.random() * times.length)],
       date: dates[Math.floor(Math.random() * dates.length)],

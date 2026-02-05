@@ -53,12 +53,16 @@ export const EnlargedPostDialog = ({
 
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-muted-foreground">
-              <MapPin className="w-4 h-4" />
-              <span>{post.location}</span>
-              <span className="mx-2">•</span>
               <Clock className="w-4 h-4" />
               <span>{post.timestamp}</span>
             </div>
+          
+          <p className="text-foreground text-sm">{post.content}</p>
+
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <MapPin className="w-4 h-4" />
+            <span>{post.location}</span>
+          </div>
 
             <div className="flex flex-wrap gap-2">
               {post.keywords.map((kw, i) => (

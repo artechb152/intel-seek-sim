@@ -5,3 +5,4 @@ export { PostGrid } from "./PostGrid";
 export { EnlargedPostDialog } from "./EnlargedPostDialog";
 export { FiltersSidebar } from "./FiltersSidebar";
 export { MissionDetailsPopup } from "./MissionDetailsPopup";
+export { QuizPopup } from "./QuizPopup";
