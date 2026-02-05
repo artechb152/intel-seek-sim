@@ -20,12 +20,14 @@ export interface Answer {
   id: number;
   text: string;
   isCorrect: boolean;
+  imageIndex?: number;
 }
 
 export interface QuizStep {
   question: string;
   answers: Answer[];
   relatedPostIds: string[];
+  isImageQuestion?: boolean;
 }
 
 // Chat types
