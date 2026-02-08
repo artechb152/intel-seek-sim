@@ -70,7 +70,7 @@ export const PostCard = ({
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/60 to-transparent p-3 pt-8">
         <div className="flex items-center justify-between text-foreground text-xs mb-1">
           <span className="font-medium">@{post.user}</span>
-          <span className="opacity-70">{post.timestamp}</span>
+          <span className="opacity-70">{post.date} · {post.timestamp}</span>
         </div>
         <p className="text-foreground/90 text-[10px] mb-1 line-clamp-1">{post.content}</p>
         <div className="flex items-center gap-1 text-foreground/70 text-[10px] mb-2">

@@ -54,7 +54,7 @@ export const EnlargedPostDialog = ({
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-muted-foreground">
               <Clock className="w-4 h-4" />
-              <span>{post.timestamp}</span>
+              <span>{post.date} · {post.timestamp}</span>
             </div>
           
           <p className="text-foreground text-sm">{post.content}</p>
