@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { locationOptions, keywordSuggestions, dateRange } from "@/constants/locations";
+import { locationOptions, keywordSuggestions } from "@/constants/locations";
 
 interface FiltersSidebarProps {
   // Location
@@ -165,8 +165,6 @@ export const FiltersSidebar = ({
               className="bg-secondary/50 [color-scheme:dark]"
               value={fromDate}
               onChange={(e) => onFromDateChange(e.target.value)}
-              min={dateRange.min}
-              max={dateRange.max}
             />
           </div>
           <div>
@@ -176,8 +174,6 @@ export const FiltersSidebar = ({
               className="bg-secondary/50 [color-scheme:dark]"
               value={toDate}
               onChange={(e) => onToDateChange(e.target.value)}
-              min={dateRange.min}
-              max={dateRange.max}
             />
           </div>
         </div>
