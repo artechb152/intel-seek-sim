@@ -262,7 +262,7 @@ export const QuizPopup = ({
         <DialogContent
           className={cn(
             "transition-all duration-300",
-            showFeedback ? "max-w-xl" : "max-w-lg"
+            isImageQuestion ? "max-w-3xl" : showFeedback ? "max-w-xl" : "max-w-lg"
           )}
           onPointerDownOutside={(e) => e.preventDefault()}
           onInteractOutside={(e) => e.preventDefault()}
@@ -307,7 +307,7 @@ export const QuizPopup = ({
 
           {/* Answers - Image or Text */}
           {isImageQuestion ? (
-            <div className="grid grid-cols-4 gap-4 max-w-[500px] mx-auto">
+            <div className="grid grid-cols-4 gap-4">
               {currentQuestion.answers.map((answer) => {
                 const isSelected = selectedAnswer === answer.id;
                 const isCorrect = answer.isCorrect;
