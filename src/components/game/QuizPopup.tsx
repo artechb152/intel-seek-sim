@@ -143,7 +143,7 @@ const ImageAnswerCard = ({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "relative rounded-xl overflow-hidden border-4 transition-all duration-200 aspect-square",
+        "relative rounded-xl overflow-hidden border-4 transition-all duration-200 aspect-[3/4]",
         showResult && isCorrect
           ? "border-emerald-500 ring-2 ring-emerald-500/50"
           : showResult && !isCorrect
@@ -262,7 +262,7 @@ export const QuizPopup = ({
         <DialogContent
           className={cn(
             "transition-all duration-300",
-            showFeedback ? "max-w-2xl" : "max-w-lg"
+            showFeedback ? "max-w-xl" : "max-w-lg"
           )}
           onPointerDownOutside={(e) => e.preventDefault()}
           onInteractOutside={(e) => e.preventDefault()}
@@ -307,7 +307,7 @@ export const QuizPopup = ({
 
           {/* Answers - Image or Text */}
           {isImageQuestion ? (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-4 gap-3">
               {currentQuestion.answers.map((answer) => {
                 const isSelected = selectedAnswer === answer.id;
                 const isCorrect = answer.isCorrect;
