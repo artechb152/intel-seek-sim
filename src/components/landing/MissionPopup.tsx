@@ -133,7 +133,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
         {/* Mission Title Below Video */}
         <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/30">
           <p className="text-lg font-bold text-foreground">
-            אסוף מידע וניתוח שטח בסיס גלילות
+            אסוף מידע וניתוח שטח בסיס ירקון
           </p>
         </div>
         
