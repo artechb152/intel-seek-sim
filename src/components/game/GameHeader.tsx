@@ -36,8 +36,9 @@ export const GameHeader = ({
 
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
+            <span className="text-muted-foreground">נבחרו:</span>
             <Badge variant="outline" className="font-mono">
-              100 פוסטים סה״כ
+              {selectedCount}/100
             </Badge>
           </div>
         </div>
