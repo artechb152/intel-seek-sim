@@ -307,7 +307,7 @@ export const QuizPopup = ({
 
           {/* Answers - Image or Text */}
           {isImageQuestion ? (
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-4 gap-4 max-w-[500px] mx-auto">
               {currentQuestion.answers.map((answer) => {
                 const isSelected = selectedAnswer === answer.id;
                 const isCorrect = answer.isCorrect;
