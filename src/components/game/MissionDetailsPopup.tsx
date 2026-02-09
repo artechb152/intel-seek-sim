@@ -29,7 +29,7 @@ export const MissionDetailsPopup = ({ open, onClose }: MissionDetailsPopupProps)
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
               <p className="text-foreground text-base leading-relaxed font-medium">
-                אסוף מידע וניתוח שטח בסיס גלילות
+                אסוף מידע וניתוח שטח בסיס ירקון
               </p>
             </div>
           </div>

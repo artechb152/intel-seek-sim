@@ -28,7 +28,7 @@ export const GameHeader = ({
           <Target className="w-5 h-5 text-primary" />
           <span className="text-sm text-muted-foreground">משימה:</span>
           <span className="font-semibold text-foreground">
-            אסוף מידע וניתוח שטח בסיס גלילות
+            אסוף מידע וניתוח שטח בסיס ירקון
           </span>
         </button>
 
