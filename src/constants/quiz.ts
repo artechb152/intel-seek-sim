@@ -67,6 +67,8 @@ export const quizSteps: QuizStep[] = [
     answers: [
       { id: 1, text: "תמונה 1", isCorrect: true, imageIndex: 0 },
       { id: 2, text: "תמונה 2", isCorrect: false, imageIndex: 1 },
+      { id: 3, text: "תמונה 3", isCorrect: false, imageIndex: 2 },
+      { id: 4, text: "תמונה 4", isCorrect: false, imageIndex: 3 },
     ],
     relatedPostIds: ["4", "8", "12", "16"],
   },

@@ -102,6 +102,11 @@ export const getFeedAvatar = (platform: string, username: string, size: number =
  * Generate base structure images for quiz
  */
 export const getBaseStructureImage = (index: number, size: number = 300): string => {
-  const baseSeeds = ["military_base_layout_correct", "military_base_layout_wrong"];
+  const baseSeeds = [
+    "military_base_layout_correct",
+    "military_base_layout_wrong_1",
+    "military_base_layout_wrong_2",
+    "military_base_layout_wrong_3",
+  ];
   return `https://picsum.photos/seed/${baseSeeds[index]}/${size}/${size}`;
 };
