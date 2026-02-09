@@ -141,7 +141,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
           <Button 
             variant="outline" 
             onClick={onClose}
-            className="flex-1 border-muted-foreground/30 hover:bg-muted"
+            className="flex-1 border-muted-foreground/30 hover:bg-muted hover:text-white"
           >
             ביטול
           </Button>

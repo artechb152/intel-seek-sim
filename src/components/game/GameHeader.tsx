@@ -15,7 +15,7 @@ export const GameHeader = ({
 }: GameHeaderProps) => {
   return (
     <header className="glass-panel rounded-xl p-4 mb-4 flex items-center justify-between flex-wrap gap-4">
-      <Button variant="ghost" onClick={onBack} className="gap-2">
+      <Button variant="ghost" onClick={onBack} className="gap-2 hover:text-primary hover:bg-primary/10">
         <ChevronLeft className="w-4 h-4" />
         חזור
       </Button>
@@ -36,9 +36,8 @@ export const GameHeader = ({
 
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">נבחרו:</span>
             <Badge variant="outline" className="font-mono">
-              {selectedCount}/{totalCount}
+              100 פוסטים סה״כ
             </Badge>
           </div>
         </div>
