@@ -143,7 +143,7 @@ const ImageAnswerCard = ({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "relative rounded-xl overflow-hidden border-4 transition-all duration-200 aspect-video",
+        "relative rounded-xl overflow-hidden border-4 transition-all duration-200 aspect-square",
         showResult && isCorrect
           ? "border-emerald-500 ring-2 ring-emerald-500/50"
           : showResult && !isCorrect
@@ -261,8 +261,8 @@ export const QuizPopup = ({
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent
           className={cn(
-            "transition-all duration-500 ease-in-out",
-            showFeedback ? "max-w-xl" : "max-w-lg"
+            "transition-all duration-300",
+            showFeedback ? "max-w-2xl" : "max-w-lg"
           )}
           onPointerDownOutside={(e) => e.preventDefault()}
           onInteractOutside={(e) => e.preventDefault()}
