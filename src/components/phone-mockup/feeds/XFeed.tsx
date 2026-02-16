@@ -2,10 +2,14 @@ import { Heart, MessageCircle, Share2, Home, Search } from 'lucide-react';
 import { StatusBar } from '../StatusBar';
 import { getFeedAvatar } from '@/constants/images';
 
+import image1 from '../../../assets/Feed/X/image1.png';
+import image2 from '../../../assets/Feed/X/image2.png';
+import image3 from '../../../assets/Feed/X/image3.png';
+
 const tweets = [
-  { id: 1, user: 'אלון מאסק', handle: '@elonmusk', content: 'Let that sink in! 🚀', time: '2h', likes: '1.2M', retweets: '234K', avatar: '' },
-  { id: 2, user: 'חדשות 12', handle: '@news12', content: 'עדכון מהשטח: פיתוח טכנולוגי חדש בישראל 🇮🇱', time: '5h', likes: '5.6K', retweets: '890', avatar: '' },
-  { id: 3, user: 'ספורט 5', handle: '@sport5', content: '⚽ תוצאות המשחקים של הערב', time: '1h', likes: '3.4K', retweets: '567', avatar: '' },
+  { id: 1, user: 'רועי ביטון', handle: '@RoiBiton', content: 'רכבת של ראשון בבוקר נראית כמו ניסוי חברתי בשינה בעמידה.', time: '2h', likes: '1.2K', retweets: '576', comments: '245', avatar: image2 },
+  { id: 2, user: 'לינוי כהן', handle: '@Lilush', content: 'אין דבר שמחבר בין אנשים יותר מאשר שנאה משותפת להנפצה שהגיעה הרגע מהמג״ד.', time: '4h', likes: '842', retweets: '134', comments: '143', avatar: image3 },
+  { id: 3, user: 'תומר כץ', handle: '@TomerK', content: 'שמירה ב-03:00 בלילה זה הזמן הכי טוב לתכנן את הסטארטאפ שאני בחיים לא אקים.', time: '6h', likes: '2.1K', retweets: '572', comments: '401', avatar: image1 },
 ];
 
 export const XFeed = () => {
@@ -56,11 +60,11 @@ export const XFeed = () => {
                   <div className="flex items-center justify-between mt-3 text-gray-500 max-w-[250px]">
                     <div className="flex items-center gap-1">
                       <MessageCircle className="w-4 h-4" />
-                      <span className="text-xs">245</span>
+                      <span className="text-xs">{tweet.comments}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z" />
+                        <path d="M4.5 3.88l4.43 2 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z" />
                       </svg>
                       <span className="text-xs">{tweet.retweets}</span>
                     </div>

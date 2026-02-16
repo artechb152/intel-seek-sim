@@ -1,7 +1,14 @@
 import { Search, Send, ArrowRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useState } from 'react';
+
+import image1 from '../../../src/assets/Chat/image1.png';
+import image2 from '../../../src/assets/Chat/image2.png';
+import image3 from '../../../src/assets/Chat/image3.png';
+import image4 from '../../../src/assets/Chat/image4.png';
+import image5 from '../../../src/assets/Chat/image5.png';
+import image6 from '../../../src/assets/Chat/image6.png';
 
 interface ChatPreview {
   id: string;
@@ -9,6 +16,7 @@ interface ChatPreview {
   message: string;
   time: string;
   unread?: number;
+  avatar: string;
 }
 
 interface ChatDetailMessage {
@@ -19,47 +27,14 @@ interface ChatDetailMessage {
   isMe?: boolean;
 }
 
-const chatPreviews: ChatPreview[] = [
-  {
-    id: '1',
-    sender: 'צוות איסוף',
-    message: 'בדוק פוסטים מהאיזור בשעות האחרונות',
-    time: '14:26',
-    unread: 2,
-  },
-  {
-    id: '2',
-    sender: 'מפקד יחידה',
-    message: 'חפש פוסטים שמזכירים את הזמן הזה',
-    time: '14:12',
-    unread: 2,
-  },
-  {
-    id: '3',
-    sender: 'אנליסט בכיר',
-    message: 'סנן לפי מילים אלו בפוסטים',
-    time: '13:36',
-    unread: 2,
-  },
-  {
-    id: '4',
-    sender: 'צוות איסוף',
-    message: 'מחפש עכשיו',
-    time: '12:10',
-  },
-  {
-    id: '5',
-    sender: 'מפקד יחידה',
-    message: 'המשך לסנות ולזהות דפוסים נוספים',
-    time: '15:05',
-    unread: 3,
-  },
-  {
-    id: '6',
-    sender: 'אנליסט בכיר',
-    message: 'הבנתי, מתחיל לסנן',
-    time: '13:05',
-  },
+// 1. שינינו את השם של המערך הראשוני
+const initialChatPreviews: ChatPreview[] = [
+  { id: '1', sender: 'צוות איסוף', message: 'בדוק פוסטים מהאיזור בשעות האחרונות', time: '14:26', unread: 2, avatar: image1 },
+  { id: '2', sender: 'מפקד יחידה', message: 'חפש פוסטים שמזכירים את הזמן הזה', time: '14:12', unread: 2, avatar: image2 },
+  { id: '3', sender: 'אנליסט בכיר', message: 'סנן לפי מילים אלו בפוסטים', time: '13:36', unread: 2, avatar: image3 },
+  { id: '4', sender: 'צוות איסוף', message: 'מחפש עכשיו', time: '12:10', avatar: image4 },
+  { id: '5', sender: 'מפקד יחידה', message: 'המשך לסנות ולזהות דפוסים נוספים', time: '15:05', unread: 3, avatar: image5 },
+  { id: '6', sender: 'אנליסט בכיר', message: 'הבנתי, מתחיל לסנן', time: '13:05', avatar: image6 },
 ];
 
 const chatDetails: Record<string, ChatDetailMessage[]> = {
@@ -100,16 +75,22 @@ const chatDetails: Record<string, ChatDetailMessage[]> = {
 
 export const TeamChat = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
+  // 2. הוספנו סטייט לניהול רשימת הצ'אטים
+  const [chats, setChats] = useState<ChatPreview[]>(initialChatPreviews);
 
   const handleChatClick = (chatId: string) => {
     setSelectedChat(chatId);
+
+    // 3. עדכון הסטייט: מסמנים את הצ'אט הספציפי ככזה שנקרא (מאפסים את unread)
+    setChats((prevChats) => prevChats.map((chat) => (chat.id === chatId ? { ...chat, unread: undefined } : chat)));
   };
 
   const handleBack = () => {
     setSelectedChat(null);
   };
 
-  const selectedChatPreview = chatPreviews.find((c) => c.id === selectedChat);
+  // 4. שימוש בסטייט `chats` במקום במערך הקבוע
+  const selectedChatPreview = chats.find((c) => c.id === selectedChat);
   const selectedMessages = selectedChat ? chatDetails[selectedChat] : [];
 
   return (
@@ -122,6 +103,7 @@ export const TeamChat = () => {
               <ArrowRight className="w-5 h-5 text-muted-foreground" />
             </button>
             <Avatar className="w-8 h-8 bg-secondary">
+              <AvatarImage src={selectedChatPreview?.avatar} alt={selectedChatPreview?.sender} className="object-cover" />
               <AvatarFallback className="bg-secondary text-muted-foreground text-xs">{selectedChatPreview?.sender.slice(0, 2)}</AvatarFallback>
             </Avatar>
             <span className="font-bold text-foreground">{selectedChatPreview?.sender}</span>
@@ -152,11 +134,12 @@ export const TeamChat = () => {
             ))}
           </div>
         ) : (
-          // Chat List View
-          chatPreviews.map((msg) => (
+          // Chat List View - עכשיו ממפים את `chats` מהסטייט
+          chats.map((msg) => (
             <div key={msg.id} onClick={() => handleChatClick(msg.id)} className="p-3 rounded-xl hover:bg-secondary/50 transition-colors cursor-pointer group">
               <div className="flex items-start gap-3">
                 <Avatar className="w-10 h-10 bg-secondary">
+                  <AvatarImage src={msg.avatar} alt={msg.sender} className="object-cover" />
                   <AvatarFallback className="bg-secondary text-muted-foreground text-sm">{msg.sender.slice(0, 2)}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
@@ -166,7 +149,8 @@ export const TeamChat = () => {
                   </div>
                   <p className="text-sm text-muted-foreground truncate">{msg.message}</p>
                 </div>
-                {msg.unread && <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">{msg.unread}</span>}
+                {/* שינינו ל-undefined בפונקציה, לכן התנאי הזה לא יתרנדר אם אין הודעות חדשות */}
+                {msg.unread && msg.unread > 0 && <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">{msg.unread}</span>}
               </div>
             </div>
           ))
