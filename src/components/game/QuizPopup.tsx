@@ -93,7 +93,8 @@ const PostDetailModal = ({ post, onClose }: PostDetailModalProps) => {
 };
 
 interface ImageAnswerCardProps {
-  imageIndex: number;
+  image?: string;
+  index: number;
   isSelected: boolean;
   isCorrect: boolean;
   showFeedback: boolean;
@@ -102,12 +103,12 @@ interface ImageAnswerCardProps {
   disabled: boolean;
 }
 
-const ImageAnswerCard = ({ imageIndex, isSelected, isCorrect, showFeedback, showCorrectAnswer, onClick, disabled }: ImageAnswerCardProps) => {
+const ImageAnswerCard = ({ image, index, isSelected, isCorrect, showFeedback, showCorrectAnswer, onClick, disabled }: ImageAnswerCardProps) => {
   const showResult = showFeedback && isSelected;
 
   return (
     <button onClick={onClick} disabled={disabled} className={cn('relative rounded-xl overflow-hidden border-4 transition-all duration-200 aspect-[3/4]', showResult && isCorrect ? 'border-emerald-500 ring-2 ring-emerald-500/50' : showResult && !isCorrect ? 'border-red-500 ring-2 ring-red-500/50' : showCorrectAnswer ? 'border-emerald-500 ring-2 ring-emerald-500/50' : isSelected ? 'border-primary' : 'border-border hover:border-primary/50')}>
-      <img src={getBaseStructureImage(imageIndex)} alt={`מבנה בסיס ${imageIndex + 1}`} className="w-full h-full object-cover" />
+      <img src={image} alt={`מבנה בסיס ${index + 1}`} className="w-full h-full object-cover" />
       {/* Overlay indicator */}
       {(showResult || showCorrectAnswer) && (
         <div className={cn('absolute inset-0 flex items-center justify-center', showResult && isCorrect ? 'bg-emerald-500/30' : showResult && !isCorrect ? 'bg-red-500/30' : 'bg-emerald-500/20')}>
@@ -115,7 +116,7 @@ const ImageAnswerCard = ({ imageIndex, isSelected, isCorrect, showFeedback, show
         </div>
       )}
       {/* Label */}
-      <div className="absolute bottom-2 right-2 bg-background/80 px-2 py-1 rounded text-sm font-medium">תמונה {imageIndex + 1}</div>
+      <div className="absolute bottom-2 right-2 bg-background/80 px-2 py-1 rounded text-sm font-medium">תמונה {index + 1}</div>
     </button>
   );
 };
@@ -201,12 +202,12 @@ export const QuizPopup = ({ open, onClose, correctCount, wrongCount, totalSelect
             {/* Answers - Image or Text */}
             {isImageQuestion ? (
               <div className="grid grid-cols-4 gap-4">
-                {currentQuestion.answers.map((answer) => {
+                {currentQuestion.answers.map((answer, index) => {
                   const isSelected = selectedAnswer === answer.id;
                   const isCorrect = answer.isCorrect;
                   const showCorrectAnswer = showFeedback && isCorrect && !isSelected;
 
-                  return <ImageAnswerCard key={answer.id} imageIndex={answer.imageIndex ?? 0} isSelected={isSelected} isCorrect={isCorrect} showFeedback={showFeedback} showCorrectAnswer={showCorrectAnswer} onClick={() => handleSelectAnswer(answer.id)} disabled={showFeedback} />;
+                  return <ImageAnswerCard key={answer.id} image={answer.image} index={index} isSelected={isSelected} isCorrect={isCorrect} showFeedback={showFeedback} showCorrectAnswer={showCorrectAnswer} onClick={() => handleSelectAnswer(answer.id)} disabled={showFeedback} />;
                 })}
               </div>
             ) : (

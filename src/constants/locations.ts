@@ -11,7 +11,7 @@ export const locationOptions = [
 /**
  * Keyword suggestions for filter
  */
-export const keywordSuggestions = ['כומתה אדומה', 'יחידה 669', 'דרגת סרן'] as const;
+export const keywordSuggestions = ['כומתה', 'וסט', 'ירקון'] as const;
 
 /**
  * All available locations in posts

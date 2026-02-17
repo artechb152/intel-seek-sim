@@ -13,14 +13,14 @@ export interface Post {
   isRelevant: boolean;
 }
 
-export type Platform = "instagram" | "x" | "facebook";
+export type Platform = 'instagram' | 'x' | 'facebook';
 
 // Quiz types
 export interface Answer {
   id: number;
   text: string;
   isCorrect: boolean;
-  imageIndex?: number;
+  image?: string;
 }
 
 export interface QuizStep {

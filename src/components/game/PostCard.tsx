@@ -34,15 +34,21 @@ export const PostCard = ({ post, isSaved, onSave, onEnlarge }: PostCardProps) =>
         <div className="flex items-center justify-between text-foreground text-xs mb-1">
           {/* <span className="font-medium">@{post.user}</span> */}
           <span className="font-medium"></span>
-          <span className="opacity-70">
-            {post.date} · {post.timestamp}
-          </span>
         </div>
+
         <p className="text-foreground/90 text-[10px] mb-1 line-clamp-1">{post.content}</p>
-        <div className="flex items-center gap-1 text-foreground/70 text-[10px] mb-2">
-          <MapPin className="w-3 h-3" />
-          {post.location}
+
+        {/* Date and Location row */}
+        <div className="flex items-center justify-between text-foreground/70 text-[10px] mb-2" dir="ltr">
+          <span>
+            {post.timestamp} - {post.date}
+          </span>
+          <div className="flex items-center gap-1" dir="rtl">
+            <MapPin className="w-3 h-3" />
+            <span>{post.location}</span>
+          </div>
         </div>
+
         <div className="flex flex-wrap gap-1">
           {post.keywords.slice(0, 2).map((kw, i) => (
             <span key={i} className="px-1.5 py-0.5 bg-foreground/20 rounded text-[9px] text-foreground">
