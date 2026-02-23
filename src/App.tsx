@@ -8,6 +8,7 @@ import Game from "./pages/Game";
 import Quiz from "./pages/Quiz";
 import Results from "./pages/Results";
 import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/game" element={<Game />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/results" element={<Results />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
