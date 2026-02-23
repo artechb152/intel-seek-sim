@@ -3,24 +3,112 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
-    <title>Lovable App</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
-
-    <!-- TODO: Update og:title to match your application name -->
-    <meta property="og:title" content="Lovable App" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <title>Yesterday - Internal Knowledge Platform</title>
+    <style>
+      :root { --bg:#020617; --panel:#0f172acc; --muted:#94a3b8; --text:#e2e8f0; --line:#ffffff1a; --cyan:#67e8f9; }
+      *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text)}
+      .wrap{max-width:1200px;margin:0 auto;padding:24px;display:grid;gap:20px}
+      .card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px}
+      .title{font-size:34px;font-weight:700;margin:.2rem 0}
+      .sub{color:var(--muted)}
+      .btn{background:#22d3ee;color:#082f49;border:0;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+      .btn.secondary{background:#1e293b;color:#e2e8f0;border:1px solid var(--line)}
+      .tabs{display:flex;gap:8px}.tab{padding:7px 10px;border-radius:10px;border:1px solid var(--line);cursor:pointer}
+      .tab.active{background:#22d3ee;color:#082f49}
+      .search{display:flex;gap:10px;background:#020617aa;border:1px solid var(--line);border-radius:14px;padding:12px}
+      input,textarea{width:100%;background:#0b1220;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px}
+      .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+      .team{border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer}
+      .layout{display:grid;grid-template-columns:280px 1fr;gap:14px}
+      .badge{display:inline-block;background:#1e293b;border:1px solid var(--line);padding:3px 8px;border-radius:999px;font-size:12px;margin:2px}
+      .feed-item{border:1px solid var(--line);border-radius:12px;padding:12px;background:#02061766;margin-top:10px}
+      .hidden{display:none}
+      @media (max-width: 900px){.grid4,.layout{grid-template-columns:1fr}}
+    </style>
   </head>
-
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <main class="wrap">
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap">
+          <div>
+            <span class="badge">Yesterday · Internal Knowledge + Retros Platform</span>
+            <h1 class="title">Turn yesterday's pain into today's advantage.</h1>
+            <p class="sub">Blame-free by design: insights focus on what was learned, what changed, and what teams can do next.</p>
+          </div>
+          <div class="tabs">
+            <div class="tab active" data-screen="landing">Screen A · Landing</div>
+            <div class="tab" data-screen="dashboard">Screen B · Dashboard</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="landing" class="card">
+        <h2>Screen A: Landing Page</h2>
+        <p class="sub">Natural-language search + team hubs + fast insight sharing.</p>
+        <div class="search">
+          <input id="searchInput" placeholder="The character animation is jumping/glitching on mobile, what should I do?" />
+        </div>
+        <div id="ragCard" class="feed-item hidden">
+          <strong>✨ Feature 1: Semantic Context-Based Search (RAG)</strong>
+          <h3>Frame Optimization and Asset Weights for Mobile</h3>
+          <p class="sub">Intent matched from context (animation instability + mobile constraints) even without exact keyword overlap.</p>
+          <span class="badge">Solved by: Programming / Development</span>
+          <span class="badge">Relevant to: Courseware Development</span>
+        </div>
+        <div class="grid4" style="margin-top:12px">
+          <div class="team">Design & 3D Modeling</div><div class="team">Programming / Development</div>
+          <div class="team">UX Characterization & Content Strategy</div><div class="team">Courseware Development</div>
+        </div>
+        <p style="margin-top:12px"><button class="btn">Log a Lesson / Share an Insight</button></p>
+      </section>
+
+      <section id="dashboard" class="layout hidden">
+        <aside class="card">
+          <h3>Screen B: Main Dashboard</h3><hr style="border-color:var(--line)">
+          <p class="sub">Teams</p>
+          <div class="team">All Teams</div><div class="team">Design & 3D Modeling</div><div class="team">Programming / Development</div>
+          <p class="sub">Projects</p><div class="team">VR Academy 2026</div><div class="team">Finance Onboarding LMS</div>
+          <p class="sub">Tags</p><span class="badge">#mobile</span><span class="badge">#compliance</span>
+        </aside>
+        <div style="display:grid;gap:14px">
+          <section class="card">
+            <h3>Recently Solved Problems Feed</h3>
+            <div class="feed-item"><b>Frame Optimization and Asset Weights for Mobile</b><p class="sub">Reduced animation jitter by capping blend trees and moving oversized assets to streaming bundles.</p><span class="badge">Solved: Programming</span><span class="badge">Affected: Courseware</span></div>
+          </section>
+          <section style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="card">
+              <h4>⚠️ Feature 2: Warning Officer</h4>
+              <input id="briefInput" placeholder="VR Courseware for a Financial Client"/>
+              <div id="warningCard" class="feed-item hidden">
+                <p><b>Heads up:</b> In 3 previous financial projects, delays were caused by strict information security requirements with Programming.</p>
+                <p class="sub">Apply now during characterization: security workshop + data handling checklist.</p>
+              </div>
+            </div>
+            <div class="card">
+              <h4>🤖 Feature 3: Duplicate + Solution Detection</h4>
+              <textarea id="issueInput" rows="5" placeholder="Type a problem statement..."></textarea>
+              <div id="dupCard" class="feed-item hidden">
+                <p><b>Wait a second!</b> A near-identical issue was solved 2 months ago by Programming. Does this solution help?</p>
+                <button class="btn">Yes, open solution</button> <button class="btn secondary">Keep writing</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script>
+      const tabs=[...document.querySelectorAll('.tab')];
+      const landing=document.getElementById('landing');
+      const dashboard=document.getElementById('dashboard');
+      tabs.forEach(t=>t.onclick=()=>{tabs.forEach(x=>x.classList.remove('active'));t.classList.add('active');
+        const dash=t.dataset.screen==='dashboard'; landing.classList.toggle('hidden',dash); dashboard.classList.toggle('hidden',!dash);
+      });
+      const search=document.getElementById('searchInput'); const rag=document.getElementById('ragCard');
+      search.addEventListener('input',()=>{const v=search.value.toLowerCase();rag.classList.toggle('hidden',!(v.includes('animation')&&(v.includes('mobile')||v.includes('jump')||v.includes('glitch'))));});
+      const brief=document.getElementById('briefInput'); const warn=document.getElementById('warningCard');
+      brief.addEventListener('input',()=>{const v=brief.value.toLowerCase();warn.classList.toggle('hidden',!(v.includes('vr')&&v.includes('financial')));});
+      const issue=document.getElementById('issueInput'); const dup=document.getElementById('dupCard');
+      issue.addEventListener('input',()=>{const v=issue.value.toLowerCase();dup.classList.toggle('hidden',!(v.includes('mobile')&&(v.includes('jump')||v.includes('glitch'))));});
+    </script>
   </body>
 </html>
