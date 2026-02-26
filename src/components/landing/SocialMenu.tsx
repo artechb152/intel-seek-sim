@@ -48,20 +48,19 @@ export const SocialMenu = ({ activePlatform, onPlatformChange }: SocialMenuProps
         ))}
       </nav>
 
-      {/* 3. Bottom Section - קופקטי */}
-      <div className="flex flex-col gap-2 flex-shrink-0">
-        {/* Info Box - טקסט קטן יותר ומרווחים קטנים יותר */}
+      {/* 3. Arabic Info Box - centered between menu and logout */}
+      <div className="flex-shrink-0">
         <div className="p-2.5 bg-secondary/50 rounded-lg text-xs text-muted-foreground leading-tight">
           <p>المدينة هادئة، لكن الأحاديث لا تتوقف. في الشوارع كرامة… وفي الظلال أسرار. شبكة الظلال تواصل الإصغاء.</p>
         </div>
+      </div>
 
-        {/* Logout */}
-        <div className="border-t border-border/50 pt-2">
-          <button className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all duration-300 text-right">
-            <LogOut className="w-4 h-4 flex-shrink-0" />
-            <span className="font-medium text-sm">התנתק</span>
-          </button>
-        </div>
+      {/* 4. Logout */}
+      <div className="flex-shrink-0 border-t border-border/50 pt-2">
+        <button className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-all duration-300 text-right">
+          <LogOut className="w-4 h-4 flex-shrink-0" />
+          <span className="font-medium text-sm">התנתק</span>
+        </button>
       </div>
     </div>
   );
