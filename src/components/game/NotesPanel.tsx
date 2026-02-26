@@ -61,7 +61,7 @@ export const NotesPanel = () => {
         contentEditable
         className="flex-1 overflow-y-auto scrollbar-tactical bg-background/30 rounded-lg p-3 text-foreground text-sm leading-relaxed focus:outline-none focus:ring-1 focus:ring-primary/30 min-h-0"
         style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
-        data-placeholder="Write your notes here..."
+        data-placeholder="כתבו את ההערות שלכם פה..."
         suppressContentEditableWarning
       />
 

@@ -83,7 +83,7 @@ const Index = () => {
             <Button onClick={handleStart} variant="tactical" size="xl" className="group relative overflow-hidden animate-pulse-glow">
               <span className="relative z-10 flex items-center gap-2">
                 <Play className="w-6 h-6 transition-transform group-hover:scale-125" />
-                התחל סימולציה
+                התחל משימה
               </span>
             </Button>
           </div>

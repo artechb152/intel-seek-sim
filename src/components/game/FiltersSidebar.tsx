@@ -43,7 +43,7 @@ export const FiltersSidebar = ({ selectedLocation, onLocationChange, fromDate, t
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold flex items-center gap-2">
           <Filter className="w-5 h-5 text-primary" />
-          פילטרים
+          כלי לסינון פוסטים
         </h2>
         <button onClick={onReset} className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground" title="איפוס פילטרים">
           <RotateCcw className="w-4 h-4" />
@@ -51,9 +51,10 @@ export const FiltersSidebar = ({ selectedLocation, onLocationChange, fromDate, t
       </div>
 
       {/* Saved Filter */}
-      <button onClick={() => onShowSavedOnlyChange(!showSavedOnly)} className={cn('w-full flex items-center gap-2 p-3 rounded-lg border transition-all', showSavedOnly ? 'bg-primary/20 border-primary/50 text-primary' : 'bg-secondary/50 border-border text-muted-foreground hover:border-primary/30')}>
-        <Bookmark className={cn('w-4 h-4', showSavedOnly && 'fill-current')} />
-        <span className="font-medium">שמורים ({savedCount})</span>
+      <button onClick={() => onShowSavedOnlyChange(!showSavedOnly)} className={cn('w-full flex items-center gap-3 p-4 rounded-lg border-2 transition-all', showSavedOnly ? 'bg-primary/25 border-primary text-primary shadow-[0_0_12px_hsl(var(--primary)/0.3)]' : 'bg-secondary/50 border-primary/40 text-foreground hover:border-primary/60 hover:bg-primary/10')}>
+        <Bookmark className={cn('w-5 h-5', showSavedOnly && 'fill-current')} />
+        <span className="font-bold text-base">פוסטים שמורים</span>
+        <span className="mr-auto font-mono font-bold text-lg">{savedCount}</span>
       </button>
 
       {/* Location Filter */}
