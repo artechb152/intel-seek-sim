@@ -21,7 +21,7 @@ export const PostGrid = ({ posts, savedPosts, onToggleSave, onEnlargePost }: Pos
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 max-w-5xl">
       {posts.map((post) => (
         <PostCard key={post.id} post={post} isSaved={savedPosts.includes(post.id)} onSave={(e) => onToggleSave(post.id, e)} onEnlarge={() => onEnlargePost(post)} />
       ))}

@@ -12,7 +12,7 @@ interface PostCardProps {
 
 export const PostCard = ({ post, isSaved, onSave, onEnlarge }: PostCardProps) => {
   return (
-    <div className="relative rounded-xl overflow-hidden transition-all duration-300 group hover:ring-1 hover:ring-primary/50">
+    <div className="relative rounded-xl overflow-hidden transition-all duration-300 group hover:ring-1 hover:ring-primary/50 px-1">
       {/* Clickable Image Area */}
       <div className="aspect-square bg-secondary cursor-pointer overflow-hidden" onClick={onEnlarge}>
         <img src={post.image} alt="Post" /* alt={`Post by ${post.user}`} */ className="w-full h-full object-cover" loading="lazy" />

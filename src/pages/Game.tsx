@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 // Components
-import { GameHeader, FiltersSidebar, PlatformTabs, PostGrid, EnlargedPostDialog, MissionDetailsPopup, QuizPopup } from '@/components/game';
+import { GameHeader, FiltersSidebar, PlatformTabs, PostGrid, EnlargedPostDialog, MissionDetailsPopup, QuizPopup, NotesPanel } from '@/components/game';
 
 // Hooks & Types
 import type { Post, Platform } from '@/types';
@@ -106,6 +106,8 @@ const Game = () => {
 
           <PostGrid posts={filteredPosts} savedPosts={savedPosts} onToggleSave={toggleSavePost} onEnlargePost={setEnlargedPost} />
         </main>
+
+        <NotesPanel />
       </div>
 
       <EnlargedPostDialog post={enlargedPost} isSaved={enlargedPost ? savedPosts.includes(enlargedPost.id) : false} onClose={() => setEnlargedPost(null)} onToggleSave={(e) => enlargedPost && toggleSavePost(enlargedPost.id, e)} />
