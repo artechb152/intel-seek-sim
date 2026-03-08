@@ -40,11 +40,11 @@ const pages = [
   },
   {
     content: (
-      <div className="space-y-4 py-2 text-right">
-        <p className="text-2xl font-bold text-foreground text-center">
+      <div className="space-y-1 py-0 text-right">
+        <p className="text-xs font-bold text-foreground text-center">
           לדוגמה: פרטים שניתן להוציא מהתמונה
         </p>
-        <img src={popUp3} alt="דוגמה לפרטים שניתן להוציא מתמונה" className="w-full rounded-lg border border-border/50" />
+        <img src={popUp3} alt="דוגמה לפרטים שניתן להוציא מתמונה" className="w-full max-h-[62vh] object-contain rounded-lg border border-border/50" />
       </div>
     ),
   },
@@ -69,19 +69,19 @@ export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="glass-panel border-primary/30 sm:max-w-xl" dir="rtl">
+      <DialogContent className={`glass-panel border-primary/30 ${currentPage === 2 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center mb-4">
+          <DialogTitle className={`font-bold text-center ${currentPage === 2 ? 'text-lg mb-0' : 'text-2xl mb-1'}`}>
             <span className="text-gradient-tactical">ברוך הבא</span>
             <br />
-            <span className="text-foreground">לסימולטור איסוף מודיעין</span>
+            <span className="text-foreground text-sm">לסימולטור איסוף מודיעין</span>
           </DialogTitle>
         </DialogHeader>
 
         {pages[currentPage].content}
 
         {/* Page indicators */}
-        <div className="flex items-center justify-center gap-2 pt-2">
+        <div className="flex items-center justify-center gap-2 pt-1">
           {pages.map((_, i) => (
             <div
               key={i}
@@ -95,8 +95,8 @@ export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
         <Button
           onClick={handleNext}
           variant="tactical"
-          size="xl"
-          className="w-full mt-4"
+          size={currentPage === 2 ? 'lg' : 'xl'}
+          className="w-full mt-2"
         >
           {currentPage < pages.length - 1 ? 'המשך' : 'הבנתי, בואו נתחיל!'}
         </Button>
