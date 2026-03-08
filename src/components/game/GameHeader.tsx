@@ -33,9 +33,6 @@ export const GameHeader = ({ selectedCount, totalCount, timeRemaining, formatted
 
         <div
           className={cn('flex items-center gap-2 font-mono text-lg font-bold text-destructive', timeRemaining <= 60 && 'animate-pulse')}
-          style={{
-            textShadow: '0 0 10px hsl(var(--destructive) / 0.8)',
-          }}
         >
           <Clock className="w-5 h-5" />
           <span>{formattedTime}</span>
