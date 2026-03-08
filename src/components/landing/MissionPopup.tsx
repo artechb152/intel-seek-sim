@@ -56,7 +56,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="glass-panel border-primary/30 max-w-lg" dir="rtl">
+      <DialogContent className="glass-panel border-primary/30 sm:max-w-xl" dir="rtl">
         <DialogHeader className="space-y-4">
           <div className="flex items-center justify-center">
             <div className="relative">

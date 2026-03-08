@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import popUp3 from '../../assets/popUp3.png';
 
 interface WelcomePopupProps {
   open: boolean;
@@ -40,9 +41,10 @@ const pages = [
   {
     content: (
       <div className="space-y-4 py-2 text-right">
-        <p className="text-muted-foreground leading-relaxed">
-          {/* תוכן עתידי */}
+        <p className="text-2xl font-bold text-foreground text-center">
+          לדוגמה: פרטים שניתן להוציא מהתמונה
         </p>
+        <img src={popUp3} alt="דוגמה לפרטים שניתן להוציא מתמונה" className="w-full rounded-lg border border-border/50" />
       </div>
     ),
   },

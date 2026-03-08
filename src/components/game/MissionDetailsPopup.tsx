@@ -18,7 +18,7 @@ export const MissionDetailsPopup = ({
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
-        className="border-2 border-primary bg-background max-w-md shadow-[0_0_30px_rgba(59,130,246,0.4)]"
+        className="border-2 border-primary bg-background sm:max-w-xl shadow-[0_0_30px_rgba(59,130,246,0.4)]"
         dir="rtl"
       >
         <DialogHeader className="space-y-4">
