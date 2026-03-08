@@ -135,6 +135,9 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
           <p className="text-lg font-bold text-foreground">
             אסוף מידע וניתוח שטח בסיס ירקון
           </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            איספו מידע ובצעו ניתוח שטח של בסיס ירקון, כולל מבנה הבסיס, התנהלות השמירות, כמות החיילים, רמת הכוננות ונוכחות בכירים בבסיס.
+          </p>
         </div>
         
         <div className="flex gap-3 mt-4">
