@@ -1,0 +1,191 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    /* Dark tactical theme */
+    --background: 220 20% 8%;
+    --foreground: 210 20% 92%;
+
+    --card: 220 18% 12%;
+    --card-foreground: 210 20% 92%;
+
+    --popover: 220 18% 10%;
+    --popover-foreground: 210 20% 92%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 220 20% 98%;
+
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 210 20% 85%;
+
+    --muted: 220 15% 15%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 38 90% 55%;
+    --accent-foreground: 220 20% 8%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 18%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.5rem;
+
+    /* Custom colors */
+    --tactical-blue: 217 91% 60%;
+    --tactical-blue-glow: 217 91% 70%;
+    --amber-alert: 38 90% 55%;
+    --cyber-blue: 200 80% 55%;
+    --danger-red: 0 70% 50%;
+    --surface-glass: 220 20% 12%;
+    
+    /* Gradients */
+    --gradient-tactical: linear-gradient(135deg, hsl(217 91% 60%), hsl(200 80% 55%));
+    --gradient-dark: linear-gradient(180deg, hsl(220 20% 10%), hsl(220 20% 6%));
+    --gradient-card: linear-gradient(135deg, hsl(220 18% 14%), hsl(220 18% 10%));
+    
+    /* Shadows */
+    --shadow-glow: 0 0 20px hsl(217 91% 60% / 0.3);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4);
+
+    --sidebar-background: 220 18% 10%;
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 220 20% 98%;
+    --sidebar-accent: 220 15% 18%;
+    --sidebar-accent-foreground: 210 20% 85%;
+    --sidebar-border: 220 15% 20%;
+    --sidebar-ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    direction: rtl;
+    font-size: 90%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Heebo', sans-serif;
+    background: linear-gradient(180deg, hsl(220 20% 10%), hsl(220 20% 6%));
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  /* Glow effects */
+  .glow-blue {
+    filter: drop-shadow(0 0 8px hsl(217 91% 60% / 0.6));
+  }
+  
+  .glow-amber {
+    filter: drop-shadow(0 0 6px hsl(38 90% 55% / 0.5));
+  }
+  
+  /* Glass panel effect */
+  .glass-panel {
+    background: linear-gradient(135deg, hsl(220 18% 14% / 0.9), hsl(220 18% 10% / 0.9));
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(220 15% 25% / 0.5);
+  }
+  
+  .tactical-border {
+    border: 1px solid hsl(217 91% 60% / 0.3);
+  }
+  
+  /* Text gradient */
+  .text-gradient-tactical {
+    background: linear-gradient(135deg, hsl(217 91% 65%), hsl(200 80% 60%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Custom scrollbar */
+  .scrollbar-tactical::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar-tactical::-webkit-scrollbar-track {
+    background: hsl(220 18% 12%);
+  }
+  
+  .scrollbar-tactical::-webkit-scrollbar-thumb {
+    background: hsl(217 91% 60% / 0.5);
+    border-radius: 3px;
+  }
+
+  /* Animations */
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), 0 0 30px rgba(59, 130, 246, 0.15);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2);
+    }
+  }
+
+  /* Date/time input icons */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+    cursor: pointer;
+  }
+
+  /* Phone mockup styles */
+  .phone-frame {
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    border-radius: 40px;
+    padding: 12px;
+    box-shadow: 
+      0 25px 50px -12px rgba(0, 0, 0, 0.8),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .phone-screen {
+    background: white;
+    border-radius: 32px;
+    overflow: hidden;
+  }
+
+  /* Unified auto-scroll animation */
+  @keyframes auto-scroll {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-66.666%);
+    }
+  }
+
+  .animate-auto-scroll {
+    animation: auto-scroll 20s linear infinite;
+  }
+
+  .animate-auto-scroll-fast {
+    animation: auto-scroll 12s linear infinite;
+  }
+
+  .animate-auto-scroll-tiktok {
+    animation: auto-scroll 8s linear infinite;
+  }
+}
