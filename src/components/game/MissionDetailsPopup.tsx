@@ -4,7 +4,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Target, MapPin, Clock, AlertTriangle } from 'lucide-react';
+import { Target, Clock, AlertTriangle } from 'lucide-react';
 
 interface MissionDetailsPopupProps {
   open: boolean;
@@ -39,18 +39,21 @@ export const MissionDetailsPopup = ({
           <div className="p-4 rounded-lg bg-primary/10 border border-primary/40">
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-              <p className="text-foreground text-base leading-relaxed font-medium">
-                איספו מידע ובצעו ניתוח שטח של בסיס ירקון, כולל מבנה הבסיס,
-                התנהלות השמירות, כמות החיילים, רמת הכוננות ונוכחות בכירים בבסיס.
-              </p>
+              <div className="text-foreground text-base leading-relaxed">
+                <p className="font-medium">איספו מידע ובצעו ניתוח של בסיס ירקון לפי</p>
+                <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
+                  <li>מבנה הבסיס</li>
+                  <li>התנהלות השמירות</li>
+                  <li>כמות החיילים</li>
+                  <li>רמת הכוננות</li>
+                  <li>נוכחות בכירים בבסיס</li>
+                </ul>
+                <p className="font-bold mt-3">כדי לא ללכת לאיבוד בתוך כמות הפוסטים הרחבה מומלץ לעבור כל פעם לפני משימה</p>
+              </div>
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center gap-3 text-muted-foreground">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span>מיקום: אזור מרכז</span>
-            </div>
             <div className="flex items-center gap-3 text-muted-foreground">
               <Clock className="w-4 h-4 text-primary" />
               <span>זמן: 15 דקות</span>
