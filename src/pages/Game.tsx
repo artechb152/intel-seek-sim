@@ -35,7 +35,7 @@ const Game = () => {
   const [showQuizPopup, setShowQuizPopup] = useState(false);
 
   const { timeRemaining, formattedTime } = useTimer({
-    initialSeconds: 10 * 60,
+    initialSeconds: 15 * 60,
     onTimeUp: () => {
       setShowQuizPopup(true);
     },

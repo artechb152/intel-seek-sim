@@ -72,9 +72,9 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`glass-panel border-primary/30 ${currentPage === 1 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl">
-        {currentPage === 0 ? (
-          <>
+      <DialogContent className={`glass-panel border-primary/30 transition-all duration-500 ${currentPage === 1 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl">
+        {/* Page 1 - Mission details */}
+        <div className={`transition-all duration-400 ${currentPage === 0 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
             <DialogHeader className="space-y-4">
               <div className="flex items-center justify-center">
                 <div className="relative">
@@ -91,7 +91,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
             </DialogHeader>
 
             {/* Video Container */}
-            <div className="relative aspect-video bg-secondary rounded-lg overflow-hidden border border-border group">
+            <div className="relative aspect-video bg-secondary rounded-lg overflow-hidden border border-border group mt-4">
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
@@ -149,13 +149,19 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
             </div>
 
             {/* Mission Title Below Video */}
-            <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/30">
+            <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/30 mt-4">
               <p className="text-lg font-bold text-foreground">
                 אסוף מידע וניתוח שטח בסיס ירקון
               </p>
               <p className="text-sm text-muted-foreground mt-2">
                 איספו מידע ובצעו ניתוח שטח של בסיס ירקון, כולל מבנה הבסיס, התנהלות השמירות, כמות החיילים, רמת הכוננות ונוכחות בכירים בבסיס.
               </p>
+            </div>
+
+            {/* Page indicators */}
+            <div className="flex items-center justify-center gap-2 pt-1 mt-2">
+              <div className="w-4 h-2 rounded-full bg-primary" />
+              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
             </div>
 
             <div className="flex gap-3 mt-4">
@@ -174,9 +180,10 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
                 המשך
               </Button>
             </div>
-          </>
-        ) : (
-          <>
+        </div>
+
+        {/* Page 2 - Image example (always rendered for preloading) */}
+        <div className={`transition-all duration-400 ${currentPage === 1 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
             <DialogHeader>
               <DialogTitle className="text-lg font-bold text-center mb-0">
                 <span className="text-gradient-tactical">ברוך הבא</span>
@@ -206,8 +213,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
             >
               התחל משימה
             </Button>
-          </>
-        )}
+        </div>
       </DialogContent>
     </Dialog>
   );

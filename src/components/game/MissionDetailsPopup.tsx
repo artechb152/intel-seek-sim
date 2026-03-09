@@ -53,7 +53,7 @@ export const MissionDetailsPopup = ({
             </div>
             <div className="flex items-center gap-3 text-muted-foreground">
               <Clock className="w-4 h-4 text-primary" />
-              <span>זמן משוער: 10 דקות</span>
+              <span>זמן משוער: 15 דקות</span>
             </div>
           </div>
 
