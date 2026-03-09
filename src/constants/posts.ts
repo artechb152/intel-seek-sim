@@ -1151,7 +1151,7 @@ export const mockPosts: Post[] = [
   {
     id: '80',
     user: 'user_80',
-    content: 'מופיע מול 200 איש',
+    content: 'מופיע מול 220 איש',
     location: 'באר שבע',
     timestamp: '11:20',
     date: '15.9.2023',

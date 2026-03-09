@@ -72,9 +72,12 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`glass-panel border-primary/30 transition-all duration-500 [&>button.absolute]:hidden ${currentPage === 2 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
-        {/* Page 1 - Video */}
-        <div className={`transition-all duration-400 ${currentPage === 0 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
+      <DialogContent className={`glass-panel border-primary/30 [&>button.absolute]:hidden ${currentPage === 2 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+        {/* Preload image */}
+        <img src={popUp3} alt="" className="hidden" />
+
+        {currentPage === 0 && (
+          <>
             <DialogHeader className="space-y-4">
               <div className="flex items-center justify-center">
                 <div className="relative">
@@ -91,7 +94,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
             </DialogHeader>
 
             {/* Video Container */}
-            <div className="relative aspect-video bg-secondary rounded-lg overflow-hidden border border-border group mt-4">
+            <div className="relative aspect-video bg-secondary rounded-lg overflow-hidden border border-border group">
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
@@ -110,7 +113,6 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
               {/* Video Controls Overlay */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                {/* Progress Bar */}
                 <div
                   className="h-1 bg-white/30 rounded-full mb-3 cursor-pointer"
                   onClick={handleProgressClick}
@@ -120,8 +122,6 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
                     style={{ width: `${progress}%` }}
                   />
                 </div>
-
-                {/* Controls */}
                 <div className="flex items-center justify-between">
                   <button
                     onClick={togglePlayPause}
@@ -133,7 +133,6 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
                       <Play className="w-4 h-4 text-white" />
                     )}
                   </button>
-
                   <button
                     onClick={toggleFullscreen}
                     className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
@@ -149,7 +148,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
             </div>
 
             {/* Mission Title Below Video */}
-            <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/30 mt-4">
+            <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/30">
               <p className="text-lg font-bold text-foreground">
                 אסוף מידע וניתוח שטח בסיס ירקון
               </p>
@@ -157,34 +156,11 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
                 איספו מידע ובצעו ניתוח שטח של בסיס ירקון, כולל מבנה הבסיס, התנהלות השמירות, כמות החיילים, רמת הכוננות ונוכחות בכירים בבסיס.
               </p>
             </div>
+          </>
+        )}
 
-            {/* Page indicators */}
-            <div className="flex items-center justify-center gap-2 pt-1 mt-2">
-              <div className="w-4 h-2 rounded-full bg-primary" />
-              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
-              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
-            </div>
-
-            <div className="flex gap-3 mt-4">
-              <Button
-                variant="outline"
-                onClick={handleClose}
-                className="flex-1 border-muted-foreground/30 hover:bg-muted hover:text-white"
-              >
-                ביטול
-              </Button>
-              <Button
-                variant="tactical"
-                onClick={handleNext}
-                className="flex-1 animate-pulse-glow"
-              >
-                המשך
-              </Button>
-            </div>
-        </div>
-
-        {/* Page 2 - Mission details */}
-        <div className={`transition-all duration-400 ${currentPage === 1 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
+        {currentPage === 1 && (
+          <>
             <DialogHeader className="space-y-4">
               <div className="flex items-center justify-center">
                 <div className="relative">
@@ -199,7 +175,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
               </DialogTitle>
             </DialogHeader>
 
-            <div className="space-y-4 mt-4">
+            <div className="space-y-4">
               <div className="p-4 rounded-lg bg-primary/10 border border-primary/40">
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
@@ -236,48 +212,57 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
                 </p>
               </div>
             </div>
+          </>
+        )}
 
-            {/* Page indicators */}
-            <div className="flex items-center justify-center gap-2 pt-1 mt-2">
-              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
-              <div className="w-4 h-2 rounded-full bg-primary" />
-              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
-            </div>
+        {currentPage === 2 && (
+          <div className="space-y-1 py-0 text-right">
+            <p className="text-sm font-bold text-foreground text-center">
+              לדוגמה: פרטים שניתן להוציא מהתמונה
+            </p>
+            <img src={popUp3} alt="דוגמה לפרטים שניתן להוציא מתמונה" className="w-full max-h-[62vh] object-contain rounded-lg border border-border/50" />
+          </div>
+        )}
 
+        {/* Page indicators */}
+        <div className="flex items-center justify-center gap-2 pt-1">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className={`h-2 rounded-full transition-all ${
+                i === currentPage ? 'bg-primary w-4' : 'bg-muted-foreground/30 w-2'
+              }`}
+            />
+          ))}
+        </div>
+
+        {currentPage === 0 ? (
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={handleClose}
+              className="flex-1 border-muted-foreground/30 hover:bg-muted hover:text-white"
+            >
+              ביטול
+            </Button>
             <Button
               variant="tactical"
               onClick={handleNext}
-              className="w-full mt-4 animate-pulse-glow"
+              className="flex-1 animate-pulse-glow"
             >
               המשך
             </Button>
-        </div>
-
-        {/* Page 3 - Image example (always rendered for preloading) */}
-        <div className={`transition-all duration-400 ${currentPage === 2 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
-            <div className="space-y-1 py-0 text-right">
-              <p className="text-sm font-bold text-foreground text-center">
-                לדוגמה: פרטים שניתן להוציא מהתמונה
-              </p>
-              <img src={popUp3} alt="דוגמה לפרטים שניתן להוציא מתמונה" className="w-full max-h-[62vh] object-contain rounded-lg border border-border/50" />
-            </div>
-
-            {/* Page indicators */}
-            <div className="flex items-center justify-center gap-2 pt-1">
-              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
-              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
-              <div className="w-4 h-2 rounded-full bg-primary" />
-            </div>
-
-            <Button
-              variant="tactical"
-              onClick={handleNext}
-              size="lg"
-              className="w-full mt-2 animate-pulse-glow"
-            >
-              התחל משימה
-            </Button>
-        </div>
+          </div>
+        ) : (
+          <Button
+            variant="tactical"
+            onClick={handleNext}
+            size={currentPage === 2 ? 'lg' : 'default'}
+            className="w-full animate-pulse-glow"
+          >
+            {currentPage === 2 ? 'התחל משימה' : 'המשך'}
+          </Button>
+        )}
       </DialogContent>
     </Dialog>
   );

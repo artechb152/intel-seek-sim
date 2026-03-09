@@ -173,8 +173,8 @@ export const QuizPopup = ({ open, onClose, correctCount, wrongCount, totalSelect
 
   return (
     <>
-      <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent className={cn('transition-all duration-300', isImageQuestion ? 'max-w-3xl' : showFeedback ? 'max-w-xl' : 'max-w-lg')} onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+      <Dialog open={open}>
+        <DialogContent className={cn('transition-all duration-300 [&>button.absolute]:hidden', isImageQuestion ? 'max-w-3xl' : showFeedback ? 'max-w-xl' : 'max-w-lg')} onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
           <DialogHeader>
             <DialogTitle className="flex items-center justify-between">
               <span>שאלון סיכום</span>
