@@ -39,17 +39,22 @@ export const MissionDetailsPopup = ({
           <div className="p-4 rounded-lg bg-primary/10 border border-primary/40">
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-              <div className="text-foreground text-base leading-relaxed">
-                <p className="font-medium">איספו מידע ובצעו ניתוח של בסיס ירקון לפי</p>
-                <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
-                  <li>מבנה הבסיס</li>
-                  <li>התנהלות השמירות</li>
-                  <li>כמות החיילים</li>
-                  <li>רמת הכוננות</li>
-                  <li>נוכחות בכירים בבסיס</li>
-                </ul>
-                <p className="font-bold mt-3">כדי לא ללכת לאיבוד בתוך כמות הפוסטים הרחבה מומלץ לעבור כל פעם לפני משימה</p>
-              </div>
+              <p className="text-foreground text-base leading-relaxed font-medium">
+                איספו מידע ובצעו ניתוח של בסיס ירקון לפי
+              </p>
+            </div>
+            <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-foreground text-right">
+              <li>מבנה הבסיס</li>
+              <li>התנהלות השמירות</li>
+              <li>כמות החיילים</li>
+              <li>רמת הכוננות</li>
+              <li>נוכחות בכירים בבסיס</li>
+            </ul>
+            <div className="mt-3 p-3 rounded-lg border-2 border-destructive bg-destructive/10 text-center">
+              <p className="font-bold text-foreground">
+                כדי לא ללכת לאיבוד בתוך כמות הפוסטים הרחבה מומלץ לעבוד כל פעם על
+                משימה אחת
+              </p>
             </div>
           </div>
 
@@ -62,8 +67,8 @@ export const MissionDetailsPopup = ({
 
           <div className="p-3 rounded-lg bg-secondary/50 border border-border">
             <p className="text-sm text-muted-foreground leading-relaxed">
-              השתמש בפילטרים לסינון לפי מיקום, תאריך ומילות מפתח. בחר את הפוסטים
-              הרלוונטיים למשימה ולחץ על "סיים בדיקה" בסיום.
+              השתמשו בפילטרים לסינון לפי מיקום, תאריך ומילות מפתח. בחרו את
+              הפוסטים הרלוונטיים למשימה ולחץ על "סיים בדיקה" בסיום.
             </p>
           </div>
         </div>
