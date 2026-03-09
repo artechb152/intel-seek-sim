@@ -72,7 +72,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`glass-panel border-primary/30 transition-all duration-500 [&>button]:hidden ${currentPage === 2 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+      <DialogContent className={`glass-panel border-primary/30 transition-all duration-500 [&>button.absolute]:hidden ${currentPage === 2 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
         {/* Page 1 - Video */}
         <div className={`transition-all duration-400 ${currentPage === 0 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
             <DialogHeader className="space-y-4">
@@ -255,16 +255,8 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
         {/* Page 3 - Image example (always rendered for preloading) */}
         <div className={`transition-all duration-400 ${currentPage === 2 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
-            <DialogHeader>
-              <DialogTitle className="text-lg font-bold text-center mb-0">
-                <span className="text-gradient-tactical">ברוך הבא</span>
-                <br />
-                <span className="text-foreground text-sm">לסימולטור איסוף מודיעין</span>
-              </DialogTitle>
-            </DialogHeader>
-
             <div className="space-y-1 py-0 text-right">
-              <p className="text-xs font-bold text-foreground text-center">
+              <p className="text-sm font-bold text-foreground text-center">
                 לדוגמה: פרטים שניתן להוציא מהתמונה
               </p>
               <img src={popUp3} alt="דוגמה לפרטים שניתן להוציא מתמונה" className="w-full max-h-[62vh] object-contain rounded-lg border border-border/50" />

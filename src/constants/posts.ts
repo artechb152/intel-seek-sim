@@ -1168,7 +1168,7 @@ export const mockPosts: Post[] = [
     user: 'user_81',
     content: 'התחלנו שמירות, בהצלחה למשתתפים',
     location: 'באר שבע',
-    timestamp: '6:27',
+    timestamp: '6:00',
     date: '15.9.2023',
     keywords: ['ירקון', 'מבנה הבסיס'],
     isRelevant: true,
