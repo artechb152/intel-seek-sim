@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 // Components
-import { GameHeader, FiltersSidebar, PlatformTabs, PostGrid, EnlargedPostDialog, MissionDetailsPopup, QuizPopup, NotesPanel } from '@/components/game';
+import { GameHeader, FiltersSidebar, PlatformTabs, PostGrid, EnlargedPostDialog, MissionDetailsPopup, QuizPopup, NotesPanel, TimeUpPopup } from '@/components/game';
 
 // Hooks & Types
 import type { Post, Platform } from '@/types';
@@ -33,11 +33,12 @@ const Game = () => {
   const [enlargedPost, setEnlargedPost] = useState<Post | null>(null);
   const [showMissionDetails, setShowMissionDetails] = useState(false);
   const [showQuizPopup, setShowQuizPopup] = useState(false);
+  const [showTimeUp, setShowTimeUp] = useState(false);
 
   const { timeRemaining, formattedTime } = useTimer({
     initialSeconds: 15 * 60,
     onTimeUp: () => {
-      setShowQuizPopup(true);
+      setShowTimeUp(true);
     },
   });
 
@@ -115,6 +116,8 @@ const Game = () => {
       <MissionDetailsPopup open={showMissionDetails} onClose={() => setShowMissionDetails(false)} />
 
       <QuizPopup open={showQuizPopup} onClose={() => setShowQuizPopup(false)} correctCount={correctCount} wrongCount={wrongCount} totalSelected={savedPosts.length} />
+
+      <TimeUpPopup open={showTimeUp} onStartQuiz={() => { setShowTimeUp(false); setShowQuizPopup(true); }} />
     </div>
   );
 };
