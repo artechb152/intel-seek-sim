@@ -6,7 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import popUp3 from '../../assets/popUp3.png';
 
 interface WelcomePopupProps {
   open: boolean;
@@ -38,16 +37,6 @@ const pages = [
       </div>
     ),
   },
-  {
-    content: (
-      <div className="space-y-1 py-0 text-right">
-        <p className="text-xs font-bold text-foreground text-center">
-          לדוגמה: פרטים שניתן להוציא מהתמונה
-        </p>
-        <img src={popUp3} alt="דוגמה לפרטים שניתן להוציא מתמונה" className="w-full max-h-[62vh] object-contain rounded-lg border border-border/50" />
-      </div>
-    ),
-  },
 ];
 
 export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
@@ -69,9 +58,9 @@ export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`glass-panel border-primary/30 ${currentPage === 2 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl">
+      <DialogContent className="glass-panel border-primary/30 sm:max-w-xl" dir="rtl">
         <DialogHeader>
-          <DialogTitle className={`font-bold text-center ${currentPage === 2 ? 'text-lg mb-0' : 'text-2xl mb-1'}`}>
+          <DialogTitle className="text-2xl font-bold text-center mb-1">
             <span className="text-gradient-tactical">ברוך הבא</span>
             <br />
             <span className="text-foreground text-sm">לסימולטור איסוף מודיעין</span>
@@ -95,7 +84,7 @@ export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
         <Button
           onClick={handleNext}
           variant="tactical"
-          size={currentPage === 2 ? 'lg' : 'xl'}
+          size="xl"
           className="w-full mt-2"
         >
           {currentPage < pages.length - 1 ? 'המשך' : 'הבנתי, בואו נתחיל!'}
