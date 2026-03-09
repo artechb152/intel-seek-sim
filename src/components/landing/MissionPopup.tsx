@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Target, Maximize2, Minimize2, Play, Pause } from "lucide-react";
+import { Target, Maximize2, Minimize2, Play, Pause, Clock, AlertTriangle } from "lucide-react";
 import popUp3 from '../../assets/popUp3.png';
 
 interface MissionPopupProps {
@@ -57,8 +57,8 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
   };
 
   const handleNext = () => {
-    if (currentPage === 0) {
-      setCurrentPage(1);
+    if (currentPage < 2) {
+      setCurrentPage(currentPage + 1);
     } else {
       setCurrentPage(0);
       onStart();
@@ -72,8 +72,8 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`glass-panel border-primary/30 transition-all duration-500 ${currentPage === 1 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl">
-        {/* Page 1 - Mission details */}
+      <DialogContent className={`glass-panel border-primary/30 transition-all duration-500 [&>button]:hidden ${currentPage === 2 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+        {/* Page 1 - Video */}
         <div className={`transition-all duration-400 ${currentPage === 0 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
             <DialogHeader className="space-y-4">
               <div className="flex items-center justify-center">
@@ -162,6 +162,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
             <div className="flex items-center justify-center gap-2 pt-1 mt-2">
               <div className="w-4 h-2 rounded-full bg-primary" />
               <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
             </div>
 
             <div className="flex gap-3 mt-4">
@@ -182,8 +183,78 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
             </div>
         </div>
 
-        {/* Page 2 - Image example (always rendered for preloading) */}
+        {/* Page 2 - Mission details */}
         <div className={`transition-all duration-400 ${currentPage === 1 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
+            <DialogHeader className="space-y-4">
+              <div className="flex items-center justify-center">
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-full bg-primary/30 flex items-center justify-center border-2 border-primary shadow-[0_0_25px_rgba(59,130,246,0.5)]">
+                    <Target className="w-8 h-8 text-primary" />
+                  </div>
+                </div>
+              </div>
+
+              <DialogTitle className="text-2xl font-bold text-center text-primary">
+                פרטי המשימה
+              </DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-4 mt-4">
+              <div className="p-4 rounded-lg bg-primary/10 border border-primary/40">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <p className="text-foreground text-base leading-relaxed font-medium">
+                    איספו מידע ובצעו ניתוח של בסיס ירקון לפי
+                  </p>
+                </div>
+                <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-foreground text-right">
+                  <li>מבנה הבסיס</li>
+                  <li>התנהלות השמירות</li>
+                  <li>כמות החיילים</li>
+                  <li>רמת הכוננות</li>
+                  <li>נוכחות בכירים בבסיס</li>
+                </ul>
+                <div className="mt-3 p-3 rounded-lg border-2 border-destructive bg-destructive/10 text-center">
+                  <p className="font-bold text-foreground">
+                    כדי לא ללכת לאיבוד בתוך כמות הפוסטים הרחבה מומלץ לעבוד כל פעם על
+                    משימה אחת
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Clock className="w-4 h-4 text-primary" />
+                  <span>זמן: 15 דקות</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-secondary/50 border border-border">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  השתמשו בפילטרים לסינון לפי מיקום, תאריך ומילות מפתח. בחרו את
+                  הפוסטים הרלוונטיים למשימה ולחץ על "סיים בדיקה" בסיום.
+                </p>
+              </div>
+            </div>
+
+            {/* Page indicators */}
+            <div className="flex items-center justify-center gap-2 pt-1 mt-2">
+              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+              <div className="w-4 h-2 rounded-full bg-primary" />
+              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+            </div>
+
+            <Button
+              variant="tactical"
+              onClick={handleNext}
+              className="w-full mt-4 animate-pulse-glow"
+            >
+              המשך
+            </Button>
+        </div>
+
+        {/* Page 3 - Image example (always rendered for preloading) */}
+        <div className={`transition-all duration-400 ${currentPage === 2 ? 'opacity-100 max-h-[80vh]' : 'opacity-0 max-h-0 overflow-hidden pointer-events-none'}`}>
             <DialogHeader>
               <DialogTitle className="text-lg font-bold text-center mb-0">
                 <span className="text-gradient-tactical">ברוך הבא</span>
@@ -201,6 +272,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
             {/* Page indicators */}
             <div className="flex items-center justify-center gap-2 pt-1">
+              <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
               <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
               <div className="w-4 h-2 rounded-full bg-primary" />
             </div>
