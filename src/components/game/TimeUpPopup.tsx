@@ -1,6 +1,11 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Clock, FileText } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 interface TimeUpPopupProps {
   open: boolean;
@@ -32,24 +37,21 @@ export const TimeUpPopup = ({ open, onStartQuiz }: TimeUpPopupProps) => {
           </div>
 
           <DialogTitle className="text-2xl font-bold text-center text-foreground">
-            !נגמר הזמן
+            נגמר הזמן
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="text-center text-muted-foreground leading-relaxed">
+          <div className="text-center text-foreground leading-relaxed">
             <p>מקווים שהצלחתם לאסוף כמה שיותר מידע.</p>
             <p className="mt-1">
-              לרשותכם פתקית ההערות שרשמתם במהלך המשימה – מומלץ לעבור עליה לפני המעבר לשאלון.
+              לרשותכם פתקית ההערות שרשמתם במהלך המשימה – מומלץ לעבור עליה לפני
+              המעבר לשאלון.
             </p>
           </div>
 
           {hasNotes && (
             <div className="p-4 rounded-lg bg-secondary/50 border border-border max-h-48 overflow-y-auto scrollbar-tactical">
-              <div className="flex items-center gap-2 mb-2 text-foreground">
-                <FileText className="w-4 h-4" />
-                <span className="text-sm font-semibold">ההערות שלך</span>
-              </div>
               <div
                 className="text-sm text-foreground leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: notesHtml }}
