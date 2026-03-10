@@ -13,7 +13,7 @@ interface MissionPopupProps {
 export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -109,6 +109,18 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
                   <span>תצוגת משימה</span>
                 </div>
               </video>
+
+              {/* Center Play Button */}
+              {!isPlaying && (
+                <button
+                  onClick={togglePlayPause}
+                  className="absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity"
+                >
+                  <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center shadow-lg hover:bg-primary transition-colors">
+                    <Play className="w-8 h-8 text-white ml-1" fill="white" />
+                  </div>
+                </button>
+              )}
 
               {/* Video Controls Overlay */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 opacity-0 group-hover:opacity-100 transition-opacity">

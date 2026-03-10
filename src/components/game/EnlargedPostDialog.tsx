@@ -2,7 +2,7 @@ import { MapPin, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { getPlatformColor } from '@/lib/platform-helpers';
+import { getPlatformColor, getPlatformIcon } from '@/lib/platform-helpers';
 import type { Post } from '@/types';
 
 interface EnlargedPostDialogProps {
@@ -24,7 +24,7 @@ export const EnlargedPostDialog = ({ post, isSaved, onClose, onToggleSave }: Enl
         <div className="flex h-full flex-col gap-3" dir="rtl">
           <DialogHeader className="space-y-0 px-1">
             <DialogTitle className="flex items-center justify-between gap-2">
-              <Badge className={getPlatformColor(post.platform)}>{post.platform}</Badge>
+              <Badge className={`${getPlatformColor(post.platform)} flex items-center gap-1`}>{getPlatformIcon(post.platform)}</Badge>
               <span className="text-sm font-medium truncate"></span>
             </DialogTitle>
           </DialogHeader>

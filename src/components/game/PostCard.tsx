@@ -21,7 +21,6 @@ export const PostCard = ({ post, isSaved, onSave, onEnlarge }: PostCardProps) =>
       {/* Platform Badge */}
       <div className={cn('absolute top-2 right-2 px-2 py-0.5 rounded text-white text-[10px] font-medium flex items-center gap-1', getPlatformColor(post.platform))}>
         {getPlatformIcon(post.platform)}
-        {post.platform}
       </div>
 
       {/* Save Button */}
