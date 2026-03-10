@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from "react";
 import type { Post, Platform } from "@/types";
+import { regionCities } from "@/constants/locations";
 
 interface UsePostFiltersOptions {
   posts: Post[];
@@ -86,9 +87,14 @@ export const usePostFilters = ({ posts }: UsePostFiltersOptions): UsePostFilters
         return false;
       }
       
-      // Location filter
-      if (selectedLocation && !post.location.includes(selectedLocation)) {
-        return false;
+      // Location filter (by region or direct match)
+      if (selectedLocation) {
+        const cities = regionCities[selectedLocation];
+        if (cities) {
+          if (!cities.includes(post.location)) return false;
+        } else if (!post.location.includes(selectedLocation)) {
+          return false;
+        }
       }
       
       // Keywords filter

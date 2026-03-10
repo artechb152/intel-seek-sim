@@ -3,20 +3,24 @@
  */
 export const locationOptions = [
   { label: 'הכל', value: '' },
-  { label: 'צפון', value: 'צפת' },
-  { label: 'מרכז', value: 'תל אביב' },
-  { label: 'דרום', value: 'באר שבע' },
+  { label: 'צפון', value: 'צפון' },
+  { label: 'מרכז', value: 'מרכז' },
+  { label: 'דרום', value: 'דרום' },
 ] as const;
+
+/**
+ * Region to cities mapping
+ */
+export const regionCities: Record<string, string[]> = {
+  'צפון': ['צפת', 'חיפה', 'נהריה', 'טבריה'],
+  'מרכז': ['תל אביב', 'ירושלים', 'רמת גן', 'לוד', 'בני ברק', 'ראשון לציון', 'בת ים', 'נתניה'],
+  'דרום': ['אשדוד', 'באר שבע', 'אשקלון', 'עין בוקק', 'ערד', 'מצפה רמון', 'אילת'],
+};
 
 /**
  * Keyword suggestions for filter
  */
 export const keywordSuggestions = ['כומתה', 'וסט', 'מדים'] as const;
-
-/**
- * All available locations in posts
- */
-export const allLocations = ['תל אביב', 'חיפה', 'ירושלים', 'באר שבע', 'אילת', 'נתניה', 'רמת גן', 'צפת', 'אשדוד', 'פתח תקווה', 'ראשון לציון', 'חולון', 'הרצליה', 'כפר סבא', 'רעננה', 'מודיעין'] as const;
 
 /**
  * Date range constraints for the simulation

@@ -98,7 +98,6 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
-                autoPlay
                 muted
                 loop
                 playsInline
