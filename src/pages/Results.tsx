@@ -49,7 +49,7 @@ const Results = () => {
               <p className="text-foreground leading-relaxed">
                 הצלחת לאתר מידע רלוונטי מתוך רעש דיגיטלי ולהוציא מודיעין איכותי מהרשתות החברתיות.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-white leading-relaxed">
                 היכולת של האויב לסנן לפי מיקום, זמן ומילות קוד מצביעה על דיוק גבוה ועבודת איסוף מסודרת.
               </p>
               <div className="glass-panel rounded-xl p-4 mt-4 border-l-4 border-primary">
@@ -57,7 +57,7 @@ const Results = () => {
                   <AlertTriangle className="w-5 h-5 text-primary flex-shrink-0 mt-1" />
                   <div className="text-right">
                     <p className="text-foreground font-medium mb-2">שים לב:</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-white text-sm leading-relaxed">
                       ברשתות חברתיות אין "סתם תמונה". כל פוסט, סטורי או סרטון עשוי לחשוף פרטים מבצעיים: מיקום, שגרה, יחידות, ציוד, דרגות ודפוסי פעילות.
                     </p>
                     <p className="text-primary font-bold mt-3">
@@ -77,7 +77,7 @@ const Results = () => {
                   <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-1" />
                   <div className="text-right">
                     <p className="text-foreground font-medium mb-2">ברשתות חברתיות אין "סתם תוכן":</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-white text-sm leading-relaxed">
                       כל פוסט, סטורי או סרטון יכול לחשוף מיקום, זמן, יחידה, דרגה ודפוסי פעילות.
                     </p>
                     <p className="text-destructive font-bold mt-3">
