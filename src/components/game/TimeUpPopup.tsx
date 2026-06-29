@@ -63,7 +63,7 @@ export const TimeUpPopup = ({ open, onStartQuiz }: TimeUpPopupProps) => {
         <Button
           variant="tactical"
           onClick={onStartQuiz}
-          className="w-full mt-4 animate-pulse-glow"
+          className="w-full mt-4 bg-none bg-blue-500 shadow-none hover:shadow-none hover:scale-100 hover:bg-blue-600"
         >
           מעבר לשאלון
         </Button>

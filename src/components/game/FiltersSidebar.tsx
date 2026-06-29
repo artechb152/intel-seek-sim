@@ -17,6 +17,10 @@ import {
   keywordSuggestions,
   regionCities,
 } from '@/constants/locations';
+import { DateField, TimeField } from './DateTimeFields';
+
+const MIN_DATE = new Date(2023, 8, 1); // 1 Sep 2023
+const MAX_DATE = new Date(2023, 8, 30); // 30 Sep 2023
 
 interface FiltersSidebarProps {
   // Location
@@ -197,48 +201,26 @@ export const FiltersSidebar = ({
           </button>
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <div>
-            <span className="text-xs text-muted-foreground">מתאריך</span>
-            <Input
-              type="date"
-              className="bg-secondary/50 [color-scheme:dark]"
-              value={fromDate}
-              min="2023-09-01"
-              max="2023-09-30"
-              onChange={(e) => onFromDateChange(e.target.value)}
-            />
-          </div>
-          <div>
-            <span className="text-xs text-muted-foreground">עד תאריך</span>
-            <Input
-              type="date"
-              className="bg-secondary/50 [color-scheme:dark]"
-              value={toDate}
-              min="2023-09-01"
-              max="2023-09-30"
-              onChange={(e) => onToDateChange(e.target.value)}
-            />
-          </div>
+          <DateField
+            label="מתאריך"
+            value={fromDate}
+            onChange={onFromDateChange}
+            fromDate={MIN_DATE}
+            toDate={MAX_DATE}
+            defaultMonth={MIN_DATE}
+          />
+          <DateField
+            label="עד תאריך"
+            value={toDate}
+            onChange={onToDateChange}
+            fromDate={MIN_DATE}
+            toDate={MAX_DATE}
+            defaultMonth={MIN_DATE}
+          />
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <div>
-            <span className="text-xs text-muted-foreground">משעה</span>
-            <Input
-              type="time"
-              className="bg-secondary/50 [color-scheme:dark]"
-              value={fromTime}
-              onChange={(e) => onFromTimeChange(e.target.value)}
-            />
-          </div>
-          <div>
-            <span className="text-xs text-muted-foreground">עד שעה</span>
-            <Input
-              type="time"
-              className="bg-secondary/50 [color-scheme:dark]"
-              value={toTime}
-              onChange={(e) => onToTimeChange(e.target.value)}
-            />
-          </div>
+          <TimeField label="משעה" value={fromTime} onChange={onFromTimeChange} />
+          <TimeField label="עד שעה" value={toTime} onChange={onToTimeChange} />
         </div>
       </div>
 

@@ -64,7 +64,7 @@ export const EnlargedPostDialog = ({ post, isSaved, onClose, onToggleSave }: Enl
             </div>
           </div>
 
-          <Button variant={isSaved ? 'tactical' : 'tacticalOutline'} className="w-full mt-auto mx-1 h-12 text-base" onClick={(e) => onToggleSave(e)}>
+          <Button variant={isSaved ? 'tactical' : 'tacticalOutline'} className={`w-full mt-auto mx-1 h-12 text-base ${isSaved ? 'bg-none bg-blue-500 shadow-none hover:shadow-none hover:scale-100 hover:bg-blue-600' : ''}`} onClick={(e) => onToggleSave(e)}>
             {isSaved ? 'הסר משמירה' : 'שמור פוסט'}
           </Button>
         </div>

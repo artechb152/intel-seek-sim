@@ -1,6 +1,7 @@
 export { GameHeader } from "./GameHeader";
 export { PlatformTabs } from "./PlatformTabs";
 export { MissionTabs } from "./MissionTabs";
+export { MissionSelectTabs } from "./MissionSelectTabs";
 export { PostCard } from "./PostCard";
 export { PostGrid } from "./PostGrid";
 export { EnlargedPostDialog } from "./EnlargedPostDialog";

@@ -74,7 +74,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`glass-panel border-primary/30 [&>button.absolute]:hidden ${currentPage === 3 ? 'sm:max-w-lg p-3 data-[state=open]:animate-none data-[state=open]:zoom-in-100 data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0' : 'sm:max-w-xl'}`} dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+      <DialogContent className={`glass-panel border-primary/30 [&>button.absolute]:hidden ${currentPage === 3 ? 'sm:max-w-lg p-3 data-[state=open]:animate-none data-[state=open]:zoom-in-100 data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0' : currentPage === 1 ? '!w-auto max-w-[95vw] max-h-[95vh] p-0 gap-3 overflow-hidden !flex flex-col justify-start !border-0 !shadow-none !bg-transparent !backdrop-blur-none' : 'sm:max-w-xl'}`} dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
         {/* Preload image */}
         <img src={popUp3} alt="" className="hidden" />
 
@@ -91,9 +91,9 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
               </div>
 
               <DialogTitle className="text-2xl font-bold text-center mb-1">
-                <span className="text-gradient-tactical">ברוך הבא</span>
+                <span className="text-gradient-tactical">ברוכים הבאים</span>
                 <br />
-                <span className="text-foreground text-sm">לסימולטור איסוף מודיעין</span>
+                <span className="text-foreground text-3xl">לסימולטור איסוף מודיעין</span>
               </DialogTitle>
             </DialogHeader>
 
@@ -110,26 +110,12 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
         {currentPage === 1 && (
           <>
-            <DialogHeader className="space-y-4">
-              <div className="flex items-center justify-center">
-                <div className="relative">
-                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/40 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-                    <Target className="w-8 h-8 text-primary animate-pulse" />
-                  </div>
-                  <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-destructive animate-ping" />
-                </div>
-              </div>
-
-              <DialogTitle className="text-2xl font-bold text-center text-foreground">
-                משימה חדשה
-              </DialogTitle>
-            </DialogHeader>
-
             {/* Video Container */}
-            <div className="relative aspect-video bg-secondary rounded-lg overflow-hidden border border-border group">
+            <div className="relative w-fit max-w-full mx-auto rounded-lg overflow-hidden group">
               <video
                 ref={videoRef}
-                className="w-full h-full object-cover"
+                onClick={togglePlayPause}
+                className="max-h-[70vh] w-auto max-w-full object-contain cursor-pointer"
                 autoPlay
                 loop
                 playsInline
@@ -159,6 +145,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
               {/* Video Controls Overlay */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 <div
+                  dir="ltr"
                   className="h-1 bg-white/30 rounded-full mb-3 cursor-pointer"
                   onClick={handleProgressClick}
                 >
@@ -169,16 +156,6 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
                 </div>
                 <div className="flex items-center justify-between">
                   <button
-                    onClick={togglePlayPause}
-                    className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-4 h-4 text-white" />
-                    ) : (
-                      <Play className="w-4 h-4 text-white" />
-                    )}
-                  </button>
-                  <button
                     onClick={toggleFullscreen}
                     className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
                   >
@@ -188,16 +165,26 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
                       <Maximize2 className="w-4 h-4 text-white" />
                     )}
                   </button>
+                  <button
+                    onClick={togglePlayPause}
+                    className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-4 h-4 text-white" />
+                    ) : (
+                      <Play className="w-4 h-4 text-white" />
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
 
             {/* Mission Title Below Video */}
-            <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/30">
-              <p className="text-lg font-bold text-foreground">
-                אסוף מידע וניתוח שטח בסיס ירקון
+            <div className="text-center p-4 rounded-lg bg-primary/10 border border-primary/30 max-w-3xl mx-auto">
+              <p className="text-2xl font-bold text-foreground">
+                איסוף מידע לכיבוש בסיס ירקון - 1-5.10.2023
               </p>
-              <p className="text-sm text-white font-medium mt-2">
+              <p className="text-lg text-white font-medium mt-2">
                 איספו מידע ובצעו ניתוח שטח של בסיס ירקון, כולל מבנה הבסיס, התנהלות השמירות, כמות החיילים, רמת הכוננות ונוכחות בכירים בבסיס.
               </p>
             </div>
@@ -294,7 +281,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
           variant="tactical"
           onClick={handleNext}
           size={currentPage === 3 ? 'lg' : 'default'}
-          className="w-full animate-pulse-glow"
+          className={`animate-pulse-glow ${currentPage === 1 ? 'w-auto px-8 mx-auto' : 'w-full'}`}
         >
           {currentPage === 3 ? 'הבנתי, בואו נתחיל!' : 'המשך'}
         </Button>

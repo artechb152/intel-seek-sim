@@ -352,7 +352,7 @@ export const QuizPopup = ({ open, onClose, correctCount, wrongCount, totalSelect
             {/* Navigation */}
             {showFeedback && (
               <div className="flex justify-center pt-2">
-                <Button variant="tactical" onClick={handleNext} className="gap-2">
+                <Button variant="tactical" onClick={handleNext} className="gap-2 bg-none bg-blue-500 shadow-none hover:shadow-none hover:scale-100 hover:bg-blue-600">
                   {isLastStep ? (
                     <>
                       סיים שאלון

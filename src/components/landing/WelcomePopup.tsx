@@ -61,9 +61,9 @@ export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
       <DialogContent className="glass-panel border-primary/30 sm:max-w-[800px] min-h-[760px] flex flex-col [&>button.absolute]:hidden" dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center mb-1">
-            <span className="text-gradient-tactical">ברוך הבא</span>
+            <span className="text-gradient-tactical">ברוכים הבאים</span>
             <br />
-            <span className="text-foreground text-sm">לסימולטור איסוף מודיעין</span>
+            <span className="text-foreground text-3xl">לסימולטור איסוף מודיעין</span>
           </DialogTitle>
         </DialogHeader>
 

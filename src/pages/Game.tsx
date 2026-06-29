@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import {
   GameHeader,
   FiltersSidebar,
-  PlatformTabs,
+  MissionSelectTabs,
   MissionTabs,
   PostGrid,
   EnlargedPostDialog,
@@ -194,8 +194,6 @@ const Game = () => {
         totalCount={50}
         timeRemaining={timeRemaining}
         formattedTime={formattedTime}
-        selectedMission={selectedMission}
-        onSelectMission={setSelectedMission}
         onSubmit={handleSubmit}
       />
 
@@ -230,9 +228,9 @@ const Game = () => {
               counts={savedMissionCounts}
             />
           ) : (
-            <PlatformTabs
-              selectedPlatform={selectedPlatform}
-              onPlatformChange={setSelectedPlatform}
+            <MissionSelectTabs
+              selectedMission={selectedMission}
+              onSelectMission={setSelectedMission}
             />
           )}
 

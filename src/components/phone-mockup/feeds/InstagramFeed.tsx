@@ -92,7 +92,7 @@ export const InstagramFeed = () => {
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <circle cx="12" cy="12" r="3" />
         </svg>
-        <span className="text-xl font-light tracking-wide" style={{ fontFamily: 'serif' }}>
+        <span className="text-xl font-light tracking-wide" style={{ fontFamily: 'Assistant, sans-serif' }}>
           Instagram
         </span>
         <div className="flex items-center gap-4">

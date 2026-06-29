@@ -24,6 +24,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Assistant', 'sans-serif'],
+        serif: ['Assistant', 'sans-serif'],
+        mono: ['Assistant', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

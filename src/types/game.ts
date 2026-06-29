@@ -1,5 +1,4 @@
 import type { Post, Platform } from "./index";
-import type { Mission } from "@/constants/missions";
 
 /**
  * Filter state for the game page
@@ -87,8 +86,6 @@ export interface GameHeaderProps {
   totalCount: number;
   timeRemaining: number;
   formattedTime: string;
-  selectedMission: Mission | null;
-  onSelectMission: (mission: Mission) => void;
   onSubmit: () => void;
 }
 
