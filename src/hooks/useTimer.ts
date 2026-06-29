@@ -3,6 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 interface UseTimerOptions {
   initialSeconds: number;
   onTimeUp?: () => void;
+  /** When false, the countdown does not run (defaults to true). */
+  isRunning?: boolean;
 }
 
 interface UseTimerReturn {
@@ -17,13 +19,13 @@ interface UseTimerReturn {
 /**
  * Custom hook for countdown timer functionality
  */
-export const useTimer = ({ initialSeconds, onTimeUp }: UseTimerOptions): UseTimerReturn => {
+export const useTimer = ({ initialSeconds, onTimeUp, isRunning = true }: UseTimerOptions): UseTimerReturn => {
   const [timeRemaining, setTimeRemaining] = useState(initialSeconds);
   const [isPaused, setIsPaused] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
-    if (isPaused || isExpired) return;
+    if (!isRunning || isPaused || isExpired) return;
 
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
@@ -38,7 +40,7 @@ export const useTimer = ({ initialSeconds, onTimeUp }: UseTimerOptions): UseTime
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isPaused, isExpired, onTimeUp]);
+  }, [isRunning, isPaused, isExpired, onTimeUp]);
 
   const formatTime = useCallback((seconds: number): string => {
     const mins = Math.floor(seconds / 60);

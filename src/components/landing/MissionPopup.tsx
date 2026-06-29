@@ -13,7 +13,7 @@ interface MissionPopupProps {
 export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -56,8 +56,10 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
     }
   };
 
+  const TOTAL_PAGES = 4;
+
   const handleNext = () => {
-    if (currentPage < 2) {
+    if (currentPage < TOTAL_PAGES - 1) {
       setCurrentPage(currentPage + 1);
     } else {
       setCurrentPage(0);
@@ -72,11 +74,41 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`glass-panel border-primary/30 [&>button.absolute]:hidden ${currentPage === 2 ? 'sm:max-w-lg p-3' : 'sm:max-w-xl'}`} dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+      <DialogContent className={`glass-panel border-primary/30 [&>button.absolute]:hidden ${currentPage === 3 ? 'sm:max-w-lg p-3 data-[state=open]:animate-none data-[state=open]:zoom-in-100 data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0' : 'sm:max-w-xl'}`} dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
         {/* Preload image */}
         <img src={popUp3} alt="" className="hidden" />
 
         {currentPage === 0 && (
+          <>
+            <DialogHeader className="space-y-4">
+              <div className="flex items-center justify-center">
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center border border-primary/40 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                    <AlertTriangle className="w-8 h-8 text-primary animate-pulse" />
+                  </div>
+                  <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-destructive animate-ping" />
+                </div>
+              </div>
+
+              <DialogTitle className="text-2xl font-bold text-center mb-1">
+                <span className="text-gradient-tactical">ברוך הבא</span>
+                <br />
+                <span className="text-foreground text-sm">לסימולטור איסוף מודיעין</span>
+              </DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-4 py-2 text-right">
+              <p className="text-foreground leading-relaxed">
+                האויב אוסף עליכם מידע ממגוון רחב של רשתות ומקורות גלויים וסמויים, במטרה לבנות תמונה מלאה עליכם ועל הארגון: מי אתם, מה התפקיד שלכם, עם מי אתם עובדים, היכן אתם נמצאים, ומהם דפוסי הפעילות שלכם.
+              </p>
+              <p className="text-white font-medium leading-relaxed">
+                איסוף המידע מתבצע לעיתים בלי שתשימו לב — דרך פרטים קטנים שמופיעים ברשתות חברתיות, אתרי אינטרנט, קבצים ציבוריים, תמונות, תגובות, מיקומים, ושיתופים שונים.
+              </p>
+            </div>
+          </>
+        )}
+
+        {currentPage === 1 && (
           <>
             <DialogHeader className="space-y-4">
               <div className="flex items-center justify-center">
@@ -98,12 +130,14 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
-                muted
+                autoPlay
                 loop
                 playsInline
                 onTimeUpdate={handleTimeUpdate}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
               >
-                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
+                <source src={`${import.meta.env.BASE_URL}${encodeURIComponent("סימולטור במ.mp4")}`} type="video/mp4" />
                 <div className="flex flex-col items-center justify-center text-muted-foreground">
                   <Target className="w-12 h-12 mb-2" />
                   <span>תצוגת משימה</span>
@@ -163,14 +197,14 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
               <p className="text-lg font-bold text-foreground">
                 אסוף מידע וניתוח שטח בסיס ירקון
               </p>
-              <p className="text-sm text-muted-foreground mt-2">
+              <p className="text-sm text-white font-medium mt-2">
                 איספו מידע ובצעו ניתוח שטח של בסיס ירקון, כולל מבנה הבסיס, התנהלות השמירות, כמות החיילים, רמת הכוננות ונוכחות בכירים בבסיס.
               </p>
             </div>
           </>
         )}
 
-        {currentPage === 1 && (
+        {currentPage === 2 && (
           <>
             <DialogHeader className="space-y-4">
               <div className="flex items-center justify-center">
@@ -194,30 +228,39 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
                     איספו מידע ובצעו ניתוח של בסיס ירקון לפי
                   </p>
                 </div>
-                <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-foreground text-right">
-                  <li>מבנה הבסיס</li>
-                  <li>התנהלות השמירות</li>
-                  <li>כמות החיילים</li>
-                  <li>רמת הכוננות</li>
-                  <li>נוכחות בכירים בבסיס</li>
-                </ul>
+                <div className="mt-3 grid grid-cols-6 gap-2 text-right">
+                  {[
+                    'מבנה הבסיס',
+                    'רמת הכוננות',
+                    'כמות החיילים',
+                    'התנהלות השמירות',
+                    'נוכחות בכירים בבסיס',
+                  ].map((item, i) => (
+                    <div
+                      key={item}
+                      className={`p-3 rounded-lg border-2 border-white bg-white/10 text-center ${
+                        i < 3 ? 'col-span-2' : 'col-span-3'
+                      }`}
+                    >
+                      <p className="font-bold text-foreground text-sm">{item}</p>
+                    </div>
+                  ))}
+                </div>
                 <div className="mt-3 p-3 rounded-lg border-2 border-destructive bg-destructive/10 text-center">
-                  <p className="font-bold text-foreground">
-                    כדי לא ללכת לאיבוד בתוך כמות הפוסטים הרחבה מומלץ לעבוד כל פעם על
-                    משימה אחת
-                  </p>
+                  <p className="font-bold text-foreground">על מנת להתמקד, בחרו בכל פעם משימה אחת מהתפריט העליון.
+                    פוסטים שתסמנו או תשמרו יכנסו באופן אוטומטי לקטגוריה של המשימה שבחרתם.                  </p>
                 </div>
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center gap-3 text-muted-foreground">
+                <div className="flex items-center gap-3 text-white font-medium">
                   <Clock className="w-4 h-4 text-primary" />
                   <span>זמן: 15 דקות</span>
                 </div>
               </div>
 
               <div className="p-3 rounded-lg bg-secondary/50 border border-border">
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-white font-medium leading-relaxed">
                   השתמשו בפילטרים לסינון לפי מיקום, תאריך ומילות מפתח. בחרו את
                   הפוסטים הרלוונטיים למשימה ולחץ על "סיים בדיקה" בסיום.
                 </p>
@@ -226,9 +269,9 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
           </>
         )}
 
-        {currentPage === 2 && (
+        {currentPage === 3 && (
           <div className="space-y-1 py-0 text-right">
-            <p className="text-sm font-bold text-foreground text-center">
+            <p className="text-lg md:text-xl font-bold text-foreground text-center">
               לדוגמה: פרטים שניתן להוציא מהתמונה
             </p>
             <img src={popUp3} alt="דוגמה לפרטים שניתן להוציא מתמונה" className="w-full max-h-[62vh] object-contain rounded-lg border border-border/50" />
@@ -237,7 +280,7 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
 
         {/* Page indicators */}
         <div className="flex items-center justify-center gap-2 pt-1">
-          {[0, 1, 2].map((i) => (
+          {[0, 1, 2, 3].map((i) => (
             <div
               key={i}
               className={`h-2 rounded-full transition-all ${
@@ -247,33 +290,14 @@ export const MissionPopup = ({ open, onClose, onStart }: MissionPopupProps) => {
           ))}
         </div>
 
-        {currentPage === 0 ? (
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              onClick={handleClose}
-              className="flex-1 border-muted-foreground/30 hover:bg-muted hover:text-white"
-            >
-              ביטול
-            </Button>
-            <Button
-              variant="tactical"
-              onClick={handleNext}
-              className="flex-1 animate-pulse-glow"
-            >
-              המשך
-            </Button>
-          </div>
-        ) : (
-          <Button
-            variant="tactical"
-            onClick={handleNext}
-            size={currentPage === 2 ? 'lg' : 'default'}
-            className="w-full animate-pulse-glow"
-          >
-            {currentPage === 2 ? 'התחל משימה' : 'המשך'}
-          </Button>
-        )}
+        <Button
+          variant="tactical"
+          onClick={handleNext}
+          size={currentPage === 3 ? 'lg' : 'default'}
+          className="w-full animate-pulse-glow"
+        >
+          {currentPage === 3 ? 'הבנתי, בואו נתחיל!' : 'המשך'}
+        </Button>
       </DialogContent>
     </Dialog>
   );

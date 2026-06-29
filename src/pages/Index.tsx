@@ -1,22 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SocialMenu } from '@/components/landing/SocialMenu';
 import { TeamChat } from '@/components/landing/TeamChat';
 import { PhoneMockup } from '@/components/phone-mockup/PhoneMockup';
-import { WelcomePopup } from '@/components/landing/WelcomePopup';
 import { MissionPopup } from '@/components/landing/MissionPopup';
 
 const Index = () => {
   const navigate = useNavigate();
   const [activePlatform, setActivePlatform] = useState('instagram');
-  const [showWelcome, setShowWelcome] = useState(false);
   const [showMission, setShowMission] = useState(false);
-
-  useEffect(() => {
-    setShowWelcome(true);
-  }, []);
 
   const handleStart = () => {
     setShowMission(true);
@@ -96,8 +90,6 @@ const Index = () => {
       </div>
 
       {/* Popups */}
-      <WelcomePopup open={showWelcome} onClose={() => setShowWelcome(false)} />
-
       <MissionPopup open={showMission} onClose={() => setShowMission(false)} onStart={handleMissionStart} />
     </div>
   );

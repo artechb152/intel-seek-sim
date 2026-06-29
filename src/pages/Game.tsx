@@ -1,5 +1,4 @@
 import { useState, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 // Components
@@ -7,6 +6,7 @@ import {
   GameHeader,
   FiltersSidebar,
   PlatformTabs,
+  MissionTabs,
   PostGrid,
   EnlargedPostDialog,
   MissionDetailsPopup,
@@ -17,20 +17,40 @@ import {
 
 // Hooks & Types
 import type { Post, Platform } from '@/types';
+import {
+  missions,
+  GENERAL_MISSION,
+  type Mission,
+  type SaveBucket,
+} from '@/constants/missions';
 import { mockPosts } from '@/constants/posts';
 import { regionCities } from '@/constants/locations';
 import { useTimer } from '@/hooks/useTimer';
 import { usePostSelection } from '@/hooks/usePostSelection';
+import { MissionPopup } from '@/components/landing/MissionPopup';
 
 const Game = () => {
-  const navigate = useNavigate();
-
   const [shuffledPosts] = useState<Post[]>(() => {
     return [...mockPosts].sort(() => Math.random() - 0.5);
   });
 
-  const { savedPosts, toggleSavePost, correctCount, wrongCount } =
+  const { savedPosts, savedPostMissions, toggleSavePost, isSavedForMission, correctCount, wrongCount } =
     usePostSelection(shuffledPosts);
+
+  const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
+  const [savedMissionFilter, setSavedMissionFilter] = useState<
+    'all' | SaveBucket
+  >('all');
+
+  const handleToggleSave = useCallback(
+    (id: string, e?: React.MouseEvent) => {
+      e?.stopPropagation();
+      // When no mission is selected, save the post under the general bucket
+      // so posts can be collected before committing to a specific mission.
+      toggleSavePost(id, selectedMission ?? GENERAL_MISSION, e);
+    },
+    [toggleSavePost, selectedMission]
+  );
 
   const [searchKeywords, setSearchKeywords] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
@@ -48,9 +68,11 @@ const Game = () => {
   const [showMissionDetails, setShowMissionDetails] = useState(false);
   const [showQuizPopup, setShowQuizPopup] = useState(false);
   const [showTimeUp, setShowTimeUp] = useState(false);
+  const [showMissionIntro, setShowMissionIntro] = useState(true);
 
   const { timeRemaining, formattedTime } = useTimer({
     initialSeconds: 15 * 60,
+    isRunning: !showMissionIntro,
     onTimeUp: () => {
       setShowTimeUp(true);
     },
@@ -61,10 +83,20 @@ const Game = () => {
 
     if (showSavedOnly) {
       posts = posts.filter((post) => savedPosts.includes(post.id));
+      if (savedMissionFilter !== 'all') {
+        posts = posts.filter((post) =>
+          savedPostMissions[post.id]?.includes(savedMissionFilter)
+        );
+      }
     }
 
     return posts.filter((post) => {
-      if (selectedPlatform !== 'all' && post.platform !== selectedPlatform)
+      // In saved view we filter by mission instead of platform
+      if (
+        !showSavedOnly &&
+        selectedPlatform !== 'all' &&
+        post.platform !== selectedPlatform
+      )
         return false;
       if (selectedLocation) {
         const cities = regionCities[selectedLocation];
@@ -106,8 +138,27 @@ const Game = () => {
     toTime,
     showSavedOnly,
     savedPosts,
+    savedPostMissions,
+    savedMissionFilter,
     shuffledPosts,
   ]);
+
+  const savedMissionCounts = useMemo(() => {
+    return savedPosts.reduce<Record<string, number>>((acc, id) => {
+      const missions = savedPostMissions[id] ?? [];
+      missions.forEach((mission) => {
+        acc[mission] = (acc[mission] ?? 0) + 1;
+      });
+      return acc;
+    }, {});
+  }, [savedPosts, savedPostMissions]);
+
+  // Posts saved under the currently selected mission — drives the bookmark state
+  // so a post can be saved/removed per-mission independently.
+  const savedPostsForSelectedMission = useMemo(() => {
+    const bucket = selectedMission ?? GENERAL_MISSION;
+    return savedPosts.filter((id) => isSavedForMission(id, bucket));
+  }, [savedPosts, selectedMission, isSavedForMission]);
 
   const handleApplyFilters = useCallback(() => {
     setIsFiltering(true);
@@ -128,6 +179,7 @@ const Game = () => {
     setFromTime('');
     setToTime('');
     setShowSavedOnly(false);
+    setSavedMissionFilter('all');
     toast.success('הפילטרים אופסו');
   }, []);
 
@@ -142,8 +194,8 @@ const Game = () => {
         totalCount={50}
         timeRemaining={timeRemaining}
         formattedTime={formattedTime}
-        onBack={() => navigate('/')}
-        onShowMission={() => setShowMissionDetails(true)}
+        selectedMission={selectedMission}
+        onSelectMission={setSelectedMission}
         onSubmit={handleSubmit}
       />
 
@@ -171,15 +223,23 @@ const Game = () => {
         />
 
         <main className="flex-1 glass-panel rounded-xl p-4 2xl:p-6 overflow-y-auto scrollbar-tactical">
-          <PlatformTabs
-            selectedPlatform={selectedPlatform}
-            onPlatformChange={setSelectedPlatform}
-          />
+          {showSavedOnly ? (
+            <MissionTabs
+              selectedMissionFilter={savedMissionFilter}
+              onMissionFilterChange={setSavedMissionFilter}
+              counts={savedMissionCounts}
+            />
+          ) : (
+            <PlatformTabs
+              selectedPlatform={selectedPlatform}
+              onPlatformChange={setSelectedPlatform}
+            />
+          )}
 
           <PostGrid
             posts={filteredPosts}
-            savedPosts={savedPosts}
-            onToggleSave={toggleSavePost}
+            savedPosts={savedPostsForSelectedMission}
+            onToggleSave={handleToggleSave}
             onEnlargePost={setEnlargedPost}
           />
         </main>
@@ -189,9 +249,19 @@ const Game = () => {
 
       <EnlargedPostDialog
         post={enlargedPost}
-        isSaved={enlargedPost ? savedPosts.includes(enlargedPost.id) : false}
+        isSaved={
+          enlargedPost
+            ? isSavedForMission(enlargedPost.id, selectedMission ?? GENERAL_MISSION)
+            : false
+        }
         onClose={() => setEnlargedPost(null)}
-        onToggleSave={(e) => enlargedPost && toggleSavePost(enlargedPost.id, e)}
+        onToggleSave={(e) => enlargedPost && handleToggleSave(enlargedPost.id, e)}
+      />
+
+      <MissionPopup
+        open={showMissionIntro}
+        onClose={() => setShowMissionIntro(false)}
+        onStart={() => setShowMissionIntro(false)}
       />
 
       <MissionDetailsPopup
@@ -205,6 +275,8 @@ const Game = () => {
         correctCount={correctCount}
         wrongCount={wrongCount}
         totalSelected={savedPosts.length}
+        savedPosts={savedPosts}
+        savedPostMissions={savedPostMissions}
       />
 
       <TimeUpPopup

@@ -1,55 +1,74 @@
 /**
- * Image URL generators for consistent military-themed images across the app
- * Uses external services for placeholder images that are deterministic
+ * Image URL helpers — fully local / offline.
+ *
+ * Every image is bundled under `public/images/` and resolved deterministically:
+ * the same input always maps to the same local file, so the app needs no network.
+ *
+ * Pools (see public/images/):
+ *   posts/0..23.jpg     – 24 themed post photos
+ *   avatars/0..49.jpg   – 50 avatar portraits
+ *   quiz/0..3.jpg       – 4 quiz base-structure images
+ *   feed-default.png    – default feed avatar
+ *
+ * To regenerate/extend the pools, see scripts/download-images.sh.
  */
 
-// Military-themed image seeds for consistent, themed content
-const militarySeeds = ['military_base_aerial', 'soldiers_patrol', 'army_barracks', 'military_equipment', 'combat_training', 'army_checkpoint', 'military_vehicles', 'soldiers_formation', 'tactical_operations', 'army_camp', 'military_guard_post', 'soldiers_briefing', 'army_logistics', 'military_drill', 'combat_gear', 'army_transport', 'military_outpost', 'soldiers_march', 'tactical_gear', 'army_command', 'military_exercise', 'soldiers_training', 'army_defense', 'military_supplies', 'combat_readiness', 'army_security', 'military_personnel', 'soldiers_equipment', 'tactical_base', 'army_operations', 'military_grounds', 'soldiers_duty', 'army_perimeter', 'military_watchtower', 'combat_unit', 'army_headquarters', 'military_convoy', 'soldiers_guard', 'tactical_position', 'army_facility', 'military_station', 'soldiers_post', 'army_compound', 'military_sector', 'combat_zone', 'army_installation', 'military_area', 'soldiers_shift', 'tactical_unit', 'army_detail'];
+const BASE = import.meta.env.BASE_URL; // respects Vite `base` (default "/")
 
-/**
- * Generate a military-themed post image URL based on post ID
- * Uses Picsum with military-themed seeds for consistent, unique images per post
- */
-export const getPostImage = (postId: string | number, size: number = 400): string => {
-  const index = typeof postId === 'string' ? parseInt(postId, 10) : postId;
-  const seed = militarySeeds[(index - 1) % militarySeeds.length];
-  return `https://picsum.photos/seed/${seed}_${postId}/${size}/${size}`;
+const POOL = {
+  posts: 24,
+  avatars: 50,
+  quiz: 4,
+} as const;
+
+/** Stable string hash (FNV-like) so a given key always picks the same file. */
+const hashIndex = (key: string, count: number): number => {
+  let h = 0;
+  for (let i = 0; i < key.length; i++) {
+    h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  return h % count;
 };
 
 /**
- * Generate an avatar image URL based on username
- * Uses Pravatar for consistent avatar images per user
+ * Generate a military-themed post image URL based on post ID.
+ * (size param kept for API compatibility; local files are pre-sized.)
  */
-export const getAvatarImage = (username: string, size: number = 150): string => {
-  return `https://i.pravatar.cc/${size}?u=${encodeURIComponent(username)}`;
+export const getPostImage = (postId: string | number, _size: number = 400): string => {
+  return `${BASE}images/posts/${hashIndex(`post_${postId}`, POOL.posts)}.jpg`;
 };
 
 /**
- * Generate a category-based image URL
- * Uses Picsum with category-based seeds
+ * Generate an avatar image URL based on username.
  */
-export const getCategoryImage = (category: string, size: number = 400): string => {
-  return `https://picsum.photos/seed/military_${category}/${size}/${size}`;
+export const getAvatarImage = (username: string, _size: number = 150): string => {
+  return `${BASE}images/avatars/${hashIndex(username, POOL.avatars)}.jpg`;
 };
 
 /**
- * Generate a feed-specific image for phone mockups
+ * Generate a category-based image URL.
  */
-export const getFeedImage = (platform: string, index: number, size: number = 400): string => {
-  const seed = militarySeeds[index % militarySeeds.length];
-  return `https://picsum.photos/seed/${platform}_${seed}/${size}/${size}`;
+export const getCategoryImage = (category: string, _size: number = 400): string => {
+  return `${BASE}images/posts/${hashIndex(`category_${category}`, POOL.posts)}.jpg`;
 };
 
 /**
- * Generate a story/avatar for feed users
+ * Generate a feed-specific image for phone mockups.
  */
-export const getFeedAvatar = (platform: string, username: string, size: number = 50): string => {
-  return 'https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png';
+export const getFeedImage = (platform: string, index: number, _size: number = 400): string => {
+  return `${BASE}images/posts/${hashIndex(`${platform}_${index}`, POOL.posts)}.jpg`;
 };
+
 /**
- * Generate base structure images for quiz
+ * Generate a story/avatar for feed users.
  */
-export const getBaseStructureImage = (index: number, size: number = 300): string => {
-  const baseSeeds = ['military_base_layout_correct', 'military_base_layout_wrong_1', 'military_base_layout_wrong_2', 'military_base_layout_wrong_3'];
-  return `https://picsum.photos/seed/${baseSeeds[index]}/${size}/${size}`;
+export const getFeedAvatar = (_platform: string, _username: string, _size: number = 50): string => {
+  return `${BASE}images/feed-default.png`;
+};
+
+/**
+ * Generate base structure images for quiz.
+ */
+export const getBaseStructureImage = (index: number, _size: number = 300): string => {
+  return `${BASE}images/quiz/${((index % POOL.quiz) + POOL.quiz) % POOL.quiz}.jpg`;
 };

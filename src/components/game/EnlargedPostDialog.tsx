@@ -20,12 +20,12 @@ export const EnlargedPostDialog = ({ post, isSaved, onClose, onToggleSave }: Enl
 
   return (
     <Dialog open={!!post} onOpenChange={onClose}>
-      <DialogContent className="w-[min(92vw,26rem)] max-h-[90vh] overflow-hidden px-2 py-4">
-        <div className="flex h-full flex-col gap-3" dir="rtl">
+      <DialogContent className="w-[min(94vw,35rem)] max-h-[90vh] overflow-hidden px-7 py-5">
+        <div className="flex h-full flex-col gap-4" dir="rtl">
           <DialogHeader className="space-y-0 px-1">
             <DialogTitle className="flex items-center justify-between gap-2">
-              <Badge className={`${getPlatformColor(post.platform)} flex items-center gap-1`}>{getPlatformIcon(post.platform)}</Badge>
-              <span className="text-sm font-medium truncate"></span>
+              <Badge className={`${getPlatformColor(post.platform)} pointer-events-none flex items-center gap-1`}>{getPlatformIcon(post.platform)}</Badge>
+              <span className="text-base font-medium truncate"></span>
             </DialogTitle>
           </DialogHeader>
 
@@ -36,35 +36,35 @@ export const EnlargedPostDialog = ({ post, isSaved, onClose, onToggleSave }: Enl
           </div>
 
           <div className="flex flex-col gap-2 min-h-0 px-1">
-            <div className="flex items-center gap-2 text-muted-foreground text-sm" dir="ltr">
-              <Clock className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-muted-foreground text-base" dir="ltr">
+              <Clock className="w-5 h-5" />
               <span className="truncate">
                 {post.date} · {post.timestamp}
               </span>
             </div>
 
-            <p className="text-foreground text-sm line-clamp-4 sm:line-clamp-6 break-words">{post.content}</p>
+            <p className="text-foreground text-base line-clamp-4 sm:line-clamp-6 break-words">{post.content}</p>
 
-            <div className="flex items-center gap-2 text-muted-foreground text-sm">
-              <MapPin className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-muted-foreground text-base">
+              <MapPin className="w-5 h-5" />
               <span className="truncate">{post.location}</span>
             </div>
 
             <div className="flex flex-wrap gap-2">
               {visibleKeywords.map((kw, i) => (
-                <Badge key={`${kw}-${i}`} variant="outline" className="text-primary border-primary/50">
+                <Badge key={`${kw}-${i}`} variant="outline" className="text-sm text-primary border-primary/50">
                   {kw}
                 </Badge>
               ))}
               {extraCount > 0 && (
-                <Badge variant="outline" className="text-muted-foreground border-border">
+                <Badge variant="outline" className="text-sm text-muted-foreground border-border">
                   +{extraCount}
                 </Badge>
               )}
             </div>
           </div>
 
-          <Button variant={isSaved ? 'tactical' : 'tacticalOutline'} className="w-full mt-auto mx-1" onClick={(e) => onToggleSave(e)}>
+          <Button variant={isSaved ? 'tactical' : 'tacticalOutline'} className="w-full mt-auto mx-1 h-12 text-base" onClick={(e) => onToggleSave(e)}>
             {isSaved ? 'הסר משמירה' : 'שמור פוסט'}
           </Button>
         </div>

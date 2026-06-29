@@ -15,11 +15,11 @@ interface WelcomePopupProps {
 const pages = [
   {
     content: (
-      <div className="space-y-4 py-2 text-right">
-        <p className="text-foreground leading-relaxed">
+      <div className="space-y-4 py-2 text-right flex-1 flex flex-col justify-center">
+        <p className="text-foreground text-lg leading-relaxed">
           האויב אוסף עליכם מידע ממגוון רחב של רשתות ומקורות גלויים וסמויים, במטרה לבנות תמונה מלאה עליכם ועל הארגון: מי אתם, מה התפקיד שלכם, עם מי אתם עובדים, היכן אתם נמצאים, ומהם דפוסי הפעילות שלכם.
         </p>
-        <p className="text-muted-foreground leading-relaxed">
+        <p className="text-white text-lg font-medium leading-relaxed">
           איסוף המידע מתבצע לעיתים בלי שתשימו לב — דרך פרטים קטנים שמופיעים ברשתות חברתיות, אתרי אינטרנט, קבצים ציבוריים, תמונות, תגובות, מיקומים, ושיתופים שונים.
         </p>
       </div>
@@ -27,11 +27,11 @@ const pages = [
   },
   {
     content: (
-      <div className="space-y-4 py-2 text-right">
-        <p className="text-foreground leading-relaxed">
+      <div className="space-y-4 py-2 text-right flex-1 flex flex-col justify-center">
+        <p className="text-foreground text-lg leading-relaxed">
           במסך הבא תוכלו לעבור בין מקורות המידע השונים ולראות כיצד כל מקור "מספר סיפור" עליכם. עברו על המקורות כדי להבין עד כמה קל לצבור פרטים משמעותיים גם בלי גישה מיוחדת.
         </p>
-        <p className="text-foreground font-medium leading-relaxed">
+        <p className="text-foreground text-lg font-medium leading-relaxed">
           לאחר שתסיימו להכיר את המקורות ולהתנסות בהם, תוכלו להתחיל בסימולציה.
         </p>
       </div>
@@ -58,7 +58,7 @@ export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="glass-panel border-primary/30 sm:max-w-xl [&>button.absolute]:hidden" dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+      <DialogContent className="glass-panel border-primary/30 sm:max-w-[800px] min-h-[760px] flex flex-col [&>button.absolute]:hidden" dir="rtl" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center mb-1">
             <span className="text-gradient-tactical">ברוך הבא</span>
@@ -87,7 +87,7 @@ export const WelcomePopup = ({ open, onClose }: WelcomePopupProps) => {
           size="xl"
           className="w-full mt-2"
         >
-          {currentPage < pages.length - 1 ? 'המשך' : 'הבנתי, בואו נתחיל!'}
+          {'המשך'}
         </Button>
       </DialogContent>
     </Dialog>

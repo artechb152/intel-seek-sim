@@ -53,7 +53,9 @@ export const PlatformTabs = ({
               "px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2",
               isActive
                 ? platform.activeClass
-                : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+                : platform.id === "all"
+                  ? "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+                  : "bg-secondary/50 text-muted-foreground"
             )}
           >
             {Icon && <Icon className="w-4 h-4" />}

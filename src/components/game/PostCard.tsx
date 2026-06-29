@@ -29,28 +29,28 @@ export const PostCard = ({ post, isSaved, onSave, onEnlarge }: PostCardProps) =>
       </button>
 
       {/* Info Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/60 to-transparent p-3 pt-8">
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/80 to-transparent p-3 pt-10">
         <div className="flex items-center justify-between text-foreground text-xs mb-1">
           {/* <span className="font-medium">@{post.user}</span> */}
           <span className="font-medium"></span>
         </div>
 
-        <p className="text-foreground/90 text-[10px] mb-1 line-clamp-1">{post.content}</p>
+        <p className="text-foreground text-sm font-semibold mb-1.5 line-clamp-2 drop-shadow-md">{post.content}</p>
 
         {/* Date and Location row */}
-        <div className="flex items-center justify-between text-foreground/70 text-[10px] mb-2" dir="ltr">
+        <div className="flex items-center justify-between text-foreground/90 text-xs font-medium mb-2 drop-shadow" dir="ltr">
           <span>
             {post.timestamp} - {post.date}
           </span>
           <div className="flex items-center gap-1" dir="rtl">
-            <MapPin className="w-3 h-3" />
+            <MapPin className="w-3.5 h-3.5" />
             <span>{post.location}</span>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-1">
           {post.keywords.slice(0, 2).map((kw, i) => (
-            <span key={i} className="px-1.5 py-0.5 bg-foreground/20 rounded text-[9px] text-foreground">
+            <span key={i} className="px-2 py-0.5 bg-foreground/25 rounded text-xs font-semibold text-foreground">
               {kw}
             </span>
           ))}

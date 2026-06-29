@@ -1,8 +1,16 @@
 import type { Config } from "tailwindcss";
+import path from "path";
+
+// Anchor the content scan to THIS config file's directory instead of the current
+// working directory. This makes Tailwind find the source files regardless of which
+// folder the build is launched from (closed-network failure points #7/#8), and keeps
+// glob resolution working even if a parent folder is Hebrew/non-ASCII (#12).
+// fast-glob requires forward slashes even on Windows, so backslashes are converted.
+const projectRoot = path.resolve(__dirname).replace(/\\/g, "/");
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [`${projectRoot}/src/**/*.{ts,tsx}`, `${projectRoot}/index.html`],
   prefix: "",
   theme: {
     container: {
@@ -15,7 +23,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Heebo', 'sans-serif'],
+        sans: ['Assistant', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

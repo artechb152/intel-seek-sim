@@ -81,10 +81,10 @@ export const quizSteps: QuizStep[] = [
   {
     question: 'כמה חיילים נמצאים בבסיס?',
     answers: [
-      { id: 1, text: '100–150 חיילים', isCorrect: false },
-      { id: 2, text: '150–200 חיילים', isCorrect: true },
-      { id: 3, text: '200–250 חיילים', isCorrect: false },
-      { id: 4, text: '250–300 חיילים', isCorrect: false },
+      { id: 1, text: '100-300 חיילים', isCorrect: true },
+      { id: 2, text: '300-500 חיילים', isCorrect: false },
+      { id: 3, text: '500-700 חיילים', isCorrect: false },
+      { id: 4, text: '700-1000 חיילים', isCorrect: false },
     ],
     relatedPostIds: ['80', '94', '90', '86'],
   },

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, X, ChevronLeft, MapPin, Clock } from 'lucide-react';
+import { Check, X, ChevronLeft, MapPin, Clock, FileText, Bookmark } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +9,8 @@ import { quizSteps } from '@/constants/quiz';
 import { mockPosts } from '@/constants/posts';
 import { getBaseStructureImage } from '@/constants/images';
 import { getPlatformColor, getPlatformIcon } from '@/lib/platform-helpers';
+import { MissionTabs } from './MissionTabs';
+import type { Mission } from '@/constants/missions';
 import type { Post } from '@/types';
 
 interface QuizPopupProps {
@@ -17,23 +19,26 @@ interface QuizPopupProps {
   correctCount: number;
   wrongCount: number;
   totalSelected: number;
+  savedPosts?: string[];
+  savedPostMissions?: Record<string, Mission[]>;
 }
 
 interface PostMiniCardProps {
   post: Post;
   onClick: () => void;
+  large?: boolean;
 }
 
-const PostMiniCard = ({ post, onClick }: PostMiniCardProps) => (
+const PostMiniCard = ({ post, onClick, large = false }: PostMiniCardProps) => (
   <button onClick={onClick} className="relative rounded-lg overflow-hidden bg-secondary aspect-square cursor-pointer hover:ring-2 hover:ring-primary/50 transition-all">
     <img
       src={post.image}
       // alt={`פוסט של ${post.user}`}
       className="w-full h-full object-cover"
     />
-    <div className={cn('absolute top-1 right-1 px-1.5 py-0.5 rounded text-white text-[8px] font-medium flex items-center gap-0.5', getPlatformColor(post.platform))}>{getPlatformIcon(post.platform)}</div>
+    <div className={cn('absolute top-1 right-1 px-1.5 py-0.5 rounded text-white font-medium flex items-center gap-0.5', large ? 'text-xs' : 'text-[8px]', getPlatformColor(post.platform))}>{getPlatformIcon(post.platform)}</div>
     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-2">
-      <p className="text-[9px] text-foreground line-clamp-2">{post.content}</p>
+      <p className={cn('text-foreground line-clamp-2', large ? 'text-sm' : 'text-[9px]')}>{post.content}</p>
     </div>
   </button>
 );
@@ -66,14 +71,14 @@ const PostDetailModal = ({ post, onClose }: PostDetailModalProps) => {
           </div>
 
           <div className="space-y-3">
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2 text-white font-medium">
               <Clock className="w-4 h-4" />
               <span>{post.timestamp}</span>
             </div>
 
             <p className="text-foreground text-sm">{post.content}</p>
 
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2 text-white font-medium">
               <MapPin className="w-4 h-4" />
               <span>{post.location}</span>
             </div>
@@ -121,13 +126,91 @@ const ImageAnswerCard = ({ image, index, isSelected, isCorrect, showFeedback, sh
   );
 };
 
-export const QuizPopup = ({ open, onClose, correctCount, wrongCount, totalSelected }: QuizPopupProps) => {
+interface NotesViewModalProps {
+  open: boolean;
+  html: string;
+  onClose: () => void;
+}
+
+const NotesViewModal = ({ open, html, onClose }: NotesViewModalProps) => (
+  <Dialog open={open} onOpenChange={onClose}>
+    <DialogContent className="max-w-md z-[60]" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+      <DialogHeader>
+        <DialogTitle className="flex items-center gap-2" dir="rtl">
+          <FileText className="w-4 h-4" />
+          <span>ההערות שלי</span>
+        </DialogTitle>
+      </DialogHeader>
+      <div dir="rtl" className="max-h-[60vh] overflow-y-auto scrollbar-tactical bg-background/30 rounded-lg p-3 text-foreground text-sm leading-relaxed" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+        {html.trim() ? <div dangerouslySetInnerHTML={{ __html: html }} /> : <p className="text-muted-foreground">לא נכתבו הערות.</p>}
+      </div>
+    </DialogContent>
+  </Dialog>
+);
+
+interface SavedPostsModalProps {
+  open: boolean;
+  posts: Post[];
+  savedPostMissions: Record<string, Mission[]>;
+  onClose: () => void;
+  onSelectPost: (post: Post) => void;
+}
+
+const SavedPostsModal = ({ open, posts, savedPostMissions, onClose, onSelectPost }: SavedPostsModalProps) => {
+  const [missionFilter, setMissionFilter] = useState<'all' | Mission>('all');
+
+  const counts = posts.reduce<Record<string, number>>((acc, post) => {
+    const missions = savedPostMissions[post.id] ?? [];
+    missions.forEach((mission) => {
+      acc[mission] = (acc[mission] ?? 0) + 1;
+    });
+    return acc;
+  }, {});
+
+  const filteredPosts = missionFilter === 'all' ? posts : posts.filter((post) => savedPostMissions[post.id]?.includes(missionFilter));
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl z-[60]" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2" dir="rtl">
+            <Bookmark className="w-4 h-4" />
+            <span>הפוסטים ששמרתי</span>
+          </DialogTitle>
+        </DialogHeader>
+        <div dir="rtl" className="max-h-[60vh] overflow-y-auto scrollbar-tactical">
+          {posts.length ? (
+            <>
+              <MissionTabs selectedMissionFilter={missionFilter} onMissionFilterChange={setMissionFilter} counts={counts} />
+              {filteredPosts.length ? (
+                <div className="grid grid-cols-3 gap-3">
+                  {filteredPosts.map((post) => (
+                    <PostMiniCard key={post.id} post={post} large onClick={() => onSelectPost(post)} />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-sm">אין פוסטים בקטגוריה זו.</p>
+              )}
+            </>
+          ) : (
+            <p className="text-muted-foreground text-sm">לא נשמרו פוסטים.</p>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export const QuizPopup = ({ open, onClose, correctCount, wrongCount, totalSelected, savedPosts = [], savedPostMissions = {} }: QuizPopupProps) => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [stepResults, setStepResults] = useState<boolean[]>([]);
   const [viewingPost, setViewingPost] = useState<Post | null>(null);
+  const [notesHtml, setNotesHtml] = useState<string | null>(null);
+  const [showSavedPosts, setShowSavedPosts] = useState(false);
+  const savedPostObjects = savedPosts.map((id) => mockPosts.find((p) => p.id === id)).filter((p): p is Post => p !== undefined);
   const currentQuestion = quizSteps[currentStep];
   const isLastStep = currentStep === quizSteps.length - 1;
   const isImageQuestion = currentQuestion.isImageQuestion;
@@ -175,6 +258,27 @@ export const QuizPopup = ({ open, onClose, correctCount, wrongCount, totalSelect
     <>
       <Dialog open={open}>
         <DialogContent className={cn('transition-all duration-300 [&>button.absolute]:hidden', isImageQuestion ? 'max-w-3xl' : showFeedback ? 'max-w-xl' : 'max-w-lg')} onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+          {/* Quick access: notes & saved posts */}
+          <div className="flex items-center justify-center gap-2" dir="rtl">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => {
+                const editor = document.getElementById('notes-editor');
+                setNotesHtml(editor?.innerHTML ?? '');
+              }}
+            >
+              <FileText className="w-4 h-4" />
+              ההערות שלי
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => setShowSavedPosts(true)}>
+              <Bookmark className="w-4 h-4" />
+              הפוסטים ששמרתי
+              {savedPostObjects.length > 0 && <span className="text-xs text-muted-foreground">({savedPostObjects.length})</span>}
+            </Button>
+          </div>
+
           <DialogHeader>
             <DialogTitle className="flex items-center justify-between">
               <span>שאלון סיכום</span>
@@ -189,7 +293,7 @@ export const QuizPopup = ({ open, onClose, correctCount, wrongCount, totalSelect
           <div className="space-y-4" dir="rtl">
             {/* Step indicator */}
             <div className="text-center">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-white font-medium">
                 שלב {currentStep + 1} מתוך {quizSteps.length}
               </span>
             </div>
@@ -236,7 +340,7 @@ export const QuizPopup = ({ open, onClose, correctCount, wrongCount, totalSelect
             {/* Feedback Section - Related Posts */}
             {showFeedback && (
               <div className="space-y-3 pt-4 border-t border-border animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <h4 className="text-sm font-medium text-muted-foreground text-center">הפוסטים מהם היה ניתן להבין</h4>
+                <h4 className="text-sm font-bold text-white text-center">הפוסטים מהם היה ניתן להבין</h4>
                 <div className="grid grid-cols-4 gap-2">
                   {relatedPosts.map((post) => (
                     <PostMiniCard key={post.id} post={post} onClick={() => setViewingPost(post)} />
@@ -266,6 +370,12 @@ export const QuizPopup = ({ open, onClose, correctCount, wrongCount, totalSelect
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Notes viewer */}
+      <NotesViewModal open={notesHtml !== null} html={notesHtml ?? ''} onClose={() => setNotesHtml(null)} />
+
+      {/* Saved posts viewer */}
+      <SavedPostsModal open={showSavedPosts} posts={savedPostObjects} savedPostMissions={savedPostMissions} onClose={() => setShowSavedPosts(false)} onSelectPost={(post) => setViewingPost(post)} />
 
       {/* Nested post detail modal */}
       <PostDetailModal post={viewingPost} onClose={() => setViewingPost(null)} />
